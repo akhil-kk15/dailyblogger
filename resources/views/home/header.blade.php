@@ -35,7 +35,12 @@
                      <li><a href="services.html">My Posts</a></li>
                      <!-- user login recognition -->
                      @if(Auth::check())
-                        <li><a href="{{ route('logout') }}">Logout</a></li>
+                        <li>
+                           <form method="POST" action="{{ route('logout') }}" style="display:inline;">
+                              @csrf
+                              <button type="submit" style="background:none;border:none;padding:0;margin:0;color:inherit;cursor:pointer;">Logout</button>
+                           </form>
+                        </li>
                      @else
                         <li><a href="{{ route('login') }}">Login</a></li>
                         <li><a href="{{ route('register') }}">Register</a></li>
