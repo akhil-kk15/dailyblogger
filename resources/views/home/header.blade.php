@@ -1,7 +1,9 @@
 <div class="header_main">
+            <div class="logo-wrapper" style="width:100%;text-align:center;margin-top:20px;">
+    <img src="{{ asset('images/logofile-cropped.svg') }}" style="max-width:25%;height:auto;display:inline-block;" alt="Logo">
+</div>
             <div class="mobile_menu">
                <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                  <div class="logo_mobile"><a href="index.html"><img src="{{ asset('images/logofile-cropped.svg') }}"></a></div>
                   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                   <span class="navbar-toggler-icon"></span>
                   </button>
@@ -27,7 +29,6 @@
                </nav>
             </div>
             <div class="container-fluid">
-               <div class="logo"><a href="index.html"><img src="{{ asset('images/logofile-cropped.svg') }}"></a></div>
                <div class="menu_main">
                   <ul>
                      <li class="active"><a href="{{ route('home.homepage') }}">Home</a></li>
