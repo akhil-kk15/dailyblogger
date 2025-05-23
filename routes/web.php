@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\homeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\adminController;
@@ -27,3 +28,6 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
 });
+
+Route::get('/post_page', [adminController::class, 'post_page'])->name('admin.post_page');
+Route::post('/add_post', [adminController::class, 'add_post'])->name('admin.add_post');

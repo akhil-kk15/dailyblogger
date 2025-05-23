@@ -21,7 +21,7 @@
           <div class="right-menu list-inline no-margin-bottom">    
             <div class="list-inline-item"><a href="#" class="search-open nav-link"><i class="icon-magnifying-glass-browser"></i></a></div>
             <div class="list-inline-item dropdown"><a id="navbarDropdownMenuLink1" href="http://example.com" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link messages-toggle"><i class="icon-email"></i><span class="badge dashbg-1">5</span></a>
-              <div aria-labelledby="navbarDropdownMenuLink1" class="dropdown-menu messages"><a href="#" class="dropdown-item message d-flex align-items-center">
+              <div aria-labelledby="navbarDropdownMenuLink1" class="dropdown-menu messages" style="margin-top:-27px;"><a href="#" class="dropdown-item message d-flex align-items-center">
                   <div class="profile"><img src="admincss/img/avatar-3.jpg" alt="..." class="img-fluid">
                     <div class="status online"></div>
                   </div>
@@ -41,7 +41,8 @@
             </div>
             <!-- Tasks-->
             <div class="list-inline-item dropdown"><a id="navbarDropdownMenuLink2" href="http://example.com" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link tasks-toggle"><i class="icon-new-file"></i><span class="badge dashbg-3">9</span></a>
-              <div aria-labelledby="navbarDropdownMenuLink2" class="dropdown-menu tasks-list"><a href="#" class="dropdown-item">
+              <div aria-labelledby="navbarDropdownMenuLink2" class="dropdown-menu tasks-list" style="margin-top:-27px;">
+                <a href="#" class="dropdown-item">
                   <div class="text d-flex justify-content-between"><strong>Task 1</strong><span>40% complete</span></div>
                   <div class="progress">
                     <div role="progressbar" style="width: 40%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" class="progress-bar dashbg-1"></div>
@@ -65,10 +66,10 @@
               </div>
             </div>
             <!-- Tasks end-->
-            <!-- Megamenu-->
+            <!-- Megamenu
             <div class="list-inline-item dropdown menu-large">
     <a href="#" data-toggle="dropdown" class="nav-link">Mega <i class="fa fa-ellipsis-v"></i></a>
-    <div class="dropdown-menu megamenu" style="margin-top:-29px;">
+    <div class="dropdown-menu megamenu" style="margin-top:-27px;">
                 <div class="row">
                   <div class="col-lg-3 col-md-6"><strong class="text-uppercase">Elements Heading</strong>
                     <ul class="list-unstyled mb-3">
@@ -128,7 +129,7 @@
                   <div class="col-lg-2 col-md-4"><a href="#" class="d-block megamenu-button-link bg-info"><i class="fa fa-clock-o"></i><strong>Demo 6</strong></a></div>
                 </div>
               </div>
-            </div>
+            </div> -->
             <!-- Megamenu end     -->
             <!-- Languages dropdown    -->
             <div class="list-inline-item dropdown">

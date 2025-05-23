@@ -7,10 +7,15 @@
             <p>Control Center</p>
           </div>
         </div>
-        <!-- Sidebar Navidation Menus--><span class="heading">Main</span>
+        <!-- Sidebar Navidation Menus-->
+         <span class="heading">Main</span>
         <ul class="list-unstyled">
-                <li class="active"><a href="index.html"> <i class="icon-home"></i>Home </a></li>
-                <li><a href="tables.html"> <i class="icon-grid"></i>Add Posts </a></li>
+                <li class="{{ request()->routeIs('home.homepage') || request()->routeIs('admin.index') ? 'active' : '' }}">
+                    <a href="{{ url('home') }}"> <i class="icon-home"></i>Home </a>
+                </li>
+                <li class="{{ request()->routeIs('admin.post_page') ? 'active' : '' }}">
+                    <a href="{{ route('admin.post_page') }}"> <i class="icon-grid"></i>Add Posts </a>
+                </li>
                 <li><a href="charts.html"> <i class="fa fa-bar-chart"></i>Charts </a></li>
                 <li><a href="forms.html"> <i class="icon-padnote"></i>Forms </a></li>
                 <li><a href="#exampledropdownDropdown" aria-expanded="false" data-toggle="collapse"> <i class="icon-windows"></i>Example dropdown </a>
