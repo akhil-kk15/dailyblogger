@@ -1,39 +1,50 @@
 <div class="header_main">
-            <div class="logo-wrapper" style="width:100%;text-align:center;margin-top:20px;">
-    <img src="{{ asset('images/logofile-cropped.svg') }}" style="max-width:25%;height:auto;display:inline-block;" alt="Logo">
-</div>
             <div class="mobile_menu">
                <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                  <a class="navbar-brand" href="{{ route('home.homepage') }}">
+                     <img src="{{ asset('images/logofile-cropped.svg') }}" alt="Daily Blogger" class="logo-img">
+                  </a>
                   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                   <span class="navbar-toggler-icon"></span>
                   </button>
                   <div class="collapse navbar-collapse" id="navbarNav">
                      <ul class="navbar-nav">
-                        <li class="nav-item">
-                           <a class="nav-link" href="index.html">Home</a>
+                        <li class="nav-item {{ request()->routeIs('home.homepage') ? 'active' : '' }}">
+                           <a class="nav-link" href="{{ route('home.homepage') }}">Home</a>
                         </li>
-                        <li class="nav-item">
-                           <a class="nav-link" href="about.html">about</a>
+                        <li class="nav-item {{ request()->routeIs('home.posts') ? 'active' : '' }}">
+                           <a class="nav-link" href="{{ route('home.posts') }}">All Posts</a>
                         </li>
-                        <li class="nav-item">
-                           <a class="nav-link" href="services.html">Create Posts</a> 
-                        </li>
+                        @if(Auth::check())
+                            <li class="nav-item {{ request()->routeIs('admin.post_page') ? 'active' : '' }}">
+                               <a class="nav-link" href="{{ route('admin.post_page') }}">Create Posts</a> 
+                            </li>
+                        @endif
                         <li class="nav-item">
                            <a class="nav-link " href="blog.html">My Posts</a>
                         </li>
-                        <li class="nav-item">
-                           <a class="nav-link " href="contact.html">Login/Register</a>
-                        </li>
+                        @if(!Auth::check())
+                            <li class="nav-item {{ request()->routeIs('login') || request()->routeIs('register') ? 'active' : '' }}">
+                               <a class="nav-link " href="{{ route('login') }}">Login/Register</a>
+                            </li>
+                        @endif
                      </ul>
                   </div>
                </nav>
             </div>
             <div class="container-fluid">
                <div class="menu_main">
+                  <div class="navbar-brand-desktop">
+                     <a href="{{ route('home.homepage') }}">
+                        <img src="{{ asset('images/logofile-cropped.svg') }}" alt="Daily Blogger" class="logo-img-desktop">
+                     </a>
+                  </div>
                   <ul>
-                     <li class="active"><a href="{{ route('home.homepage') }}">Home</a></li>
-                     <li><a href="about.html">Create Posts</a></li>
-                     <li><a href="services.html">My Posts</a></li>
+                     <li class="{{ request()->routeIs('home.homepage') ? 'active' : '' }}"><a href="{{ route('home.homepage') }}">Home</a></li>
+                     <li class="{{ request()->routeIs('home.posts') ? 'active' : '' }}"><a href="{{ route('home.posts') }}">All Posts</a></li>
+                     @if(Auth::check())
+                        <li class="{{ request()->routeIs('admin.post_page') ? 'active' : '' }}"><a href="{{ route('admin.post_page') }}">Create Posts</a></li>
+                     @endif
                      <!-- user login recognition -->
                      @if(Auth::check())
                         <li>
@@ -43,8 +54,8 @@
                            </form>
                         </li>
                      @else
-                        <li><a href="{{ route('login') }}">Login</a></li>
-                        <li><a href="{{ route('register') }}">Register</a></li>
+                        <li class="{{ request()->routeIs('login') ? 'active' : '' }}"><a href="{{ route('login') }}">Login</a></li>
+                        <li class="{{ request()->routeIs('register') ? 'active' : '' }}"><a href="{{ route('register') }}">Register</a></li>
                      @endif
                   </ul>
                </div>
