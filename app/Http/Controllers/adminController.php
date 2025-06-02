@@ -38,6 +38,8 @@ class adminController extends Controller
         if (!Auth::check()) {
             return redirect()->route('login');
         }
+
+    
         $post = new Posts;
         $post->title = $request->title;
         $post->description = $request->description;
@@ -49,10 +51,17 @@ class adminController extends Controller
         $request->image->move('postimage', $imagename);
         $post->image = $imagename;
     }
+
+        $post ->id =$user_id = Auth::id(); // This line is not necessary, as you can directly use Auth::id() later
+        //user_id and userid from different tables 
+
+
+
+        //logged in user_id
         $post->name = Auth::user()->name;
         $post->user_id = Auth::id();
         $post->usertype = Auth::user()->usertype;
         $post->save();
-        return redirect()->back();
+        return redirect()->back()->with('message', 'Post added successfully');
     }
 }

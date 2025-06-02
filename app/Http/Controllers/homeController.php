@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Posts;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 class homeController extends Controller
@@ -28,6 +29,19 @@ class homeController extends Controller
     }
     public function homepage()
     {
-        return view('home.homepage');
+        $posts = Posts::where('post_status', 'active')->latest()->limit(6)->get();
+        return view('home.homepage', compact('posts'));
+    }
+    
+    public function all_posts()
+    {
+        $posts = Posts::where('post_status', 'active')->latest()->paginate(12);
+        return view('home.all_posts', compact('posts'));
+    }
+    
+    public function post_details($id)
+    {
+        $post = Posts::findOrFail($id);
+        return view('home.post_details', compact('post'));
     }
 }

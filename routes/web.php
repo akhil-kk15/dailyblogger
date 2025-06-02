@@ -8,6 +8,10 @@ use App\Http\Controllers\adminController;
 //calling homeController
 Route::get('/', [homeController::class, 'homepage'])->name('home.homepage');
 
+// Posts routes
+Route::get('/posts', [homeController::class, 'all_posts'])->name('home.posts');
+Route::get('/posts/{id}', [homeController::class, 'post_details'])->name('home.post_details');
+
 // Route::get('/', function () {
 //     return view('welcome');
 // });
