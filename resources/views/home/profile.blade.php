@@ -2,7 +2,7 @@
 <html lang="en">
    <head>
       @include('home.homecss')
-   </head>
+       </head>
    <body>
       <!-- header section start -->
       <div class="header_section">
@@ -28,6 +28,17 @@
                                   @csrf
                                   @method('PUT')
                                   
+                                  <!-- Profile Photo -->
+                                  @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
+                                  <div class="profile_photo_section">
+                                      <label class="profile_label">Photo</label>
+                                      <div class="profile_photo_container">
+                                          <img src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" class="current_profile_photo">
+                                          <input type="file" name="photo" accept="image/*" class="profile_photo_input">
+                                      </div>
+                                  </div>
+                                  @endif
+                                  
                                   <!-- Name -->
                                   <div class="profile_input_group">
                                       <label for="name" class="profile_label">Name</label>
@@ -52,7 +63,7 @@
                               </form>
                           </div>
                           
-                          <!-- Password Update Section -->
+                          <!-- Update Password Section -->
                           <div class="profile_section_item">
                               <h3 class="profile_section_title">Update Password</h3>
                               <p class="profile_section_description">Ensure your account is using a long, random password to stay secure.</p>
@@ -61,6 +72,7 @@
                                   @csrf
                                   @method('PUT')
                                   
+                                  <!-- Current Password -->
                                   <div class="profile_input_group">
                                       <label for="current_password" class="profile_label">Current Password</label>
                                       <input type="password" id="current_password" name="current_password" class="profile_input" required>
@@ -69,6 +81,7 @@
                                       @enderror
                                   </div>
                                   
+                                  <!-- New Password -->
                                   <div class="profile_input_group">
                                       <label for="password" class="profile_label">New Password</label>
                                       <input type="password" id="password" name="password" class="profile_input" required>
@@ -77,6 +90,7 @@
                                       @enderror
                                   </div>
                                   
+                                  <!-- Confirm Password -->
                                   <div class="profile_input_group">
                                       <label for="password_confirmation" class="profile_label">Confirm Password</label>
                                       <input type="password" id="password_confirmation" name="password_confirmation" class="profile_input" required>
@@ -111,7 +125,6 @@
       </div>
       <!-- profile section end -->
       
-
       <!-- footer section start -->
       @include('home.footer')
       <!-- footer section end -->
@@ -180,6 +193,31 @@
               display: block;
           }
           
+          .profile_photo_section {
+              margin-bottom: 30px;
+          }
+          
+          .profile_photo_container {
+              display: flex;
+              align-items: center;
+              gap: 20px;
+          }
+          
+          .current_profile_photo {
+              width: 80px;
+              height: 80px;
+              border-radius: 50%;
+              object-fit: cover;
+              border: 3px solid #eee;
+          }
+          
+          .profile_photo_input {
+              flex: 1;
+              padding: 10px;
+              border: 1px solid #ddd;
+              border-radius: 6px;
+          }
+          
           .profile_actions {
               margin-top: 30px;
           }
@@ -239,6 +277,11 @@
               
               .profile_section_item {
                   padding: 20px;
+              }
+              
+              .profile_photo_container {
+                  flex-direction: column;
+                  align-items: flex-start;
               }
               
               .account_actions {

@@ -16,9 +16,10 @@
                 <li class="{{ request()->routeIs('admin.post_page') ? 'active' : '' }}">
                     <a href="{{ route('admin.post_page') }}"> <i class="icon-grid"></i>Add Posts </a>
                 </li>
-                <li><a href="charts.html"> <i class="fa fa-bar-chart"></i>Charts </a></li>
-                <li><a href="forms.html"> <i class="icon-padnote"></i>Forms </a></li>
-                <li><a href="#exampledropdownDropdown" aria-expanded="false" data-toggle="collapse"> <i class="icon-windows"></i>Example dropdown </a>
+
+                <li><a href="#{{ url('/show_post') }}" aria-expanded="false" data-toggle="collapse"> <i class="icon-windows"></i>Show Posts </a>
+                <li><a href="charts.html"> <i class="fa fa-bar-chart"></i>Stats </a></li>
+                <li><a href="forms.html"> <i class="icon-padnote"></i>Approval list </a></li>
                   <ul id="exampledropdownDropdown" class="collapse list-unstyled ">
                     <li><a href="#">Page</a></li>
                     <li><a href="#">Page</a></li>

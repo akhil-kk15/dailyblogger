@@ -35,3 +35,8 @@ Route::middleware([
 
 Route::get('/post_page', [adminController::class, 'post_page'])->name('admin.post_page');
 Route::post('/add_post', [adminController::class, 'add_post'])->name('admin.add_post');
+
+// Custom Profile route (override Jetstream default before it loads)
+Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
+    Route::get('/user/profile', [ProfileController::class, 'showCustomProfile'])->name('profile.show');
+});
