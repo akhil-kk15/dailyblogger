@@ -17,11 +17,35 @@
         <!-- Styles -->
         @livewireStyles
     </head>
-    <body>
-        <div class="font-sans text-gray-900 antialiased">
+    <body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+        <!-- Dark Mode Toggle Button -->
+        <button id="darkModeToggle" class="fixed top-4 right-4 z-50 px-4 py-2 rounded bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 shadow transition-colors">
+            Toggle Dark Mode
+        </button>
+        <div class="font-sans text-gray-900 dark:text-gray-100 antialiased">
             {{ $slot }}
         </div>
 
         @livewireScripts
+        <script>
+            // Dark mode toggle logic
+            const html = document.documentElement;
+            const toggle = document.getElementById('darkModeToggle');
+            // On load, set dark mode if preferred
+            if (localStorage.getItem('theme') === 'dark' ||
+                (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                html.classList.add('dark');
+            } else {
+                html.classList.remove('dark');
+            }
+            toggle.addEventListener('click', () => {
+                html.classList.toggle('dark');
+                if (html.classList.contains('dark')) {
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    localStorage.setItem('theme', 'light');
+                }
+            });
+        </script>
     </body>
 </html>
