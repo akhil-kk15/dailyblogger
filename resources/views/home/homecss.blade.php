@@ -288,7 +288,7 @@
               padding: 0;
           }
           
-          .dropdown:hover .dropdown-menu {
+          .dropdown-menu.show {
               display: block;
           }
           
@@ -341,7 +341,7 @@
               box-shadow: 0 0.5rem 1rem rgba(0,0,0,.175);
           }
           
-          .menu_main .dropdown:hover .dropdown-menu {
+          .menu_main .dropdown-menu.show {
               display: block;
           }
           

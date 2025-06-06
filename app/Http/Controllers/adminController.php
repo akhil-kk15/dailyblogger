@@ -23,7 +23,14 @@ class adminController extends Controller
                 return view('home.homepage');
             }
             else if($usertype == 'admin'){
-                return view('admin.adminhome');
+                // Get post statistics for admin dashboard
+                $totalPosts = Posts::count();
+                $activePosts = Posts::where('post_status', 'active')->count();
+                $pendingPosts = Posts::where('post_status', 'pending')->count();
+                $rejectedPosts = Posts::where('post_status', 'rejected')->count();
+                $totalUsers = User::count();
+                
+                return view('admin.adminhome', compact('totalPosts', 'activePosts', 'pendingPosts', 'rejectedPosts', 'totalUsers'));
             }
             else{
                 return redirect()->back();
@@ -43,7 +50,13 @@ class adminController extends Controller
         $post = new Posts;
         $post->title = $request->title;
         $post->description = $request->description;
-        $post->post_status = 'active';
+        
+        // Set post status based on user type
+        if(Auth::user()->usertype == 'admin') {
+            $post->post_status = 'active'; // Admin posts are automatically approved
+        } else {
+            $post->post_status = 'pending'; // User posts need approval
+        }
         $image = $request->image;
         if($image)
         {
@@ -63,5 +76,43 @@ class adminController extends Controller
         $post->usertype = Auth::user()->usertype;
         $post->save();
         return redirect()->back()->with('message', 'Post added successfully');
+    }
+
+    public function show_posts()
+    {
+        $posts = Posts::orderBy('created_at', 'desc')->paginate(10);
+        return view('admin.show_posts', compact('posts'));
+    }
+
+    public function approve_post($id)
+    {
+        $post = Posts::findOrFail($id);
+        $post->post_status = 'active';
+        $post->save();
+        
+        return redirect()->back()->with('message', 'Post approved successfully');
+    }
+
+    public function reject_post($id)
+    {
+        $post = Posts::findOrFail($id);
+        $post->post_status = 'rejected';
+        $post->save();
+        
+        return redirect()->back()->with('message', 'Post rejected successfully');
+    }
+
+    public function delete_post($id)
+    {
+        $post = Posts::findOrFail($id);
+        
+        // Delete the image file if it exists
+        if($post->image && file_exists(public_path('postimage/' . $post->image))) {
+            unlink(public_path('postimage/' . $post->image));
+        }
+        
+        $post->delete();
+        
+        return redirect()->back()->with('message', 'Post deleted successfully');
     }
 }
