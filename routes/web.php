@@ -12,6 +12,13 @@ Route::get('/', [homeController::class, 'homepage'])->name('home.homepage');
 Route::get('/posts', [homeController::class, 'all_posts'])->name('home.posts');
 Route::get('/posts/{id}', [homeController::class, 'post_details'])->name('home.post_details');
 
+// User authenticated routes
+Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
+    Route::get('/my-posts', [homeController::class, 'my_posts'])->name('home.my_posts');
+    Route::get('/create-post', [homeController::class, 'create_post'])->name('home.create_post');
+    Route::post('/store-post', [homeController::class, 'store_post'])->name('home.store_post');
+});
+
 // Route::get('/', function () {
 //     return view('welcome');
 // });

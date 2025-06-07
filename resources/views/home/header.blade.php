@@ -17,12 +17,18 @@
                         </li>
                         <!-- change this from  redirecting to adminpage  -->
                         @if(Auth::check())
-                            <li class="nav-item {{ request()->routeIs('admin.post_page') ? 'active' : '' }}">
-                               <a class="nav-link" href="{{ route('admin.post_page') }}">Create Posts</a> 
-                            </li>
+                            @if(Auth::user()->usertype == 'admin')
+                                <li class="nav-item {{ request()->routeIs('admin.post_page') ? 'active' : '' }}">
+                                   <a class="nav-link" href="{{ route('admin.post_page') }}">Create Posts</a> 
+                                </li>
+                            @else
+                                <li class="nav-item {{ request()->routeIs('home.create_post') ? 'active' : '' }}">
+                                   <a class="nav-link" href="{{ route('home.create_post') }}">Create Posts</a> 
+                                </li>
+                            @endif
                         @endif
-                        <li class="nav-item">
-                           <a class="nav-link " href="blog.html">My Posts</a>
+                        <li class="nav-item {{ request()->routeIs('home.my_posts') ? 'active' : '' }}">
+                           <a class="nav-link " href="{{ route('home.my_posts') }}">My Posts</a>
                         </li>
                         @if(Auth::check())
                             <li class="nav-item dropdown {{ request()->routeIs('profile.show') ? 'active' : '' }}">
@@ -62,9 +68,13 @@
                      <li class="{{ request()->routeIs('home.homepage') ? 'active' : '' }}"><a href="{{ route('home.homepage') }}">Home</a></li>
                      <li class="{{ request()->routeIs('home.posts') ? 'active' : '' }}"><a href="{{ route('home.posts') }}">All Posts</a></li>
                      @if(Auth::check())
-                        <li class="{{ request()->routeIs('admin.post_page') ? 'active' : '' }}"><a href="{{ route('admin.post_page') }}">Create Posts</a></li>
+                        @if(Auth::user()->usertype == 'admin')
+                            <li class="{{ request()->routeIs('admin.post_page') ? 'active' : '' }}"><a href="{{ route('admin.post_page') }}">Create Posts</a></li>
+                        @else
+                            <li class="{{ request()->routeIs('home.create_post') ? 'active' : '' }}"><a href="{{ route('home.create_post') }}">Create Posts</a></li>
+                        @endif
                      @endif
-                     <li><a href="blog.html">My Posts</a></li>
+                     <li class="{{ request()->routeIs('home.my_posts') ? 'active' : '' }}"><a href="{{ route('home.my_posts') }}">My Posts</a></li>
                      @if(Auth::check())
                         <li class="dropdown {{ request()->routeIs('profile.show') ? 'active' : '' }}">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ Auth::user()->name }} </a>
