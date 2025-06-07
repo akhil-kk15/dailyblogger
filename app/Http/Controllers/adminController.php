@@ -102,6 +102,20 @@ class adminController extends Controller
         return redirect()->back()->with('message', 'Post rejected successfully');
     }
 
+    public function reject_post_with_reason(Request $request, $id)
+    {
+        $request->validate([
+            'rejection_reason' => 'required|string|max:500'
+        ]);
+
+        $post = Posts::findOrFail($id);
+        $post->post_status = 'rejected';
+        $post->rejection_reason = $request->rejection_reason;
+        $post->save();
+        
+        return redirect()->back()->with('message', 'Post rejected with reason successfully');
+    }
+
     public function delete_post($id)
     {
         $post = Posts::findOrFail($id);

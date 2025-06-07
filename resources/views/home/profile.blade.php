@@ -110,7 +110,11 @@
                               <div class="account_actions">
                                   <a href="{{ route('home.posts') }}" class="btn btn-secondary">View All Posts</a>
                                   @if(Auth::check())
-                                      <a href="{{ route('admin.post_page') }}" class="btn btn-secondary">Create New Post</a>
+                                      @if(Auth::user()->usertype == 'admin')
+                                          <a href="{{ route('admin.post_page') }}" class="btn btn-secondary">Create New Post</a>
+                                      @else
+                                          <a href="{{ route('home.create_post') }}" class="btn btn-secondary">Create New Post</a>
+                                      @endif
                                   @endif
                                   <form method="POST" action="{{ route('logout') }}" style="display: inline;">
                                       @csrf

@@ -4,7 +4,34 @@
       @include('home.homecss')
        </head>
    <body>
-      <!-- header section start -->
+      <!-- header           .post_author, .post_date {
+              color: #666;
+              font-size: 14px;
+              margin-bottom: 10px;
+          }
+          
+          .post_meta {
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              margin-bottom: 15px;
+          }
+          
+          .post_meta p {
+              margin: 0;
+          }
+          
+          .post_comments {
+              color: #007bff;
+              font-size: 12px;
+              font-weight: 600;
+          }
+          
+          .no_posts_message {
+              text-align: center;
+              padding: 50px 0;
+              color: #666;
+          }rt -->
       <div class="header_section">
          @include('home.header')
       </div>
@@ -31,7 +58,10 @@
                                           <h4 class="post_title">{{ \Illuminate\Support\Str::limit($post->title, 50) }}</h4>
                                           <p class="post_description">{{ \Illuminate\Support\Str::limit($post->description, 100) }}</p>
                                           <p class="post_author">By: {{ $post->name }}</p>
-                                          <p class="post_date">{{ $post->created_at->format('M d, Y') }}</p>
+                                          <div class="post_meta">
+                                              <p class="post_date">{{ $post->created_at->format('M d, Y') }}</p>
+                                              <p class="post_comments">{{ $post->comments_count }} {{ $post->comments_count == 1 ? 'comment' : 'comments' }}</p>
+                                          </div>
                                           <div class="btn_main">
                                               <a href="{{ route('home.post_details', $post->id) }}">Check Post</a>
                                           </div>

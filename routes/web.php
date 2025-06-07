@@ -17,6 +17,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     Route::get('/my-posts', [homeController::class, 'my_posts'])->name('home.my_posts');
     Route::get('/create-post', [homeController::class, 'create_post'])->name('home.create_post');
     Route::post('/store-post', [homeController::class, 'store_post'])->name('home.store_post');
+    Route::post('/posts/{id}/comment', [homeController::class, 'store_comment'])->name('home.store_comment');
 });
 
 // Route::get('/', function () {
@@ -50,6 +51,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     Route::post('/approve_post/{id}', [adminController::class, 'approve_post'])->name('admin.approve_post');
     Route::delete('/delete_post/{id}', [adminController::class, 'delete_post'])->name('admin.delete_post');
     Route::post('/reject_post/{id}', [adminController::class, 'reject_post'])->name('admin.reject_post');
+    Route::post('/reject_post_with_reason/{id}', [adminController::class, 'reject_post_with_reason'])->name('admin.reject_post_with_reason');
 });
 
 // Custom Profile route (override Jetstream default before it loads)

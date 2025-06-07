@@ -43,6 +43,59 @@
                               </div>
                           </div>
                       </div>
+                      
+                      <!-- Comments Section -->
+                      <div class="comments_section">
+                          <h3 class="comments_title">Comments ({{ $comments->count() }})</h3>
+                          
+                          @if(session()->has('message'))
+                              <div class="alert alert-success">
+                                  {{ session('message') }}
+                              </div>
+                          @endif
+                          
+                          <!-- Add Comment Form (only for authenticated users) -->
+                          @if(Auth::check())
+                              <div class="add_comment_form">
+                                  <h4>Leave a Comment</h4>
+                                  <form action="{{ route('home.store_comment', $post->id) }}" method="POST">
+                                      @csrf
+                                      <div class="form_group">
+                                          <textarea name="comment" placeholder="Write your comment here..." rows="4" required>{{ old('comment') }}</textarea>
+                                          @error('comment')
+                                              <span class="error_message">{{ $message }}</span>
+                                          @enderror
+                                      </div>
+                                      <button type="submit" class="btn btn-primary">Post Comment</button>
+                                  </form>
+                              </div>
+                          @else
+                              <div class="login_prompt">
+                                  <p>Please <a href="{{ route('login') }}">login</a> to leave a comment.</p>
+                              </div>
+                          @endif
+                          
+                          <!-- Display Comments -->
+                          <div class="comments_list">
+                              @if($comments->count() > 0)
+                                  @foreach($comments as $comment)
+                                      <div class="comment_item">
+                                          <div class="comment_header">
+                                              <strong class="comment_author">{{ $comment->user_name }}</strong>
+                                              <span class="comment_date">{{ $comment->created_at->format('M d, Y \a\t h:i A') }}</span>
+                                          </div>
+                                          <div class="comment_content">
+                                              {!! nl2br(e($comment->comment)) !!}
+                                          </div>
+                                      </div>
+                                  @endforeach
+                              @else
+                                  <div class="no_comments">
+                                      <p>No comments yet. Be the first to comment!</p>
+                                  </div>
+                              @endif
+                          </div>
+                      </div>
                   </div>
               </div>
           </div>
@@ -147,6 +200,138 @@
               background: #545b62;
           }
           
+          /* Comments Section Styles */
+          .comments_section {
+              background: #fff;
+              border-radius: 8px;
+              box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+              padding: 30px;
+              margin-top: 30px;
+          }
+          
+          .comments_title {
+              font-size: 24px;
+              font-weight: bold;
+              margin-bottom: 25px;
+              color: #333;
+              border-bottom: 2px solid #007bff;
+              padding-bottom: 10px;
+          }
+          
+          .add_comment_form {
+              margin-bottom: 30px;
+              padding: 20px;
+              background: #f8f9fa;
+              border-radius: 8px;
+          }
+          
+          .add_comment_form h4 {
+              margin-bottom: 15px;
+              color: #333;
+          }
+          
+          .form_group {
+              margin-bottom: 15px;
+          }
+          
+          .form_group textarea {
+              width: 100%;
+              padding: 12px;
+              border: 1px solid #ddd;
+              border-radius: 4px;
+              font-size: 14px;
+              resize: vertical;
+              font-family: inherit;
+          }
+          
+          .form_group textarea:focus {
+              outline: none;
+              border-color: #007bff;
+              box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
+          }
+          
+          .error_message {
+              color: #dc3545;
+              font-size: 14px;
+              margin-top: 5px;
+              display: block;
+          }
+          
+          .login_prompt {
+              text-align: center;
+              padding: 20px;
+              background: #f8f9fa;
+              border-radius: 8px;
+              margin-bottom: 30px;
+          }
+          
+          .login_prompt a {
+              color: #007bff;
+              text-decoration: none;
+              font-weight: bold;
+          }
+          
+          .login_prompt a:hover {
+              text-decoration: underline;
+          }
+          
+          .comments_list {
+              margin-top: 20px;
+          }
+          
+          .comment_item {
+              border: 1px solid #eee;
+              border-radius: 8px;
+              padding: 20px;
+              margin-bottom: 15px;
+              background: #fff;
+          }
+          
+          .comment_header {
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              margin-bottom: 10px;
+              padding-bottom: 8px;
+              border-bottom: 1px solid #f0f0f0;
+          }
+          
+          .comment_author {
+              color: #007bff;
+              font-size: 16px;
+          }
+          
+          .comment_date {
+              color: #666;
+              font-size: 12px;
+          }
+          
+          .comment_content {
+              color: #444;
+              line-height: 1.6;
+              font-size: 14px;
+          }
+          
+          .no_comments {
+              text-align: center;
+              color: #666;
+              font-style: italic;
+              padding: 40px 20px;
+          }
+          
+          .alert {
+              padding: 15px;
+              margin-bottom: 20px;
+              border: 1px solid transparent;
+              border-radius: 4px;
+          }
+          
+          .alert-success {
+              color: #155724;
+              background-color: #d4edda;
+              border-color: #c3e6cb;
+          }
+          
           @media (max-width: 768px) {
               .post_details_content {
                   padding: 20px;
@@ -159,6 +344,16 @@
               .post_meta {
                   flex-direction: column;
                   gap: 10px;
+              }
+              
+              .comments_section {
+                  padding: 20px;
+              }
+              
+              .comment_header {
+                  flex-direction: column;
+                  align-items: flex-start;
+                  gap: 5px;
               }
           }
       </style>

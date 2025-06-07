@@ -38,6 +38,12 @@
                                                   </span>
                                               </div>
                                           </div>
+                                          @if($post->post_status == 'rejected' && $post->rejection_reason)
+                                              <div class="rejection_reason">
+                                                  <strong>Rejection Reason:</strong>
+                                                  <p>{{ $post->rejection_reason }}</p>
+                                              </div>
+                                          @endif
                                           <div class="post_actions">
                                               @if($post->post_status == 'active')
                                                   <a href="{{ route('home.post_details', $post->id) }}" class="btn btn-primary">View Post</a>
@@ -59,7 +65,11 @@
               @else
                   <div class="no_posts_message">
                       <p>You haven't created any posts yet.</p>
-                      <a href="{{ route('admin.post_page') }}" class="btn btn-primary">Create Your First Post</a>
+                      @if(Auth::user()->usertype == 'admin')
+                          <a href="{{ route('admin.post_page') }}" class="btn btn-primary">Create Your First Post</a>
+                      @else
+                          <a href="{{ route('home.create_post') }}" class="btn btn-primary">Create Your First Post</a>
+                      @endif
                   </div>
               @endif
           </div>
@@ -228,6 +238,27 @@
           .pagination_wrapper .pagination li.active a {
               background: #007bff;
               color: white;
+          }
+          
+          .rejection_reason {
+              background: #f8d7da;
+              border: 1px solid #f5c6cb;
+              color: #721c24;
+              padding: 10px;
+              border-radius: 4px;
+              margin-bottom: 15px;
+              font-size: 13px;
+          }
+          
+          .rejection_reason strong {
+              display: block;
+              margin-bottom: 5px;
+              font-weight: 600;
+          }
+          
+          .rejection_reason p {
+              margin: 0;
+              line-height: 1.4;
           }
       </style>
    </body>

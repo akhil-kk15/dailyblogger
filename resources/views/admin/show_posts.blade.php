@@ -134,6 +134,84 @@
         color: #666;
         font-size: 18px;
     }
+    .reject_dropdown {
+        position: relative;
+        display: inline-block;
+    }
+    .reject_btn {
+        background: #ffc107;
+        color: #212529;
+        padding: 8px 12px;
+        border: none;
+        border-radius: 4px;
+        font-size: 12px;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+        text-align: center;
+        min-width: 70px;
+    }
+    .reject_btn:hover {
+        background: #e0a800;
+        color: #212529;
+    }
+    .reject_content {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 300px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1000;
+        right: 0;
+        border-radius: 4px;
+        padding: 15px;
+        top: 100%;
+        margin-top: 5px;
+    }
+    .reject_content.show {
+        display: block;
+    }
+    .reject_form_group {
+        margin-bottom: 15px;
+    }
+    .reject_form_group label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 5px;
+        color: #333;
+    }
+    .reject_form_group select,
+    .reject_form_group textarea {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+    }
+    .reject_form_group textarea {
+        height: 60px;
+        resize: vertical;
+    }
+    .reject_form_buttons {
+        display: flex;
+        gap: 10px;
+        justify-content: flex-end;
+    }
+    .reject_form_buttons button {
+        padding: 8px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 12px;
+    }
+    .btn_reject_confirm {
+        background: #dc3545;
+        color: white;
+    }
+    .btn_reject_cancel {
+        background: #6c757d;
+        color: white;
+    }
    </style>
   </head>
   <body>
@@ -197,20 +275,71 @@
                                                 @csrf
                                                 <button type="submit" class="btn_action btn_approve" onclick="return confirm('Are you sure you want to approve this post?')">Approve</button>
                                             </form>
-                                            <form action="{{ route('admin.reject_post', $post->id) }}" method="POST" style="display: inline;">
-                                                @csrf
-                                                <button type="submit" class="btn_action btn_reject" onclick="return confirm('Are you sure you want to reject this post?')">Reject</button>
-                                            </form>
+                                            <div class="reject_dropdown">
+                                                <button type="button" class="reject_btn" onclick="toggleRejectForm('{{ $post->id }}')">Reject</button>
+                                                <div id="rejectForm{{ $post->id }}" class="reject_content">
+                                                    <form action="{{ route('admin.reject_post_with_reason', $post->id) }}" method="POST">
+                                                        @csrf
+                                                        <div class="reject_form_group">
+                                                            <label for="rejection_reason_{{ $post->id }}">Rejection Reason:</label>
+                                                            <select id="rejection_reason_select_{{ $post->id }}" onchange="handleReasonSelect('{{ $post->id }}')">
+                                                                <option value="">Select a reason...</option>
+                                                                <option value="Inappropriate content">Inappropriate content</option>
+                                                                <option value="Spam or low quality">Spam or low quality</option>
+                                                                <option value="Copyright violation">Copyright violation</option>
+                                                                <option value="Incorrect information">Incorrect information</option>
+                                                                <option value="Does not meet guidelines">Does not meet guidelines</option>
+                                                                <option value="custom">Custom reason...</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="reject_form_group">
+                                                            <textarea name="rejection_reason" id="rejection_reason_{{ $post->id }}" placeholder="Enter rejection reason..." required></textarea>
+                                                        </div>
+                                                        <div class="reject_form_buttons">
+                                                            <button type="button" class="btn_reject_cancel" onclick="toggleRejectForm('{{ $post->id }}')">Cancel</button>
+                                                            <button type="submit" class="btn_reject_confirm">Reject Post</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
                                         @elseif($post->post_status == 'active')
-                                            <form action="{{ route('admin.reject_post', $post->id) }}" method="POST" style="display: inline;">
-                                                @csrf
-                                                <button type="submit" class="btn_action btn_reject" onclick="return confirm('Are you sure you want to reject this post?')">Reject</button>
-                                            </form>
+                                            <div class="reject_dropdown">
+                                                <button type="button" class="reject_btn" onclick="toggleRejectForm('{{ $post->id }}')">Reject</button>
+                                                <div id="rejectForm{{ $post->id }}" class="reject_content">
+                                                    <form action="{{ route('admin.reject_post_with_reason', $post->id) }}" method="POST">
+                                                        @csrf
+                                                        <div class="reject_form_group">
+                                                            <label for="rejection_reason_{{ $post->id }}">Rejection Reason:</label>
+                                                            <select id="rejection_reason_select_{{ $post->id }}" onchange="handleReasonSelect('{{ $post->id }}')">
+                                                                <option value="">Select a reason...</option>
+                                                                <option value="Inappropriate content">Inappropriate content</option>
+                                                                <option value="Spam or low quality">Spam or low quality</option>
+                                                                <option value="Copyright violation">Copyright violation</option>
+                                                                <option value="Incorrect information">Incorrect information</option>
+                                                                <option value="Does not meet guidelines">Does not meet guidelines</option>
+                                                                <option value="custom">Custom reason...</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="reject_form_group">
+                                                            <textarea name="rejection_reason" id="rejection_reason_{{ $post->id }}" placeholder="Enter rejection reason..." required></textarea>
+                                                        </div>
+                                                        <div class="reject_form_buttons">
+                                                            <button type="button" class="btn_reject_cancel" onclick="toggleRejectForm('{{ $post->id }}')">Cancel</button>
+                                                            <button type="submit" class="btn_reject_confirm">Reject Post</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
                                         @elseif($post->post_status == 'rejected')
                                             <form action="{{ route('admin.approve_post', $post->id) }}" method="POST" style="display: inline;">
                                                 @csrf
                                                 <button type="submit" class="btn_action btn_approve" onclick="return confirm('Are you sure you want to approve this post?')">Approve</button>
                                             </form>
+                                            @if($post->rejection_reason)
+                                                <div style="margin-top: 10px;">
+                                                    <small style="color: #dc3545; font-weight: 600;">Reason: {{ $post->rejection_reason }}</small>
+                                                </div>
+                                            @endif
                                         @endif
                                         
                                         <form action="{{ route('admin.delete_post', $post->id) }}" method="POST" style="display: inline;">
@@ -239,5 +368,47 @@
       </div>
     </div>
     @include('admin.footer')
+    
+    <script>
+        function toggleRejectForm(postId) {
+            const form = document.getElementById('rejectForm' + postId);
+            const allForms = document.querySelectorAll('.reject_content');
+            
+            // Close all other forms
+            allForms.forEach(f => {
+                if (f.id !== 'rejectForm' + postId) {
+                    f.classList.remove('show');
+                }
+            });
+            
+            // Toggle current form
+            form.classList.toggle('show');
+        }
+        
+        function handleReasonSelect(postId) {
+            const select = document.getElementById('rejection_reason_select_' + postId);
+            const textarea = document.getElementById('rejection_reason_' + postId);
+            
+            if (select.value === 'custom') {
+                textarea.value = '';
+                textarea.placeholder = 'Enter custom rejection reason...';
+                textarea.focus();
+            } else if (select.value !== '') {
+                textarea.value = select.value;
+            } else {
+                textarea.value = '';
+                textarea.placeholder = 'Enter rejection reason...';
+            }
+        }
+        
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('.reject_dropdown')) {
+                document.querySelectorAll('.reject_content').forEach(form => {
+                    form.classList.remove('show');
+                });
+            }
+        });
+    </script>
   </body>
 </html>

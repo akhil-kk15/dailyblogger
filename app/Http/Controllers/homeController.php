@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Posts;
+use App\Models\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 class homeController extends Controller
@@ -29,13 +30,13 @@ class homeController extends Controller
     }
     public function homepage()
     {
-        $posts = Posts::where('post_status', 'active')->latest()->limit(6)->get();
+        $posts = Posts::where('post_status', 'active')->withCount('comments')->latest()->limit(6)->get();
         return view('home.homepage', compact('posts'));
     }
     
     public function all_posts()
     {
-        $posts = Posts::where('post_status', 'active')->latest()->paginate(12);
+        $posts = Posts::where('post_status', 'active')->withCount('comments')->latest()->paginate(12);
         return view('home.all_posts', compact('posts'));
     }
     
@@ -44,7 +45,10 @@ class homeController extends Controller
         $post = Posts::where('id', $id)
                     ->where('post_status', 'active')
                     ->firstOrFail();
-        return view('home.post_details', compact('post'));
+        $comments = Comment::where('post_id', $id)
+                          ->orderBy('created_at', 'desc')
+                          ->get();
+        return view('home.post_details', compact('post', 'comments'));
     }
     
     public function my_posts()
@@ -78,7 +82,7 @@ class homeController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048'
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
         
         $post = new Posts;
@@ -100,5 +104,30 @@ class homeController extends Controller
         $post->save();
         
         return redirect()->back()->with('message', 'Post submitted successfully! It will be reviewed by admin before publishing.');
+    }
+    
+    public function store_comment(Request $request, $post_id)
+    {
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+        
+        $request->validate([
+            'comment' => 'required|string|max:1000'
+        ]);
+        
+        // Check if post exists and is active
+        $post = Posts::where('id', $post_id)
+                    ->where('post_status', 'active')
+                    ->firstOrFail();
+        
+        $comment = new Comment;
+        $comment->post_id = $post_id;
+        $comment->user_id = Auth::id();
+        $comment->user_name = Auth::user()->name;
+        $comment->comment = $request->comment;
+        $comment->save();
+        
+        return redirect()->back()->with('message', 'Comment added successfully!');
     }
 }

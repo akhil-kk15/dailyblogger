@@ -181,9 +181,9 @@
                   </div>
                   
                   <div class="form_group">
-                     <label for="image" class="form_label">Featured Image *</label>
+                     <label for="image" class="form_label">Featured Image (Optional)</label>
                      <input type="file" id="image" name="image" class="file_input" 
-                            accept="image/*" required>
+                            accept="image/*">
                      @error('image')
                          <div class="error_message">{{ $message }}</div>
                      @enderror
