@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Posts;
+use App\Services\NotificationService;
 
 class adminController extends Controller
 {
@@ -90,6 +91,9 @@ class adminController extends Controller
         $post->post_status = 'active';
         $post->save();
         
+        // Create notification for post approval
+        NotificationService::createPostApprovedNotification($post);
+        
         return redirect()->back()->with('message', 'Post approved successfully');
     }
 
@@ -112,6 +116,9 @@ class adminController extends Controller
         $post->post_status = 'rejected';
         $post->rejection_reason = $request->rejection_reason;
         $post->save();
+        
+        // Create notification for post rejection
+        NotificationService::createPostRejectedNotification($post);
         
         return redirect()->back()->with('message', 'Post rejected with reason successfully');
     }

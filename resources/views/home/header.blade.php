@@ -31,6 +31,12 @@
                            <a class="nav-link " href="{{ route('home.my_posts') }}">My Posts</a>
                         </li>
                         @if(Auth::check())
+                            <li class="nav-item {{ request()->routeIs('home.notifications') ? 'active' : '' }}">
+                               <a class="nav-link" href="{{ route('home.notifications') }}" id="mobile-notifications-link">
+                                   <i class="fa fa-bell"></i> Notifications 
+                                   <span class="badge badge-danger" id="mobile-notification-count" style="display: none;">0</span>
+                               </a>
+                            </li>
                             <li class="nav-item dropdown {{ request()->routeIs('profile.show') ? 'active' : '' }}">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     {{ Auth::user()->name }}
@@ -76,6 +82,12 @@
                      @endif
                      <li class="{{ request()->routeIs('home.my_posts') ? 'active' : '' }}"><a href="{{ route('home.my_posts') }}">My Posts</a></li>
                      @if(Auth::check())
+                        <li class="{{ request()->routeIs('home.notifications') ? 'active' : '' }}" style="position: relative;">
+                            <a href="{{ route('home.notifications') }}" id="desktop-notifications-link">
+                                <i class="fa fa-bell"></i> Notifications
+                                <span class="badge badge-danger" id="desktop-notification-count" style="position: absolute; top: -5px; right: -10px; min-width: 18px; height: 18px; line-height: 18px; font-size: 11px; text-align: center; border-radius: 50%; background: #dc3545; color: white; display: none;">0</span>
+                            </a>
+                        </li>
                         <li class="dropdown {{ request()->routeIs('profile.show') ? 'active' : '' }}">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ Auth::user()->name }} </a>
                             <ul class="dropdown-menu">
@@ -100,3 +112,36 @@
                </div>
             </div>
          </div>
+
+@if(Auth::check())
+<script>
+    // Real-time notification count updates
+    function updateNotificationCount() {
+        $.get('{{ route("api.notifications.count") }}', function(data) {
+            var count = data.count;
+            var countElements = [
+                $('#desktop-notification-count'),
+                $('#mobile-notification-count')
+            ];
+            
+            countElements.forEach(function(element) {
+                if (count > 0) {
+                    element.text(count).show();
+                } else {
+                    element.hide();
+                }
+            });
+        }).fail(function() {
+            console.log('Failed to fetch notification count');
+        });
+    }
+
+    // Update notification count on page load
+    $(document).ready(function() {
+        updateNotificationCount();
+        
+        // Update notification count every 30 seconds
+        setInterval(updateNotificationCount, 30000);
+    });
+</script>
+@endif

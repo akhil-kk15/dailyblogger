@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- basic -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- mobile metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <!-- site metas -->
+    <title>Daily Blogger - Notifications</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- bootstrap css -->
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+    <!-- style css -->
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <!-- Responsive-->
+    <link rel="stylesheet" href="{{ asset('css/responsive.css') }}">
+    <!-- fevicon -->
+    <link rel="icon" href="{{ asset('images/fevicon.png') }}" type="image/gif" />
+    <!-- Scrollbar Custom CSS -->
+    <link rel="stylesheet" href="{{ asset('css/jquery.mCustomScrollbar.min.css') }}">
+    <!-- Tweaks for older IEs-->
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
+</head>
+<body class="main-layout">
+    <!-- header -->
+    <div class="header_section">
+        @include('home.homecss')
+        @include('home.header')
+    </div>
+    <!-- end header -->
+
+    <!-- notifications section start -->
+    <div class="services_section layout_padding" style="background: #f8f9fa; min-height: 70vh;">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h1 class="services_taital" style="text-align: center; margin-bottom: 50px;">
+                        <i class="fa fa-bell"></i> Your Notifications
+                    </h1>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-12">
+                    @if($notifications->count() > 0)
+                        <!-- Mark All as Read Button -->
+                        <div class="text-right mb-4">
+                            <button id="markAllReadBtn" class="btn btn-primary btn-sm">
+                                <i class="fa fa-check"></i> Mark All as Read
+                            </button>
+                        </div>
+
+                        <!-- Notifications List -->
+                        <div class="notifications-container">
+                            @foreach($notifications as $notification)
+                                <div class="notification-item {{ $notification->is_read ? 'read' : 'unread' }}" 
+                                     data-notification-id="{{ $notification->id }}"
+                                     style="background: {{ $notification->is_read ? '#ffffff' : '#e3f2fd' }}; 
+                                            border: 1px solid #ddd; 
+                                            border-radius: 8px; 
+                                            padding: 20px; 
+                                            margin-bottom: 15px; 
+                                            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                                            border-left: 4px solid {{ $notification->is_read ? '#ccc' : '#2196F3' }};">
+                                    <div class="row">
+                                        <div class="col-md-1">
+                                            @if($notification->type == 'post_approved')
+                                                <i class="fa fa-check-circle text-success" style="font-size: 24px;"></i>
+                                            @elseif($notification->type == 'post_rejected')
+                                                <i class="fa fa-times-circle text-danger" style="font-size: 24px;"></i>
+                                            @elseif($notification->type == 'comment_added')
+                                                <i class="fa fa-comment text-info" style="font-size: 24px;"></i>
+                                            @else
+                                                <i class="fa fa-bell text-primary" style="font-size: 24px;"></i>
+                                            @endif
+                                        </div>
+                                        <div class="col-md-11">
+                                            <div class="notification-content">
+                                                <h5 style="margin-bottom: 10px; font-weight: 600; color: #333;">
+                                                    {{ $notification->title }}
+                                                    @if(!$notification->is_read)
+                                                        <span class="badge badge-primary ml-2">New</span>
+                                                    @endif
+                                                </h5>
+                                                <p style="margin-bottom: 10px; color: #666; line-height: 1.5;">
+                                                    {{ $notification->message }}
+                                                </p>
+                                                <div class="notification-footer d-flex justify-content-between align-items-center">
+                                                    <small class="text-muted">
+                                                        <i class="fa fa-clock-o"></i> 
+                                                        {{ $notification->created_at->diffForHumans() }}
+                                                    </small>
+                                                    @if($notification->post_id)
+                                                        <a href="{{ route('home.post_details', $notification->post_id) }}" 
+                                                           class="btn btn-sm btn-outline-primary">
+                                                            <i class="fa fa-eye"></i> View Post
+                                                        </a>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+
+                        <!-- Pagination if needed -->
+                        @if($notifications instanceof \Illuminate\Pagination\LengthAwarePaginator)
+                            <div class="d-flex justify-content-center mt-4">
+                                {{ $notifications->links() }}
+                            </div>
+                        @endif
+                    @else
+                        <!-- No Notifications -->
+                        <div class="text-center" style="padding: 60px 20px;">
+                            <i class="fa fa-bell-o" style="font-size: 64px; color: #ccc; margin-bottom: 20px;"></i>
+                            <h3 style="color: #999; margin-bottom: 15px;">No Notifications Yet</h3>
+                            <p style="color: #666; font-size: 16px;">
+                                You'll receive notifications when your posts are approved/rejected or when someone comments on your posts.
+                            </p>
+                            <a href="{{ route('home.homepage') }}" class="btn btn-primary mt-3">
+                                <i class="fa fa-home"></i> Go to Homepage
+                            </a>
+                        </div>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- notifications section end -->
+
+    <!-- footer start -->
+    @include('home.footer')
+    <!-- footer end -->
+
+    <script>
+        $(document).ready(function() {
+            // Mark individual notification as read when clicked
+            $('.notification-item.unread').click(function() {
+                var notificationId = $(this).data('notification-id');
+                var notificationItem = $(this);
+                
+                $.ajax({
+                    url: '{{ route("api.notifications.mark_read") }}',
+                    method: 'POST',
+                    data: {
+                        notification_ids: [notificationId],
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            notificationItem.removeClass('unread').addClass('read');
+                            notificationItem.css({
+                                'background': '#ffffff',
+                                'border-left-color': '#ccc'
+                            });
+                            notificationItem.find('.badge-primary').remove();
+                            updateNotificationCount();
+                        }
+                    }
+                });
+            });
+
+            // Mark all notifications as read
+            $('#markAllReadBtn').click(function() {
+                $.ajax({
+                    url: '{{ route("api.notifications.mark_read") }}',
+                    method: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            $('.notification-item.unread').each(function() {
+                                $(this).removeClass('unread').addClass('read');
+                                $(this).css({
+                                    'background': '#ffffff',
+                                    'border-left-color': '#ccc'
+                                });
+                                $(this).find('.badge-primary').remove();
+                            });
+                            $('#markAllReadBtn').hide();
+                            updateNotificationCount();
+                        }
+                    }
+                });
+            });
+
+            // Hide mark all read button if no unread notifications
+            if ($('.notification-item.unread').length === 0) {
+                $('#markAllReadBtn').hide();
+            }
+        });
+
+        function updateNotificationCount() {
+            $.get('{{ route("api.notifications.count") }}', function(data) {
+                var count = data.count;
+                var countElements = [
+                    $('#desktop-notification-count'),
+                    $('#mobile-notification-count')
+                ];
+                
+                countElements.forEach(function(element) {
+                    if (count > 0) {
+                        element.text(count).show();
+                    } else {
+                        element.hide();
+                    }
+                });
+            });
+        }
+    </script>
+
+    <style>
+        .notification-item {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .notification-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15) !important;
+        }
+
+        .notification-item.unread:hover {
+            background: #bbdefb !important;
+        }
+
+        .notification-content h5 {
+            margin-bottom: 8px;
+        }
+
+        .notification-footer {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+
+        @media (max-width: 768px) {
+            .notification-item {
+                padding: 15px;
+            }
+            
+            .notification-item .col-md-1 {
+                text-align: center;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</body>
+</html>

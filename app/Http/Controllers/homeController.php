@@ -7,6 +7,7 @@ use App\Models\Posts;
 use App\Models\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Services\NotificationService;
 class homeController extends Controller
 {
     public function index()
@@ -128,6 +129,45 @@ class homeController extends Controller
         $comment->comment = $request->comment;
         $comment->save();
         
+        // Create notification for new comment
+        NotificationService::createNewCommentNotification($comment, $post);
+        
         return redirect()->back()->with('message', 'Comment added successfully!');
+    }
+    
+    public function notifications()
+    {
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+        
+        $notifications = NotificationService::getRecentNotifications(Auth::id(), 50);
+        
+        return view('home.notifications', compact('notifications'));
+    }
+    
+    public function getNotificationCount()
+    {
+        if (!Auth::check()) {
+            return response()->json(['count' => 0]);
+        }
+        
+        $count = NotificationService::getUnreadCount(Auth::id());
+        return response()->json(['count' => $count]);
+    }
+    
+    public function markNotificationsAsRead(Request $request)
+    {
+        if (!Auth::check()) {
+            return response()->json(['success' => false]);
+        }
+        
+        if ($request->has('notification_ids')) {
+            NotificationService::markAsRead($request->notification_ids);
+        } else {
+            NotificationService::markAllAsRead(Auth::id());
+        }
+        
+        return response()->json(['success' => true]);
     }
 }
