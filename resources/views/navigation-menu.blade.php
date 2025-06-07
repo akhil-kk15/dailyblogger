@@ -19,6 +19,11 @@
             </div>
 
             <div class="hidden sm:flex sm:items-center sm:ms-6">
+                <!-- Dark Mode Toggle Button -->
+                <button id="navbarDarkModeToggle" type="button" class="ml-4 px-3 py-2 rounded bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 shadow transition-colors">
+                    🌓
+                </button>
+
                 <!-- Teams Dropdown -->
                 @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
                     <div class="ms-3 relative">
@@ -217,3 +222,26 @@
         </div>
     </div>
 </nav>
+<script>
+    // Navbar dark mode toggle logic
+    document.addEventListener('DOMContentLoaded', function() {
+        const html = document.documentElement;
+        const toggle = document.getElementById('navbarDarkModeToggle');
+        if (toggle) {
+            if (localStorage.getItem('theme') === 'dark' ||
+                (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                html.classList.add('dark');
+            } else {
+                html.classList.remove('dark');
+            }
+            toggle.addEventListener('click', () => {
+                html.classList.toggle('dark');
+                if (html.classList.contains('dark')) {
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    localStorage.setItem('theme', 'light');
+                }
+            });
+        }
+    });
+</script>
