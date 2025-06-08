@@ -74,4 +74,16 @@ class NotificationService
     {
         return Notification::forUser($userId)->unread()->update(['is_read' => true]);
     }
+    
+    public static function createAnnouncementNotification($userId, $announcement)
+    {
+        return Notification::create([
+            'user_id' => $userId,
+            'type' => 'announcement',
+            'title' => 'New Announcement: ' . $announcement->title,
+            'message' => substr($announcement->content, 0, 150) . (strlen($announcement->content) > 150 ? '...' : ''),
+            'post_id' => null, // announcements don't have post_id
+            'comment_id' => null,
+        ]);
+    }
 }

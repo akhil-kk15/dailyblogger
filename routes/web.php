@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\homeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\adminController;
+use App\Http\Controllers\AnnouncementController;
 
 //calling homeController
 Route::get('/', [homeController::class, 'homepage'])->name('home.homepage');
@@ -63,6 +64,13 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     Route::delete('/delete_post/{id}', [adminController::class, 'delete_post'])->name('admin.delete_post');
     Route::post('/reject_post/{id}', [adminController::class, 'reject_post'])->name('admin.reject_post');
     Route::post('/reject_post_with_reason/{id}', [adminController::class, 'reject_post_with_reason'])->name('admin.reject_post_with_reason');
+    
+    // Admin announcement routes
+    Route::get('/announcement_page', [AnnouncementController::class, 'announcement_page'])->name('admin.announcement_page');
+    Route::post('/store_announcement', [AnnouncementController::class, 'store_announcement'])->name('admin.store_announcement');
+    Route::get('/show_announcements', [AnnouncementController::class, 'show_announcements'])->name('admin.show_announcements');
+    Route::post('/toggle_announcement/{id}', [AnnouncementController::class, 'toggle_announcement'])->name('admin.toggle_announcement');
+    Route::delete('/delete_announcement/{id}', [AnnouncementController::class, 'delete_announcement'])->name('admin.delete_announcement');
 });
 
 // Custom Profile route (override Jetstream default before it loads)

@@ -36,6 +36,27 @@
                                       <div class="post_content">
                                           <h4 class="post_title">{{ \Illuminate\Support\Str::limit($post->title, 50) }}</h4>
                                           <p class="post_description">{{ \Illuminate\Support\Str::limit($post->description, 100) }}</p>
+                                          
+                                          @if($post->category)
+                                              <p class="post_category" style="margin-bottom: 10px;">
+                                                  <i class="fa fa-folder" style="margin-right: 5px; color: #007bff;"></i>
+                                                  <span style="color: #007bff; font-weight: 600;">{{ $post->category->name }}</span>
+                                              </p>
+                                          @endif
+                                          
+                                          @if($post->tags->count() > 0)
+                                              <div class="post_tags" style="margin-bottom: 15px;">
+                                                  @foreach($post->tags->take(3) as $tag)
+                                                      <span class="tag_badge" style="background-color: {{ $tag->color }}; color: #fff; padding: 2px 6px; border-radius: 8px; font-size: 10px; margin-right: 4px; display: inline-block;">
+                                                          {{ $tag->name }}
+                                                      </span>
+                                                  @endforeach
+                                                  @if($post->tags->count() > 3)
+                                                      <span style="font-size: 10px; color: #666;">+{{ $post->tags->count() - 3 }} more</span>
+                                                  @endif
+                                              </div>
+                                          @endif
+                                          
                                           <div class="post_meta">
                                               <p class="post_date">{{ $post->created_at->format('M d, Y') }}</p>
                                               <div class="post_status">

@@ -75,6 +75,8 @@
                                                 <i class="fa fa-times-circle text-danger" style="font-size: 24px;"></i>
                                             @elseif($notification->type == 'comment_added')
                                                 <i class="fa fa-comment text-info" style="font-size: 24px;"></i>
+                                            @elseif($notification->type == 'announcement')
+                                                <i class="fa fa-bullhorn text-warning" style="font-size: 24px;"></i>
                                             @else
                                                 <i class="fa fa-bell text-primary" style="font-size: 24px;"></i>
                                             @endif
@@ -100,6 +102,10 @@
                                                            class="btn btn-sm btn-outline-primary">
                                                             <i class="fa fa-eye"></i> View Post
                                                         </a>
+                                                    @elseif($notification->type == 'announcement')
+                                                        <span class="badge badge-warning">
+                                                            <i class="fa fa-bullhorn"></i> Announcement
+                                                        </span>
                                                     @endif
                                                 </div>
                                             </div>

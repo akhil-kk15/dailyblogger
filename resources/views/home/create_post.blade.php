@@ -125,6 +125,39 @@
             color: #7f8c8d;
             margin-bottom: 5px;
          }
+         .tags_container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+         }
+         .tag_checkbox {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            margin: 0;
+         }
+         .tag_checkbox input[type="checkbox"] {
+            display: none;
+         }
+         .tag_label {
+            padding: 8px 16px;
+            border-radius: 20px;
+            color: white;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+         }
+         .tag_checkbox input[type="checkbox"]:checked + .tag_label {
+            border-color: #2c3e50;
+            box-shadow: 0 0 0 2px rgba(44, 62, 80, 0.2);
+            transform: scale(1.05);
+         }
+         .tag_label:hover {
+            transform: scale(1.05);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+         }
       </style>
    </head>
    <body>
@@ -176,6 +209,40 @@
                                placeholder="Write your post content here..." 
                                required>{{ old('description') }}</textarea>
                      @error('description')
+                         <div class="error_message">{{ $message }}</div>
+                     @enderror
+                  </div>
+                  
+                  <div class="form_group">
+                     <label for="category_id" class="form_label">Category</label>
+                     <select id="category_id" name="category_id" class="form_input">
+                        <option value="">Select a category (optional)</option>
+                        @foreach($categories as $category)
+                           <option value="{{ $category->id }}" 
+                                   {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                              {{ $category->name }}
+                           </option>
+                        @endforeach
+                     </select>
+                     @error('category_id')
+                         <div class="error_message">{{ $message }}</div>
+                     @enderror
+                  </div>
+                  
+                  <div class="form_group">
+                     <label class="form_label">Tags (optional)</label>
+                     <div class="tags_container">
+                        @foreach($tags as $tag)
+                           <label class="tag_checkbox">
+                              <input type="checkbox" name="tags[]" value="{{ $tag->id }}" 
+                                     {{ in_array($tag->id, old('tags', [])) ? 'checked' : '' }}>
+                              <span class="tag_label" style="background-color: {{ $tag->color }}">
+                                 {{ $tag->name }}
+                              </span>
+                           </label>
+                        @endforeach
+                     </div>
+                     @error('tags')
                          <div class="error_message">{{ $message }}</div>
                      @enderror
                   </div>

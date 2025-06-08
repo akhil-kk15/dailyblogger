@@ -28,7 +28,24 @@
                               <div class="post_meta">
                                   <span class="post_author">By: {{ $post->name }}</span>
                                   <span class="post_date">{{ $post->created_at->format('F d, Y') }}</span>
+                                  @if($post->category)
+                                      <span class="post_category">
+                                          <i class="fa fa-folder" style="margin-right: 5px;"></i>
+                                          {{ $post->category->name }}
+                                      </span>
+                                  @endif
                               </div>
+                              
+                              @if($post->tags->count() > 0)
+                                  <div class="post_tags">
+                                      <i class="fa fa-tags" style="margin-right: 8px; color: #666;"></i>
+                                      @foreach($post->tags as $tag)
+                                          <span class="tag_badge" style="background-color: {{ $tag->color }}; color: #fff; padding: 4px 8px; border-radius: 12px; font-size: 12px; margin-right: 6px; display: inline-block;">
+                                              {{ $tag->name }}
+                                          </span>
+                                      @endforeach
+                                  </div>
+                              @endif
                               
                               <div class="post_description_full">
                                   {!! nl2br(e($post->description)) !!}
@@ -140,14 +157,33 @@
               display: flex;
               flex-wrap: wrap;
               gap: 20px;
-              margin-bottom: 30px;
-              padding-bottom: 20px;
+              margin-bottom: 20px;
+              padding-bottom: 15px;
               border-bottom: 1px solid #eee;
           }
           
-          .post_author, .post_date {
+          .post_author, .post_date, .post_category {
               color: #666;
               font-size: 14px;
+          }
+          
+          .post_category {
+              color: #007bff;
+              font-weight: 600;
+          }
+          
+          .post_tags {
+              margin-bottom: 30px;
+              padding-bottom: 15px;
+              border-bottom: 1px solid #eee;
+          }
+          
+          .tag_badge {
+              transition: transform 0.2s ease;
+          }
+          
+          .tag_badge:hover {
+              transform: scale(1.05);
           }
           
           .post_description_full {

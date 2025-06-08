@@ -13,8 +13,11 @@
                 <li class="{{ request()->routeIs('home.homepage') || request()->routeIs('admin.index') ? 'active' : '' }}">
                     <a href="{{ url('home') }}"> <i class="icon-home"></i>Home </a>
                 </li>
-                <li class="{{ request()->routeIs('admin.post_page') ? 'active' : '' }}">
-                    <a href="{{ route('admin.post_page') }}"> <i class="icon-grid"></i>Add Posts </a>
+                <li class="{{ request()->routeIs('admin.announcement_page') ? 'active' : '' }}">
+                    <a href="{{ route('admin.announcement_page') }}"> <i class="icon-grid"></i>Add Announcements </a>
+                </li>
+                <li class="{{ request()->routeIs('admin.show_announcements') ? 'active' : '' }}">
+                    <a href="{{ route('admin.show_announcements') }}"> <i class="icon-list"></i>Show Announcements </a>
                 </li>
                 <li class="{{ request()->routeIs('admin.show_posts') ? 'active' : '' }}">
                     <a href="{{ route('admin.show_posts') }}"> <i class="icon-windows"></i>Show Posts </a>

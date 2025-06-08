@@ -134,7 +134,7 @@
             <!-- Languages dropdown    -->
             <div class="list-inline-item dropdown">
     <a id="languages" rel="nofollow" data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link language dropdown-toggle"><img src="admincss/img/flags/16/GB.png" alt="English"><span class="d-none d-sm-inline-block">English</span></a>
-    <div aria-labelledby="languages" class="dropdown-menu" style="margin-top:-29px;"><a rel="nofollow" href="#" class="dropdown-item"> <img src="admincss/img/flags/16/DE.png" alt="English" class="mr-2"><span>German</span></a><a rel="nofollow" href="#" class="dropdown-item"> <img src="admincss/img/flags/16/FR.png" alt="English" class="mr-2"><span>French  </span></a></div>
+    <div aria-labelledby="languages" class="dropdown-menu" style="margin-top:-29px;"><a rel="nofollow" href="#" class="dropdown-item"> <img src="admincss/img/flags/16/DE.png" alt="English" class="mr-2"><span>Latvian</span></a><a rel="nofollow" href="#" class="dropdown-item"> <img src="admincss/img/flags/16/FR.png" alt="English" class="mr-2"><span>German  </span></a></div>
 </div>
             <!-- User menu dropdown -->
             <div class="list-inline-item dropdown">

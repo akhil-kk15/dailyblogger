@@ -13,7 +13,10 @@ class adminController extends Controller
 
     public function post_page()
     {
-        return view('admin.post_page');
+        $categories = \App\Models\Category::active()->orderBy('name')->get();
+        $tags = \App\Models\Tag::active()->orderBy('name')->get();
+        
+        return view('admin.post_page', compact('categories', 'tags'));
     }
     public function index()
     {
@@ -47,10 +50,19 @@ class adminController extends Controller
             return redirect()->route('login');
         }
 
-    
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'category_id' => 'nullable|exists:categories,id',
+            'tags' => 'nullable|array',
+            'tags.*' => 'exists:tags,id',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+        ]);
+
         $post = new Posts;
         $post->title = $request->title;
         $post->description = $request->description;
+        $post->category_id = $request->category_id;
         
         // Set post status based on user type
         if(Auth::user()->usertype == 'admin') {
@@ -58,30 +70,33 @@ class adminController extends Controller
         } else {
             $post->post_status = 'pending'; // User posts need approval
         }
+        
         $image = $request->image;
         if($image)
         {
-        $imagename = time().'.'.$image->getClientOriginalExtension();
-        $request->image->move('postimage', $imagename);
-        $post->image = $imagename;
-    }
+            $imagename = time().'.'.$image->getClientOriginalExtension();
+            $request->image->move('postimage', $imagename);
+            $post->image = $imagename;
+        }
 
-        $post ->id =$user_id = Auth::id(); // This line is not necessary, as you can directly use Auth::id() later
-        //user_id and userid from different tables 
-
-
-
-        //logged in user_id
         $post->name = Auth::user()->name;
         $post->user_id = Auth::id();
         $post->usertype = Auth::user()->usertype;
         $post->save();
+        
+        // Attach tags to the post
+        if ($request->has('tags') && is_array($request->tags)) {
+            $post->tags()->attach($request->tags);
+        }
+        
         return redirect()->back()->with('message', 'Post added successfully');
     }
 
     public function show_posts()
     {
-        $posts = Posts::orderBy('created_at', 'desc')->paginate(10);
+        $posts = Posts::with(['category', 'tags'])
+                     ->orderBy('created_at', 'desc')
+                     ->paginate(10);
         return view('admin.show_posts', compact('posts'));
     }
 

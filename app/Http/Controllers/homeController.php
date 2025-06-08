@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Posts;
 use App\Models\Comment;
+use App\Models\Announcement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Services\NotificationService;
@@ -31,19 +32,43 @@ class homeController extends Controller
     }
     public function homepage()
     {
-        $posts = Posts::where('post_status', 'active')->withCount('comments')->latest()->limit(6)->get();
-        return view('home.homepage', compact('posts'));
+        $posts = Posts::with(['category', 'tags'])
+                     ->where('post_status', 'active')
+                     ->withCount('comments')
+                     ->latest()
+                     ->limit(6)
+                     ->get();
+        
+        $announcements = Announcement::active()
+                                   ->orderBy('priority', 'desc')
+                                   ->orderBy('created_at', 'desc')
+                                   ->get();
+        
+        return view('home.homepage', compact('posts', 'announcements'));
     }
     
     public function all_posts()
     {
-        $posts = Posts::where('post_status', 'active')->withCount('comments')->latest()->paginate(12);
-        return view('home.all_posts', compact('posts'));
+        $posts = Posts::with(['category', 'tags'])
+                     ->where('post_status', 'active')
+                     ->withCount('comments')
+                     ->latest()
+                     ->paginate(12);
+        
+        $announcements = Announcement::active()
+                                   ->where('type', '!=', 'maintenance') // Don't show maintenance announcements on all posts page
+                                   ->orderBy('priority', 'desc')
+                                   ->orderBy('created_at', 'desc')
+                                   ->limit(3)
+                                   ->get();
+        
+        return view('home.all_posts', compact('posts', 'announcements'));
     }
     
     public function post_details($id)
     {
-        $post = Posts::where('id', $id)
+        $post = Posts::with(['category', 'tags'])
+                    ->where('id', $id)
                     ->where('post_status', 'active')
                     ->firstOrFail();
         $comments = Comment::where('post_id', $id)
@@ -58,7 +83,8 @@ class homeController extends Controller
             return redirect()->route('login');
         }
         
-        $posts = Posts::where('name', Auth::user()->name)
+        $posts = Posts::with(['category', 'tags'])
+                     ->where('name', Auth::user()->name)
                      ->latest()
                      ->paginate(12);
         
@@ -71,7 +97,10 @@ class homeController extends Controller
             return redirect()->route('login');
         }
         
-        return view('home.create_post');
+        $categories = \App\Models\Category::active()->orderBy('name')->get();
+        $tags = \App\Models\Tag::active()->orderBy('name')->get();
+        
+        return view('home.create_post', compact('categories', 'tags'));
     }
     
     public function store_post(Request $request)
@@ -83,12 +112,16 @@ class homeController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
+            'category_id' => 'nullable|exists:categories,id',
+            'tags' => 'nullable|array',
+            'tags.*' => 'exists:tags,id',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
         
         $post = new Posts;
         $post->title = $request->title;
         $post->description = $request->description;
+        $post->category_id = $request->category_id;
         $post->post_status = 'pending'; // User posts need admin approval
         
         // Handle image upload
@@ -103,6 +136,11 @@ class homeController extends Controller
         $post->user_id = Auth::id();
         $post->usertype = Auth::user()->usertype;
         $post->save();
+        
+        // Attach tags to the post
+        if ($request->has('tags') && is_array($request->tags)) {
+            $post->tags()->attach($request->tags);
+        }
         
         return redirect()->back()->with('message', 'Post submitted successfully! It will be reviewed by admin before publishing.');
     }
@@ -179,9 +217,13 @@ class homeController extends Controller
         
         $post = Posts::where('id', $id)
                     ->where('user_id', Auth::id())
+                    ->with('tags')
                     ->firstOrFail();
         
-        return view('home.edit_post', compact('post'));
+        $categories = \App\Models\Category::active()->orderBy('name')->get();
+        $tags = \App\Models\Tag::active()->orderBy('name')->get();
+        
+        return view('home.edit_post', compact('post', 'categories', 'tags'));
     }
     
     public function update_post(Request $request, $id)
@@ -197,11 +239,15 @@ class homeController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
+            'category_id' => 'nullable|exists:categories,id',
+            'tags' => 'nullable|array',
+            'tags.*' => 'exists:tags,id',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
         
         $post->title = $request->title;
         $post->description = $request->description;
+        $post->category_id = $request->category_id;
         
         // If the post was previously rejected, reset it to pending for re-review
         if ($post->post_status == 'rejected') {
@@ -223,6 +269,13 @@ class homeController extends Controller
         }
         
         $post->save();
+        
+        // Update tags
+        if ($request->has('tags') && is_array($request->tags)) {
+            $post->tags()->sync($request->tags);
+        } else {
+            $post->tags()->detach();
+        }
         
         $message = $post->post_status == 'pending' ? 
             'Post updated successfully! It will be reviewed by admin before publishing.' : 

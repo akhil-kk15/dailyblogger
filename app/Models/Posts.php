@@ -17,7 +17,8 @@ class Posts extends Model
         'user_id',
         'usertype',
         'post_status',
-        'rejection_reason'
+        'rejection_reason',
+        'category_id'
     ];
     
     public function comments()
@@ -28,5 +29,15 @@ class Posts extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+    
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+    
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class, 'post_tag', 'post_id', 'tag_id');
     }
 }

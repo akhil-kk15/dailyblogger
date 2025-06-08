@@ -240,6 +240,7 @@
                             <th>Image</th>
                             <th>Title</th>
                             <th>Description</th>
+                            <th>Category/Tags</th>
                             <th>Author</th>
                             <th>Status</th>
                             <th>Created</th>
@@ -258,6 +259,26 @@
                                 </td>
                                 <td class="post_title">{{ $post->title }}</td>
                                 <td class="post_description">{{ Str::limit($post->description, 100) }}</td>
+                                <td>
+                                    @if($post->category)
+                                        <div style="margin-bottom: 8px;">
+                                            <i class="fa fa-folder" style="color: #007bff; margin-right: 4px;"></i>
+                                            <span style="color: #007bff; font-weight: 600; font-size: 12px;">{{ $post->category->name }}</span>
+                                        </div>
+                                    @endif
+                                    @if($post->tags->count() > 0)
+                                        <div>
+                                            @foreach($post->tags->take(2) as $tag)
+                                                <span style="background-color: {{ $tag->color }}; color: #fff; padding: 2px 6px; border-radius: 8px; font-size: 10px; margin-right: 2px; display: inline-block;">
+                                                    {{ $tag->name }}
+                                                </span>
+                                            @endforeach
+                                            @if($post->tags->count() > 2)
+                                                <span style="font-size: 10px; color: #666;">+{{ $post->tags->count() - 2 }}</span>
+                                            @endif
+                                        </div>
+                                    @endif
+                                </td>
                                 <td>
                                     <strong>{{ $post->name }}</strong><br>
                                     <small style="color: #666;">{{ ucfirst($post->usertype) }}</small>
