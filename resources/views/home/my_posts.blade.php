@@ -16,11 +16,17 @@
               <h1 class="services_taital">My Posts</h1>
               <p class="services_text">Manage and view all your blog posts</p>
               
+              @if(session('message'))
+                  <div class="alert alert-success">
+                      {{ session('message') }}
+                  </div>
+              @endif
+              
               @if($posts->count() > 0)
                   <div class="posts_section_2">
                       <div class="row">
                           @foreach($posts as $post)
-                              <div class="col-md-4 col-sm-6 mb-4">
+                              <div class="col-md-4 col-sm-6 mb-4" data-post-id="{{ $post->id }}">
                                   <div class="post_card">
                                       @if($post->image)
                                           <div class="post_image">
@@ -46,10 +52,16 @@
                                           @endif
                                           <div class="post_actions">
                                               @if($post->post_status == 'active')
-                                                  <a href="{{ route('home.post_details', $post->id) }}" class="btn btn-primary">View Post</a>
+                                                  <a href="{{ route('home.post_details', $post->id) }}" class="btn btn-primary btn-sm">View Post</a>
                                               @else
-                                                  <span class="btn btn-secondary disabled">{{ ucfirst($post->post_status) }}</span>
+                                                  <span class="btn btn-secondary disabled btn-sm">{{ ucfirst($post->post_status) }}</span>
                                               @endif
+                                              <a href="{{ route('home.edit_post', $post->id) }}" class="btn btn-warning btn-sm">
+                                                  <i class="fa fa-edit"></i> Edit
+                                              </a>
+                                              <button onclick="deletePost({{ $post->id }})" class="btn btn-danger btn-sm">
+                                                  <i class="fa fa-trash"></i> Delete
+                                              </button>
                                           </div>
                                       </div>
                                   </div>
@@ -165,6 +177,9 @@
           
           .post_actions {
               margin-top: auto;
+              display: flex;
+              gap: 8px;
+              flex-wrap: wrap;
           }
           
           .btn {
@@ -176,6 +191,14 @@
               font-size: 14px;
               cursor: pointer;
               transition: all 0.3s ease;
+              flex: 1;
+              text-align: center;
+              min-width: auto;
+          }
+          
+          .btn-sm {
+              padding: 6px 12px;
+              font-size: 12px;
           }
           
           .btn-primary {
@@ -187,6 +210,27 @@
               background: #0056b3;
               color: white;
               text-decoration: none;
+          }
+          
+          .btn-warning {
+              background: #ffc107;
+              color: #212529;
+          }
+          
+          .btn-warning:hover {
+              background: #e0a800;
+              color: #212529;
+              text-decoration: none;
+          }
+          
+          .btn-danger {
+              background: #dc3545;
+              color: white;
+          }
+          
+          .btn-danger:hover {
+              background: #c82333;
+              color: white;
           }
           
           .btn-secondary {
@@ -260,6 +304,73 @@
               margin: 0;
               line-height: 1.4;
           }
+          
+          .alert {
+              padding: 15px;
+              margin-bottom: 20px;
+              border: 1px solid transparent;
+              border-radius: 4px;
+          }
+          
+          .alert-success {
+              color: #155724;
+              background-color: #d4edda;
+              border-color: #c3e6cb;
+          }
+          
+          .alert-error {
+              color: #721c24;
+              background-color: #f8d7da;
+              border-color: #f5c6cb;
+          }
       </style>
+      
+      <script>
+         function deletePost(postId) {
+            if (confirm('Are you sure you want to delete this post? This action cannot be undone.')) {
+               fetch(`/delete-post/${postId}`, {
+                  method: 'DELETE',
+                  headers: {
+                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                     'Content-Type': 'application/json',
+                     'Accept': 'application/json'
+                  }
+               })
+               .then(response => response.json())
+               .then(data => {
+                  if (data.success) {
+                     // Show success message
+                     const alertDiv = document.createElement('div');
+                     alertDiv.className = 'alert alert-success';
+                     alertDiv.textContent = data.message;
+                     
+                     const container = document.querySelector('.container');
+                     const title = container.querySelector('.services_taital');
+                     title.parentNode.insertBefore(alertDiv, title.nextSibling.nextSibling);
+                     
+                     // Remove the post card
+                     const postCard = document.querySelector(`[data-post-id="${postId}"]`);
+                     if (postCard) {
+                        postCard.style.opacity = '0';
+                        setTimeout(() => {
+                           postCard.remove();
+                           // Check if no posts left
+                           const remainingPosts = document.querySelectorAll('[data-post-id]');
+                           if (remainingPosts.length === 0) {
+                              location.reload(); // Reload to show "no posts" message
+                           }
+                        }, 300);
+                     }
+                  } else {
+                     alert('Error: ' + data.message);
+                  }
+               })
+               .catch(error => {
+                  console.error('Error:', error);
+                  alert('An error occurred while deleting the post.');
+               });
+            }
+         }
+      </script>
    </body>
 </html>

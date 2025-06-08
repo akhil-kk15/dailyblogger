@@ -170,4 +170,91 @@ class homeController extends Controller
         
         return response()->json(['success' => true]);
     }
+    
+    public function edit_post($id)
+    {
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+        
+        $post = Posts::where('id', $id)
+                    ->where('user_id', Auth::id())
+                    ->firstOrFail();
+        
+        return view('home.edit_post', compact('post'));
+    }
+    
+    public function update_post(Request $request, $id)
+    {
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+        
+        $post = Posts::where('id', $id)
+                    ->where('user_id', Auth::id())
+                    ->firstOrFail();
+        
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+        ]);
+        
+        $post->title = $request->title;
+        $post->description = $request->description;
+        
+        // If the post was previously rejected, reset it to pending for re-review
+        if ($post->post_status == 'rejected') {
+            $post->post_status = 'pending';
+            $post->rejection_reason = null;
+        }
+        
+        // Handle image upload
+        if($request->hasFile('image')) {
+            // Delete old image if it exists
+            if($post->image && file_exists(public_path('postimage/' . $post->image))) {
+                unlink(public_path('postimage/' . $post->image));
+            }
+            
+            $image = $request->file('image');
+            $imagename = time().'.'.$image->getClientOriginalExtension();
+            $image->move(public_path('postimage'), $imagename);
+            $post->image = $imagename;
+        }
+        
+        $post->save();
+        
+        $message = $post->post_status == 'pending' ? 
+            'Post updated successfully! It will be reviewed by admin before publishing.' : 
+            'Post updated successfully!';
+        
+        return redirect()->route('home.my_posts')->with('message', $message);
+    }
+    
+    public function delete_post($id)
+    {
+        if (!Auth::check()) {
+            return response()->json(['success' => false, 'message' => 'Unauthorized'], 401);
+        }
+        
+        $post = Posts::where('id', $id)
+                    ->where('user_id', Auth::id())
+                    ->first();
+        
+        if (!$post) {
+            return response()->json(['success' => false, 'message' => 'Post not found or unauthorized'], 404);
+        }
+        
+        // Delete associated image if it exists
+        if($post->image && file_exists(public_path('postimage/' . $post->image))) {
+            unlink(public_path('postimage/' . $post->image));
+        }
+        
+        // Delete associated comments
+        Comment::where('post_id', $id)->delete();
+        
+        $post->delete();
+        
+        return response()->json(['success' => true, 'message' => 'Post deleted successfully!']);
+    }
 }

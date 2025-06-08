@@ -17,6 +17,12 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     Route::get('/my-posts', [homeController::class, 'my_posts'])->name('home.my_posts');
     Route::get('/create-post', [homeController::class, 'create_post'])->name('home.create_post');
     Route::post('/store-post', [homeController::class, 'store_post'])->name('home.store_post');
+    
+    // Edit and delete routes for user posts
+    Route::get('/edit-post/{id}', [homeController::class, 'edit_post'])->name('home.edit_post');
+    Route::put('/update-post/{id}', [homeController::class, 'update_post'])->name('home.update_post');
+    Route::delete('/delete-post/{id}', [homeController::class, 'delete_post'])->name('home.delete_post');
+    
     Route::post('/posts/{id}/comment', [homeController::class, 'store_comment'])->name('home.store_comment');
     
     // Notification routes

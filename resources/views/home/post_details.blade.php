@@ -28,9 +28,6 @@
                               <div class="post_meta">
                                   <span class="post_author">By: {{ $post->name }}</span>
                                   <span class="post_date">{{ $post->created_at->format('F d, Y') }}</span>
-                                  @if($post->usertype)
-                                      <span class="post_user_type">{{ ucfirst($post->usertype) }}</span>
-                                  @endif
                               </div>
                               
                               <div class="post_description_full">
@@ -148,17 +145,9 @@
               border-bottom: 1px solid #eee;
           }
           
-          .post_author, .post_date, .post_user_type {
+          .post_author, .post_date {
               color: #666;
               font-size: 14px;
-          }
-          
-          .post_user_type {
-              background: #007bff;
-              color: white;
-              padding: 2px 8px;
-              border-radius: 12px;
-              font-size: 12px;
           }
           
           .post_description_full {
