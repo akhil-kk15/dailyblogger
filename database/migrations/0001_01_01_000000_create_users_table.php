@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('usertype')->default('user');
 
             $table->string('password');
+            $table->string('usertype')->default('user'); // Default role is 'user'
             $table->rememberToken();
             $table->foreignId('current_team_id')->nullable();
             $table->string('profile_photo_path', 2048)->nullable();

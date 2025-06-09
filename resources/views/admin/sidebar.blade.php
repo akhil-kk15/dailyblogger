@@ -25,7 +25,11 @@
                     <li><a href="#">Page</a></li>
                   </ul>
                 </li>
-                <li><a href="login.html"> <i class="icon-logout"></i>Login page </a></li>
+                <li class="{{ request()->routeIs('admin.show_posts') ? 'active' : '' }}">
+                    <a href="{{ route('admin.show_posts') }}"> <i class="icon-windows"></i>Show Posts </a>
+                </li>
+                <li><a href="#"> <i class="fa fa-bar-chart"></i>Stats </a></li>
+                <li><a href="#"> <i class="icon-padnote"></i>User Management </a></li>
         </ul><span class="heading">Extras</span>
         <ul class="list-unstyled">
           <li> <a href="#"> <i class="icon-settings"></i>Demo </a></li>
