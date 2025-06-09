@@ -1,4 +1,4 @@
-<div class="about_section layout_padding">
+<!-- <div class="about_section layout_padding">
          <div class="container-fluid">
             <div class="row">
                <div class="col-md-6">
@@ -13,4 +13,4 @@
                </div>
             </div>
          </div>
-      </div>
+      </div> -->

@@ -2,7 +2,7 @@
          <div class="container">
             <div class="input_btn_main">
                <input type="text" class="mail_text" placeholder="Enter your email" name="Enter your email">
-               <div class="subscribe_bt"><a href="#">Subscribe</a></div>
+               <div class="subscribe_bt"><a href="#">Join us </a></div>
             </div>
             <div class="location_main">
                <div class="call_text"><img src="images/call-icon.png"></div>
