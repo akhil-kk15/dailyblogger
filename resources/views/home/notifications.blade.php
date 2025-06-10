@@ -60,13 +60,12 @@
                             @foreach($notifications as $notification)
                                 <div class="notification-item {{ $notification->is_read ? 'read' : 'unread' }}" 
                                      data-notification-id="{{ $notification->id }}"
-                                     style="background: {{ $notification->is_read ? '#ffffff' : '#e3f2fd' }}; 
-                                            border: 1px solid #ddd; 
+                                     style="border: 1px solid; 
                                             border-radius: 8px; 
                                             padding: 20px; 
                                             margin-bottom: 15px; 
                                             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-                                            border-left: 4px solid {{ $notification->is_read ? '#ccc' : '#2196F3' }};">
+                                            border-left-width: 4px;">
                                     <div class="row">
                                         <div class="col-md-1">
                                             @if($notification->type == 'post_approved')
@@ -83,13 +82,13 @@
                                         </div>
                                         <div class="col-md-11">
                                             <div class="notification-content">
-                                                <h5 style="margin-bottom: 10px; font-weight: 600; color: #333;">
+                                                <h5 style="margin-bottom: 10px; font-weight: 600;">
                                                     {{ $notification->title }}
                                                     @if(!$notification->is_read)
                                                         <span class="badge badge-primary ml-2">New</span>
                                                     @endif
                                                 </h5>
-                                                <p style="margin-bottom: 10px; color: #666; line-height: 1.5;">
+                                                <p style="margin-bottom: 10px; line-height: 1.5;">
                                                     {{ $notification->message }}
                                                 </p>
                                                 <div class="notification-footer d-flex justify-content-between align-items-center">
@@ -146,6 +145,30 @@
 
     <script>
         $(document).ready(function() {
+            // Check if dark mode is active
+            function isDarkMode() {
+                return document.body.classList.contains('dark-mode');
+            }
+
+            // Get appropriate colors based on theme
+            function getThemeColors() {
+                if (isDarkMode()) {
+                    return {
+                        readBackground: '#2d2d2d',
+                        readBorderLeft: '#666',
+                        unreadBackground: '#2a3f5f',
+                        unreadBorderLeft: '#67a3ff'
+                    };
+                } else {
+                    return {
+                        readBackground: '#ffffff',
+                        readBorderLeft: '#ccc',
+                        unreadBackground: '#e3f2fd',
+                        unreadBorderLeft: '#2196F3'
+                    };
+                }
+            }
+
             // Mark individual notification as read when clicked
             $('.notification-item.unread').click(function() {
                 var notificationId = $(this).data('notification-id');
@@ -159,10 +182,11 @@
                     },
                     success: function(response) {
                         if (response.success) {
+                            var colors = getThemeColors();
                             notificationItem.removeClass('unread').addClass('read');
                             notificationItem.css({
-                                'background': '#ffffff',
-                                'border-left-color': '#ccc'
+                                'background': colors.readBackground,
+                                'border-left-color': colors.readBorderLeft
                             });
                             notificationItem.find('.badge-primary').remove();
                             updateNotificationCount();
@@ -181,11 +205,12 @@
                     },
                     success: function(response) {
                         if (response.success) {
+                            var colors = getThemeColors();
                             $('.notification-item.unread').each(function() {
                                 $(this).removeClass('unread').addClass('read');
                                 $(this).css({
-                                    'background': '#ffffff',
-                                    'border-left-color': '#ccc'
+                                    'background': colors.readBackground,
+                                    'border-left-color': colors.readBorderLeft
                                 });
                                 $(this).find('.badge-primary').remove();
                             });
@@ -254,6 +279,168 @@
             .notification-item .col-md-1 {
                 text-align: center;
                 margin-bottom: 10px;
+            }
+        }
+
+        /* Dark Mode Styling for Notifications */
+        body.dark-mode {
+            background-color: #1a1a1a !important;
+            color: #e1e1e1 !important;
+        }
+
+        body.dark-mode .services_section {
+            background: #1a1a1a !important;
+        }
+
+        body.dark-mode .services_taital {
+            color: #e1e1e1 !important;
+        }
+
+        /* Dark Mode Notification Items */
+        body.dark-mode .notification-item {
+            background: #2d2d2d !important;
+            border-color: #495057 !important;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3) !important;
+        }
+
+        body.dark-mode .notification-item.unread {
+            background: #2a3f5f !important;
+            border-left-color: #67a3ff !important;
+        }
+
+        body.dark-mode .notification-item.read {
+            background: #2d2d2d !important;
+            border-left-color: #666 !important;
+        }
+
+        body.dark-mode .notification-item:hover {
+            background: #3a3a3a !important;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.4) !important;
+        }
+
+        body.dark-mode .notification-item.unread:hover {
+            background: #3d5a85 !important;
+        }
+
+        /* Dark Mode Text Colors */
+        body.dark-mode .notification-content h5 {
+            color: #e1e1e1 !important;
+        }
+
+        body.dark-mode .notification-content p {
+            color: #b0b0b0 !important;
+        }
+
+        body.dark-mode .text-muted {
+            color: #888 !important;
+        }
+
+        body.dark-mode .notification-footer {
+            border-top-color: #495057 !important;
+        }
+
+        /* Dark Mode Icons */
+        body.dark-mode .text-success {
+            color: #5cb85c !important;
+        }
+
+        body.dark-mode .text-danger {
+            color: #d9534f !important;
+        }
+
+        body.dark-mode .text-info {
+            color: #5bc0de !important;
+        }
+
+        body.dark-mode .text-warning {
+            color: #f0ad4e !important;
+        }
+
+        body.dark-mode .text-primary {
+            color: #67a3ff !important;
+        }
+
+        /* Dark Mode Badges */
+        body.dark-mode .badge-primary {
+            background-color: #67a3ff !important;
+            color: #fff !important;
+        }
+
+        body.dark-mode .badge-warning {
+            background-color: #f0ad4e !important;
+            color: #333 !important;
+        }
+
+        /* Dark Mode Buttons */
+        body.dark-mode .btn-primary {
+            background-color: #67a3ff !important;
+            border-color: #67a3ff !important;
+            color: #fff !important;
+        }
+
+        body.dark-mode .btn-primary:hover {
+            background-color: #5a91e6 !important;
+            border-color: #5a91e6 !important;
+        }
+
+        body.dark-mode .btn-outline-primary {
+            color: #67a3ff !important;
+            border-color: #67a3ff !important;
+            background-color: transparent !important;
+        }
+
+        body.dark-mode .btn-outline-primary:hover {
+            background-color: #67a3ff !important;
+            border-color: #67a3ff !important;
+            color: #fff !important;
+        }
+
+        /* Dark Mode Empty State */
+        body.dark-mode .text-center i {
+            color: #666 !important;
+        }
+
+        body.dark-mode .text-center h3 {
+            color: #b0b0b0 !important;
+        }
+
+        body.dark-mode .text-center p {
+            color: #888 !important;
+        }
+
+        /* Dark Mode Container */
+        body.dark-mode .container {
+            background-color: transparent !important;
+        }
+
+        /* Dark Mode Pagination */
+        body.dark-mode .pagination .page-link {
+            background-color: #2d2d2d !important;
+            border-color: #495057 !important;
+            color: #e1e1e1 !important;
+        }
+
+        body.dark-mode .pagination .page-link:hover {
+            background-color: #3a3a3a !important;
+            border-color: #67a3ff !important;
+            color: #67a3ff !important;
+        }
+
+        body.dark-mode .pagination .page-item.active .page-link {
+            background-color: #67a3ff !important;
+            border-color: #67a3ff !important;
+            color: #fff !important;
+        }
+
+        /* Dark Mode Responsive Adjustments */
+        @media (max-width: 768px) {
+            body.dark-mode .notification-item {
+                background: #2d2d2d !important;
+                border-color: #495057 !important;
+            }
+
+            body.dark-mode .notification-item.unread {
+                background: #2a3f5f !important;
             }
         }
     </style>

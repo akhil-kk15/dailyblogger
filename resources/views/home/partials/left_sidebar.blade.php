@@ -37,62 +37,64 @@
         </div>
     </div>
 
-    <!-- Community Stats Widget -->
+    <!-- User Stats Widget -->
     <div class="sidebar_widget stats_widget">
         <div class="widget_header">
             <h3 class="widget_title">
-                <i class="fa fa-bar-chart"></i>
-                Community Stats
+                <i class="fa fa-users"></i>
+                User Statistics
             </h3>
         </div>
         <div class="widget_content">
             @php
-                $totalPosts = \App\Models\Posts::where('post_status', 'active')->count();
-                $activeUsers = \App\Models\User::where('usertype', '!=', 'blocked')->count();
-                $totalCategories = \App\Models\Category::count();
-                $weeklyPosts = \App\Models\Posts::where('post_status', 'active')
-                    ->where('created_at', '>=', now()->subWeek())
+                $totalUsers = \App\Models\User::where('usertype', '!=', 'blocked')->count();
+                $totalAuthors = \App\Models\User::whereHas('posts', function($query) {
+                    $query->where('post_status', 'active');
+                })->count();
+                $activeThisWeek = \App\Models\User::where('created_at', '>=', now()->subWeek())
+                    ->where('usertype', '!=', 'blocked')
                     ->count();
+                $totalComments = \App\Models\Comment::count();
             @endphp
             
             <div class="stats_grid">
                 <div class="stat_item">
                     <div class="stat_icon">
-                        <i class="fa fa-file-text"></i>
-                    </div>
-                    <div class="stat_details">
-                        <span class="stat_number">{{ $totalPosts }}</span>
-                        <span class="stat_label">Total Posts</span>
-                    </div>
-                </div>
-                
-                <div class="stat_item">
-                    <div class="stat_icon">
                         <i class="fa fa-users"></i>
                     </div>
                     <div class="stat_details">
-                        <span class="stat_number">{{ $activeUsers }}</span>
-                        <span class="stat_label">Active Users</span>
+                        <span class="stat_number">{{ $totalUsers }}</span>
+                        <span class="stat_label">Total Users</span>
                     </div>
                 </div>
                 
                 <div class="stat_item">
                     <div class="stat_icon">
-                        <i class="fa fa-folder"></i>
+                        <i class="fa fa-pencil"></i>
                     </div>
                     <div class="stat_details">
-                        <span class="stat_number">{{ $totalCategories }}</span>
-                        <span class="stat_label">Categories</span>
+                        <span class="stat_number">{{ $totalAuthors }}</span>
+                        <span class="stat_label">Authors</span>
                     </div>
                 </div>
                 
                 <div class="stat_item">
                     <div class="stat_icon">
-                        <i class="fa fa-calendar"></i>
+                        <i class="fa fa-user-plus"></i>
                     </div>
                     <div class="stat_details">
-                        <span class="stat_number">{{ $weeklyPosts }}</span>
-                        <span class="stat_label">This Week</span>
+                        <span class="stat_number">{{ $activeThisWeek }}</span>
+                        <span class="stat_label">New Users</span>
+                    </div>
+                </div>
+                
+                <div class="stat_item">
+                    <div class="stat_icon">
+                        <i class="fa fa-comments"></i>
+                    </div>
+                    <div class="stat_details">
+                        <span class="stat_number">{{ $totalComments }}</span>
+                        <span class="stat_label">Comments</span>
                     </div>
                 </div>
             </div>
@@ -101,9 +103,11 @@
 </div>
 
 <style>
-    /* Left Sidebar Styling */
+    /* Left Sidebar Styling with Padding */
     .left_sidebar_container {
         background: transparent;
+        padding-left: 20px; /* Add left padding so it's not flush to screen edge */
+        padding-right: 10px; /* Add right padding for breathing room */
     }
     
     .sidebar_widget {

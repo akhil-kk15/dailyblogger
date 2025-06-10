@@ -174,22 +174,22 @@
         color: #666;
     }
 
-    /* Sidebar positioning - push to extreme edges */
+    /* Sidebar positioning - with internal padding instead of edge flush */
     .col-lg-3.col-md-12 {
-        padding-left: 25px;
-        padding-right: 25px;
+        padding-left: 15px;
+        padding-right: 15px;
     }
     
-    /* Left sidebar flush to left edge */
+    /* Remove the edge flush positioning since we're adding padding internally */
     .posts_section_2 .col-lg-3:nth-child(1) {
-        padding-left: 0;
-        padding-right: 30px;
+        padding-left: 15px; /* Reset to normal padding */
+        padding-right: 25px; /* Keep extra spacing from center */
     }
     
-    /* Right sidebar flush to right edge */
+    /* Right sidebar with normal padding */
     .posts_section_2 .col-lg-3:nth-child(3) {
-        padding-left: 30px;
-        padding-right: 0;
+        padding-left: 25px; /* Keep extra spacing from center */
+        padding-right: 15px; /* Reset to normal padding */
     }
     
     /* Three-column responsive improvements */

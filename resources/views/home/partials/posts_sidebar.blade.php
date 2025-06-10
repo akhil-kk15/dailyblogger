@@ -140,9 +140,10 @@
 </div>
 
 <style>
-/* Posts Sidebar Styles */
+/* Posts Sidebar Styles with Padding */
 .posts_sidebar {
-    padding-left: 20px;
+    padding-left: 10px; /* Add left padding for breathing room */
+    padding-right: 20px; /* Add right padding so it's not flush to screen edge */
 }
 
 .sidebar_widget {
