@@ -15,7 +15,7 @@
                         <li class="nav-item {{ request()->routeIs('home.posts') ? 'active' : '' }}">
                            <a class="nav-link" href="{{ route('home.posts') }}">All Posts</a>
                         </li>
-                        <li class="nav-item {{ request()->routeIs('home.search') ? 'active' : '' }}">
+                         <li class="nav-item {{ request()->routeIs('home.search') ? 'active' : '' }}">
                            <a class="nav-link" href="{{ route('home.search') }}">Search</a>
                         </li>
                         @if(Auth::check())
