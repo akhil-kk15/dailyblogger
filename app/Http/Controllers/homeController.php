@@ -41,7 +41,11 @@ class homeController extends Controller
     
     public function post_details($id)
     {
-        $post = Posts::findOrFail($id);
+        $post = Posts::with(['category', 'tags', 'comments.user'])
+                    ->where('id', $id)
+                    ->where('post_status', 'active')
+                    ->firstOrFail();
+                    
         return view('home.post_details', compact('post'));
     }
 }

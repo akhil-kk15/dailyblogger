@@ -10,6 +10,7 @@
       <meta name="keywords" content="">
       <meta name="description" content="">
       <meta name="author" content="">
+      <meta name="csrf-token" content="{{ csrf_token() }}">
       <!-- bootstrap css -->
       <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap.min.css') }}">
       <!-- style css -->
@@ -251,9 +252,128 @@
               margin: 0;
               padding: 0;
               font-family: 'Poppins', sans-serif;
+              transition: background-color 0.3s ease, color 0.3s ease;
           }
           
           .layout_padding {
               padding: 90px 0;
           }
+          
+          /* Dark Mode Styles */
+          body.dark-mode {
+              background-color: #1a1a1a;
+              color: #e1e1e1;
+          }
+          
+          body.dark-mode .header_section {
+              background: #2d2d2d;
+              box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+          }
+          
+          body.dark-mode .menu_main {
+              background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
+          }
+          
+          body.dark-mode .mobile_menu {
+              background: #2d2d2d;
+              border-bottom: 1px solid #444;
+          }
+          
+          body.dark-mode .mobile_menu .navbar {
+              background-color: #2d2d2d !important;
+          }
+          
+          body.dark-mode .mobile_menu .nav-link {
+              color: #e1e1e1 !important;
+          }
+          
+          body.dark-mode .mobile_menu .nav-link:hover,
+          body.dark-mode .mobile_menu .nav-item.active .nav-link {
+              background-color: #667eea;
+              color: #fff !important;
+          }
+          
+          body.dark-mode .services_section {
+              background-color: #2d2d2d;
+          }
+          
+          body.dark-mode .services_taital {
+              color: #e1e1e1;
+          }
+          
+          body.dark-mode .services_text {
+              color: #b0b0b0;
+          }
+          
+          /* Dark Mode Toggle Button Styles */
+          #darkModeToggleDesktop:hover {
+              background-color: rgba(255,255,255,0.2) !important;
+              border-color: rgba(255,255,255,0.3) !important;
+              transform: translateY(-2px);
+              box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+          }
+          
+          body.dark-mode #darkModeToggleDesktop {
+              color: #ffd700 !important;
+          }
+          
+          body.dark-mode #darkModeToggleMobile {
+              color: #ffd700 !important;
+          }
       </style>
+      
+      <script>
+          // Dark mode functionality for home layout
+          document.addEventListener('DOMContentLoaded', function() {
+              const html = document.documentElement;
+              const body = document.body;
+              const toggleDesktop = document.getElementById('darkModeToggleDesktop');
+              const toggleMobile = document.getElementById('darkModeToggleMobile');
+              const iconDesktop = document.getElementById('darkModeIconDesktop');
+              const iconMobile = document.getElementById('darkModeIconMobile');
+              const textDesktop = document.getElementById('darkModeTextDesktop');
+              const textMobile = document.getElementById('darkModeTextMobile');
+              
+              // Clean up old theme keys
+              localStorage.removeItem('theme'); // Remove old key
+              
+              // Initialize with light mode as default
+              let isDarkMode = localStorage.getItem('app-theme') === 'dark';
+              
+              function updateTheme() {
+                  if (isDarkMode) {
+                      body.classList.add('dark-mode');
+                      iconDesktop.className = 'fa fa-sun-o';
+                      iconMobile.className = 'fa fa-sun-o';
+                      textDesktop.textContent = 'Light';
+                      textMobile.textContent = 'Light Mode';
+                      localStorage.setItem('app-theme', 'dark');
+                  } else {
+                      body.classList.remove('dark-mode');
+                      iconDesktop.className = 'fa fa-moon-o';
+                      iconMobile.className = 'fa fa-moon-o';
+                      textDesktop.textContent = 'Dark';
+                      textMobile.textContent = 'Dark Mode';
+                      localStorage.setItem('app-theme', 'light');
+                  }
+              }
+              
+              // Initialize theme
+              updateTheme();
+              
+              // Add event listeners
+              if (toggleDesktop) {
+                  toggleDesktop.addEventListener('click', function() {
+                      isDarkMode = !isDarkMode;
+                      updateTheme();
+                  });
+              }
+              
+              if (toggleMobile) {
+                  toggleMobile.addEventListener('click', function() {
+                      isDarkMode = !isDarkMode;
+                      updateTheme();
+                  });
+              }
+          });
+      </script>

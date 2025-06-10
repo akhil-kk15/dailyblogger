@@ -109,9 +109,9 @@
                   <td>{{ ucfirst($user->usertype) }}</td>
                   <td>
                     @if(auth()->id() !== $user->id)
-                      <form method="POST" action="{{ route('admin.users.update-role', $user) }}" class="role-form">
+                      <form method="POST" action="{{ route('admin.users.updateRole', $user) }}" class="role-form">
                         @csrf
-                        @method('PATCH')
+                        @method('PUT')
                         <select name="usertype" class="role-select">
                           <option value="user" {{ $user->usertype === 'user' ? 'selected' : '' }}>User</option>
                           <option value="admin" {{ $user->usertype === 'admin' ? 'selected' : '' }}>Admin</option>

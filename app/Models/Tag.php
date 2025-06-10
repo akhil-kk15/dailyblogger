@@ -10,7 +10,6 @@ class Tag extends Model
     protected $fillable = [
         'name',
         'slug',
-        'color',
         'is_active'
     ];
 
@@ -39,7 +38,7 @@ class Tag extends Model
     // Relationship with posts (many-to-many)
     public function posts()
     {
-        return $this->belongsToMany(Posts::class, 'post_tag', 'tag_id', 'post_id');
+        return $this->belongsToMany(Posts::class, 'post_tags', 'tag_id', 'post_id');
     }
 
     // Scope for active tags

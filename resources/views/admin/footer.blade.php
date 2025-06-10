@@ -17,3 +17,9 @@
     <script src="vendor/jquery-validation/jquery.validate.min.js"></script>
     <script src="js/charts-home.js"></script>
     <script src="js/front.js"></script>
+    
+    <script>
+        function showComingSoon(feature) {
+            alert(feature + ' feature is coming soon! We are working on bringing you amazing analytics and reporting tools.');
+        }
+    </script>

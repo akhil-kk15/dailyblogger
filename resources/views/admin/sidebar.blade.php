@@ -16,24 +16,25 @@
                 <li class="{{ request()->routeIs('admin.post_page') ? 'active' : '' }}">
                     <a href="{{ route('admin.post_page') }}"> <i class="icon-grid"></i>Add Posts </a>
                 </li>
-                <li><a href="charts.html"> <i class="fa fa-bar-chart"></i>Charts </a></li>
-                <li><a href="forms.html"> <i class="icon-padnote"></i>Forms </a></li>
-                <li><a href="#exampledropdownDropdown" aria-expanded="false" data-toggle="collapse"> <i class="icon-windows"></i>Example dropdown </a>
-                  <ul id="exampledropdownDropdown" class="collapse list-unstyled ">
-                    <li><a href="#">Page</a></li>
-                    <li><a href="#">Page</a></li>
-                    <li><a href="#">Page</a></li>
-                  </ul>
-                </li>
                 <li class="{{ request()->routeIs('admin.show_posts') ? 'active' : '' }}">
                     <a href="{{ route('admin.show_posts') }}"> <i class="icon-windows"></i>Show Posts </a>
                 </li>
-                <li><a href="#"> <i class="fa fa-bar-chart"></i>Stats </a></li>
-                <li><a href="#"> <i class="icon-padnote"></i>User Management </a></li>
-        </ul><span class="heading">Extras</span>
+                <li class="{{ request()->routeIs('admin.comments.index') ? 'active' : '' }}">
+                    <a href="{{ route('admin.comments.index') }}"> <i class="icon-speech"></i>Comments </a>
+                </li>
+                <li class="{{ request()->routeIs('admin.users.index') ? 'active' : '' }}">
+                    <a href="{{ route('admin.users.index') }}"> <i class="icon-user"></i>User Management </a>
+                </li>
+                <li class="{{ request()->routeIs('admin.announcement_page') ? 'active' : '' }}">
+                    <a href="{{ route('admin.announcement_page') }}"> <i class="icon-megaphone"></i>Announcements </a>
+                </li>
+        </ul><span class="heading">Analytics</span>
         <ul class="list-unstyled">
-          <li> <a href="#"> <i class="icon-settings"></i>Demo </a></li>
-          <li> <a href="#"> <i class="icon-writing-whiteboard"></i>Demo </a></li>
-          <li> <a href="#"> <i class="icon-chart"></i>Demo </a></li>
+          <li> <a href="#" onclick="showComingSoon('Stats')"> <i class="fa fa-bar-chart"></i>Stats </a></li>
+          <li> <a href="#" onclick="showComingSoon('Charts')"> <i class="fa fa-line-chart"></i>Charts </a></li>
+        </ul><span class="heading">Settings</span>
+        <ul class="list-unstyled">
+          <li> <a href="#" onclick="showComingSoon('Settings')"> <i class="icon-settings"></i>Settings </a></li>
+          <li> <a href="#" onclick="showComingSoon('Reports')"> <i class="icon-writing-whiteboard"></i>Reports </a></li>
         </ul>
       </nav>

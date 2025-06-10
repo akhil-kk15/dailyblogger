@@ -15,19 +15,37 @@
                         <li class="nav-item {{ request()->routeIs('home.posts') ? 'active' : '' }}">
                            <a class="nav-link" href="{{ route('home.posts') }}">All Posts</a>
                         </li>
+                        <li class="nav-item {{ request()->routeIs('home.search') ? 'active' : '' }}">
+                           <a class="nav-link" href="{{ route('home.search') }}">Search</a>
+                        </li>
                         @if(Auth::check())
-                            <li class="nav-item {{ request()->routeIs('admin.post_page') ? 'active' : '' }}">
-                               <a class="nav-link" href="{{ route('admin.post_page') }}">Create Posts</a> 
+                            @if(Auth::user()->usertype == 'admin')
+                                <li class="nav-item {{ request()->routeIs('admin.post_page') ? 'active' : '' }}">
+                                   <a class="nav-link" href="{{ route('admin.post_page') }}">Create Posts</a> 
+                                </li>
+                            @else
+                                <li class="nav-item {{ request()->routeIs('home.create_post') ? 'active' : '' }}">
+                                   <a class="nav-link" href="{{ route('home.create_post') }}">Create Posts</a> 
+                                </li>
+                            @endif
+                        @endif
+                        @if(Auth::check())
+                            <li class="nav-item {{ request()->routeIs('home.my_posts') ? 'active' : '' }}">
+                               <a class="nav-link" href="{{ route('home.my_posts') }}">My Posts</a>
                             </li>
                         @endif
-                        <li class="nav-item">
-                           <a class="nav-link " href="blog.html">My Posts</a>
-                        </li>
                         @if(!Auth::check())
                             <li class="nav-item {{ request()->routeIs('login') || request()->routeIs('register') ? 'active' : '' }}">
                                <a class="nav-link " href="{{ route('login') }}">Login/Register</a>
                             </li>
                         @endif
+                        <!-- Dark Mode Toggle for Mobile -->
+                        <li class="nav-item">
+                           <button id="darkModeToggleMobile" class="nav-link" style="background: none; border: none; cursor: pointer;">
+                              <i id="darkModeIconMobile" class="fa fa-moon-o"></i>
+                              <span id="darkModeTextMobile">Dark Mode</span>
+                           </button>
+                        </li>
                      </ul>
                   </div>
                </nav>
@@ -42,8 +60,14 @@
                   <ul>
                      <li class="{{ request()->routeIs('home.homepage') ? 'active' : '' }}"><a href="{{ route('home.homepage') }}">Home</a></li>
                      <li class="{{ request()->routeIs('home.posts') ? 'active' : '' }}"><a href="{{ route('home.posts') }}">All Posts</a></li>
+                     <li class="{{ request()->routeIs('home.search') ? 'active' : '' }}"><a href="{{ route('home.search') }}">Search</a></li>
                      @if(Auth::check())
-                        <li class="{{ request()->routeIs('admin.post_page') ? 'active' : '' }}"><a href="{{ route('admin.post_page') }}">Create Posts</a></li>
+                        @if(Auth::user()->usertype == 'admin')
+                            <li class="{{ request()->routeIs('admin.post_page') ? 'active' : '' }}"><a href="{{ route('admin.post_page') }}">Create Posts</a></li>
+                        @else
+                            <li class="{{ request()->routeIs('home.create_post') ? 'active' : '' }}"><a href="{{ route('home.create_post') }}">Create Posts</a></li>
+                        @endif
+                        <li class="{{ request()->routeIs('home.my_posts') ? 'active' : '' }}"><a href="{{ route('home.my_posts') }}">My Posts</a></li>
                      @endif
                      <!-- user login recognition -->
                      @if(Auth::check())
@@ -57,6 +81,13 @@
                         <li class="{{ request()->routeIs('login') ? 'active' : '' }}"><a href="{{ route('login') }}">Login</a></li>
                         <li class="{{ request()->routeIs('register') ? 'active' : '' }}"><a href="{{ route('register') }}">Register</a></li>
                      @endif
+                     <!-- Dark Mode Toggle for Desktop -->
+                     <li>
+                        <button id="darkModeToggleDesktop" style="background:none;border:none;padding:15px 20px;margin:0;color:#fff;cursor:pointer;font-size:16px;font-weight:500;transition:all 0.3s ease;border-radius:6px;border:2px solid transparent;">
+                           <i id="darkModeIconDesktop" class="fa fa-moon-o" style="margin-right:8px;"></i>
+                           <span id="darkModeTextDesktop">Dark</span>
+                        </button>
+                     </li>
                   </ul>
                </div>
             </div>

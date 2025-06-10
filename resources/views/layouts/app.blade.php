@@ -10,6 +10,10 @@
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+        
+        <!-- FontAwesome -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -21,8 +25,8 @@
         <x-banner />
 
         <!-- Dark Mode Toggle Button -->
-        <button id="darkModeToggle" class="fixed top-4 right-4 z-50 px-4 py-2 rounded bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 shadow transition-colors">
-            Toggle Dark Mode
+        <button id="darkModeToggle" style="position: fixed !important; top: 20px; right: 20px; width: 60px; height: 60px; background: #4f46e5 !important; color: white !important; border: none; border-radius: 50%; z-index: 999999 !important; cursor: pointer; font-size: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); transition: all 0.3s ease;">
+            <span id="darkModeIcon">🌙</span>
         </button>
 
         <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
@@ -30,7 +34,7 @@
 
             <!-- Page Heading -->
             @if (isset($header))
-                <header class="bg-white shadow">
+                <header class="bg-white dark:bg-gray-800 shadow">
                     <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                         {{ $header }}
                     </div>
@@ -47,24 +51,4 @@
 
         @livewireScripts
     </body>
-    <script>
-        // Dark mode toggle logic
-        const html = document.documentElement;
-        const toggle = document.getElementById('darkModeToggle');
-        // On load, set dark mode if preferred
-        if (localStorage.getItem('theme') === 'dark' ||
-            (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            html.classList.add('dark');
-        } else {
-            html.classList.remove('dark');
-        }
-        toggle.addEventListener('click', () => {
-            html.classList.toggle('dark');
-            if (html.classList.contains('dark')) {
-                localStorage.setItem('theme', 'dark');
-            } else {
-                localStorage.setItem('theme', 'light');
-            }
-        });
-    </script>
 </html>
