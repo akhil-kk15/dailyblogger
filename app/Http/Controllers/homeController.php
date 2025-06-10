@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Posts;
+use App\Models\Notification;
+use App\Services\NotificationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 class homeController extends Controller
@@ -48,5 +50,40 @@ class homeController extends Controller
                     ->firstOrFail();
                     
         return view('home.post_details', compact('post'));
+    }
+    
+    public function notifications()
+    {
+        $notifications = Notification::forUser(Auth::id())
+                                   ->orderBy('created_at', 'desc')
+                                   ->paginate(10);
+                                   
+        return view('home.notifications', compact('notifications'));
+    }
+    
+    public function getNotificationCount()
+    {
+        $count = NotificationService::getUnreadCount(Auth::id());
+        return response()->json(['count' => $count]);
+    }
+    
+    public function markNotificationRead($id)
+    {
+        $notification = Notification::where('id', $id)
+                                  ->where('user_id', Auth::id())
+                                  ->first();
+                                  
+        if ($notification) {
+            $notification->update(['is_read' => true]);
+            return response()->json(['success' => true]);
+        }
+        
+        return response()->json(['success' => false], 404);
+    }
+    
+    public function markAllNotificationsRead()
+    {
+        NotificationService::markAllAsRead(Auth::id());
+        return response()->json(['success' => true]);
     }
 }

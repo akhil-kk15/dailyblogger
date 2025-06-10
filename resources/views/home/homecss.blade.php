@@ -30,6 +30,9 @@
       <link rel="stylesheet" href="{{ asset('css/owl.theme.default.min.css') }}">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
       
+      <!-- Notification JavaScript -->
+      <script src="{{ asset('js/notifications.js') }}" defer></script>
+      
       <!-- Custom Navbar and Header Styles -->
       <style>
           /* Header Section Styles */
@@ -374,6 +377,117 @@
                       isDarkMode = !isDarkMode;
                       updateTheme();
                   });
+              }
+          });
+      </script>
+      
+      <!-- Notification Badge Styles -->
+      <style>
+          .notification-badge {
+              background: #ff4757 !important;
+              color: white !important;
+              border-radius: 50%;
+              padding: 2px 6px;
+              font-size: 11px;
+              position: absolute;
+              top: -5px;
+              right: -10px;
+              min-width: 16px;
+              text-align: center;
+              font-weight: bold;
+              border: 2px solid white;
+              box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+          }
+          
+          .nav-link {
+              position: relative;
+          }
+          
+          .menu_main ul li a {
+              position: relative;
+          }
+          
+          /* Dark mode notification badge */
+          .dark-mode .notification-badge {
+              border-color: #1a1a1a;
+          }
+          
+          /* Mobile notification styling */
+          @media (max-width: 991px) {
+              .notification-badge {
+                  position: static;
+                  margin-left: 5px;
+                  top: auto;
+                  right: auto;
+              }
+          }
+          
+          /* Profile Dropdown Styles */
+          .dropdown-menu-custom {
+              transition: all 0.3s ease;
+          }
+          
+          .dropdown-menu-custom a:hover {
+              background-color: #f8f9fa !important;
+          }
+          
+          .dropdown-menu-custom a:last-child:hover {
+              background-color: #f5f5f5 !important;
+          }
+          
+          /* Mobile dropdown styling */
+          @media (max-width: 991px) {
+              .dropdown-menu {
+                  border: none;
+                  box-shadow: none;
+                  background: rgba(248, 249, 250, 0.95);
+                  margin-top: 5px;
+              }
+              
+              .dropdown-item {
+                  padding: 10px 20px;
+                  color: #333 !important;
+              }
+              
+              .dropdown-item:hover {
+                  background-color: rgba(0, 123, 255, 0.1) !important;
+              }
+          }
+      </style>
+      
+      <!-- Profile Dropdown JavaScript -->
+      <script>
+          function toggleDropdown(event) {
+              event.preventDefault();
+              event.stopPropagation();
+              
+              const dropdown = document.getElementById('profileDropdownDesktop');
+              const isVisible = dropdown.style.display !== 'none';
+              
+              // Close all other dropdowns first
+              document.querySelectorAll('.dropdown-menu-custom').forEach(function(menu) {
+                  menu.style.display = 'none';
+              });
+              
+              // Toggle current dropdown
+              dropdown.style.display = isVisible ? 'none' : 'block';
+          }
+          
+          // Close dropdown when clicking outside
+          document.addEventListener('click', function(event) {
+              const dropdown = document.getElementById('profileDropdownDesktop');
+              const dropdownParent = dropdown ? dropdown.closest('.dropdown') : null;
+              
+              if (dropdown && dropdownParent && !dropdownParent.contains(event.target)) {
+                  dropdown.style.display = 'none';
+              }
+          });
+          
+          // Close dropdown on window resize
+          window.addEventListener('resize', function() {
+              const dropdown = document.getElementById('profileDropdownDesktop');
+              if (dropdown) {
+                  dropdown.style.display = 'none';
               }
           });
       </script>

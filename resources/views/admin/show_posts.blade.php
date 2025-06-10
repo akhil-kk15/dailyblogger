@@ -151,6 +151,90 @@
         color: #666;
         font-size: 18px;
     }
+    
+    /* Status Filter Tabs Styles */
+    .status-filter-tabs {
+        display: flex;
+        gap: 10px;
+        margin: 20px 0;
+        border-bottom: 2px solid #eee;
+        padding-bottom: 10px;
+        flex-wrap: wrap;
+    }
+    
+    .filter-tab {
+        padding: 10px 20px;
+        background: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-radius: 6px 6px 0 0;
+        text-decoration: none;
+        color: #495057;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        position: relative;
+    }
+    
+    .filter-tab:hover {
+        background: #e9ecef;
+        text-decoration: none;
+        color: #495057;
+        transform: translateY(-2px);
+    }
+    
+    .filter-tab.active {
+        background: #007bff;
+        color: white;
+        border-color: #007bff;
+        box-shadow: 0 2px 4px rgba(0,123,255,0.3);
+    }
+    
+    .filter-tab.active:hover {
+        background: #0056b3;
+        color: white;
+    }
+    
+    .tab-count {
+        background: rgba(255,255,255,0.2);
+        padding: 2px 8px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 600;
+        min-width: 20px;
+        text-align: center;
+    }
+    
+    .filter-tab.active .tab-count {
+        background: rgba(255,255,255,0.3);
+    }
+    
+    .filter-tab:not(.active) .tab-count {
+        background: #6c757d;
+        color: white;
+    }
+    
+    /* Responsive tabs */
+    @media (max-width: 768px) {
+        .status-filter-tabs {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+        
+        .filter-tab {
+            padding: 8px 12px;
+            font-size: 14px;
+            justify-content: center;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .status-filter-tabs {
+            grid-template-columns: 1fr;
+        }
+    }
     .reject_dropdown {
         position: relative;
         display: inline-block;
@@ -253,6 +337,34 @@
       
       <div class="page-content">
         <h1 class="posts_title">Manage Posts</h1>
+        
+        <!-- Status Filter Tabs -->
+        <div class="status-filter-tabs">
+            <a href="{{ route('admin.show_posts') }}" 
+               class="filter-tab {{ $currentStatus == 'all' ? 'active' : '' }}">
+                <i class="fa fa-list"></i>
+                All Posts
+                <span class="tab-count">{{ $stats['totalPosts'] ?? \App\Models\Posts::count() }}</span>
+            </a>
+            <a href="{{ route('admin.show_posts', ['status' => 'active']) }}" 
+               class="filter-tab {{ $currentStatus == 'active' ? 'active' : '' }}">
+                <i class="fa fa-check-circle"></i>
+                Published
+                <span class="tab-count">{{ $stats['approvedPosts'] ?? \App\Models\Posts::where('post_status', 'active')->count() }}</span>
+            </a>
+            <a href="{{ route('admin.show_posts', ['status' => 'pending']) }}" 
+               class="filter-tab {{ $currentStatus == 'pending' ? 'active' : '' }}">
+                <i class="fa fa-clock-o"></i>
+                Pending
+                <span class="tab-count">{{ $stats['pendingPosts'] ?? \App\Models\Posts::where('post_status', 'pending')->count() }}</span>
+            </a>
+            <a href="{{ route('admin.show_posts', ['status' => 'rejected']) }}" 
+               class="filter-tab {{ $currentStatus == 'rejected' ? 'active' : '' }}">
+                <i class="fa fa-times-circle"></i>
+                Rejected
+                <span class="tab-count">{{ $stats['rejectedPosts'] ?? \App\Models\Posts::where('post_status', 'rejected')->count() }}</span>
+            </a>
+        </div>
         
         @if(session()->has('message'))
             <div class="alert alert-success">

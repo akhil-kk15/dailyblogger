@@ -152,10 +152,9 @@
                 var notificationItem = $(this);
                 
                 $.ajax({
-                    url: '{{ route("api.notifications.mark_read") }}',
+                    url: '/notifications/mark-read/' + notificationId,
                     method: 'POST',
                     data: {
-                        notification_ids: [notificationId],
                         _token: '{{ csrf_token() }}'
                     },
                     success: function(response) {
@@ -175,7 +174,7 @@
             // Mark all notifications as read
             $('#markAllReadBtn').click(function() {
                 $.ajax({
-                    url: '{{ route("api.notifications.mark_read") }}',
+                    url: '{{ route("notifications.mark_all_read") }}',
                     method: 'POST',
                     data: {
                         _token: '{{ csrf_token() }}'
@@ -204,7 +203,7 @@
         });
 
         function updateNotificationCount() {
-            $.get('{{ route("api.notifications.count") }}', function(data) {
+            $.get('{{ route("notifications.count") }}', function(data) {
                 var count = data.count;
                 var countElements = [
                     $('#desktop-notification-count'),

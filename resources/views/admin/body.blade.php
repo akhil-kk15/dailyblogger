@@ -31,16 +31,20 @@
               </div>
               <div class="welcome-stats">
                 <div class="stat-item">
-                  <div class="stat-number">{{ \App\Models\Posts::count() }}</div>
-                  <div class="stat-label">{{ __('admin.total_posts') }}</div>
+                  <div class="stat-number">{{ $stats['recentPosts'] ?? 0 }}</div>
+                  <div class="stat-label">New Posts (30d)</div>
                 </div>
                 <div class="stat-item">
-                  <div class="stat-number">{{ \App\Models\User::count() }}</div>
-                  <div class="stat-label">{{ __('admin.total_users') }}</div>
+                  <div class="stat-number">{{ $stats['recentUsers'] ?? 0 }}</div>
+                  <div class="stat-label">New Users (30d)</div>
                 </div>
                 <div class="stat-item">
-                  <div class="stat-number">{{ \App\Models\Posts::where('post_status', 'active')->count() }}</div>
-                  <div class="stat-label">Published</div>
+                  <div class="stat-number">{{ $stats['recentApproved'] ?? 0 }}</div>
+                  <div class="stat-label">Recently Published</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-number">{{ $stats['pendingPosts'] ?? 0 }}</div>
+                  <div class="stat-label">Awaiting Review</div>
                 </div>
               </div>
             </div>
@@ -60,80 +64,255 @@
             
             <div class="row">
               <div class="col-md-3 col-sm-6">
-                <div class="statistic-block block">
-                  <div class="progress-details d-flex align-items-end justify-content-between">
-                    <div class="title">
-                      <div class="icon"><i class="icon-user-1"></i></div><strong>New Users</strong>
+                <a href="{{ route('admin.users.index') }}" class="statistic-link">
+                  <div class="statistic-block block">
+                    <div class="progress-details d-flex align-items-end justify-content-between">
+                      <div class="title">
+                        <div class="icon"><i class="icon-user-1"></i></div><strong>Total Users</strong>
+                      </div>
+                      <div class="number dashtext-1">{{ $stats['totalUsers'] ?? 0 }}</div>
                     </div>
-                    <div class="number dashtext-1">27</div>
+                    <div class="progress progress-template">
+                      @php
+                        $totalUsers = max($stats['totalUsers'] ?? 0, 1);
+                        $recentUsers = max($stats['recentUsers'] ?? 0, 0);
+                        $userProgress = min(max(($recentUsers / $totalUsers) * 100, 0), 100);
+                        $userProgress = round($userProgress, 1);
+                      @endphp
+                      <div role="progressbar" style="width: {{ $userProgress }}%" aria-valuenow="{{ $userProgress }}" aria-valuemin="0" aria-valuemax="100" class="progress-bar progress-bar-template dashbg-1"></div>
+                    </div>
+                    <small class="text-muted">+{{ $stats['recentUsers'] ?? 0 }} this month</small>
                   </div>
-                  <div class="progress progress-template">
-                    <div role="progressbar" style="width: 30%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" class="progress-bar progress-bar-template dashbg-1"></div>
-                  </div>
-                </div>
+                </a>
               </div>
               <div class="col-md-3 col-sm-6">
-                <div class="statistic-block block">
-                  <div class="progress-details d-flex align-items-end justify-content-between">
-                    <div class="title">
-                      <div class="icon"><i class="icon-contract"></i></div><strong>New Posts</strong>
+                <a href="{{ route('admin.show_posts') }}" class="statistic-link">
+                  <div class="statistic-block block">
+                    <div class="progress-details d-flex align-items-end justify-content-between">
+                      <div class="title">
+                        <div class="icon"><i class="icon-contract"></i></div><strong>Total Posts</strong>
+                      </div>
+                      <div class="number dashtext-2">{{ $stats['totalPosts'] ?? 0 }}</div>
                     </div>
-                    <div class="number dashtext-2">375</div>
+                    <div class="progress progress-template">
+                      @php
+                        $totalPosts = max($stats['totalPosts'] ?? 0, 1);
+                        $recentPosts = max($stats['recentPosts'] ?? 0, 0);
+                        $postProgress = min(max(($recentPosts / $totalPosts) * 100, 0), 100);
+                        $postProgress = round($postProgress, 1);
+                      @endphp
+                      <div role="progressbar" style="width: {{ $postProgress }}%" aria-valuenow="{{ $postProgress }}" aria-valuemin="0" aria-valuemax="100" class="progress-bar progress-bar-template dashbg-2"></div>
+                    </div>
+                    <small class="text-muted">+{{ $stats['recentPosts'] ?? 0 }} this month</small>
                   </div>
-                  <div class="progress progress-template">
-                    <div role="progressbar" style="width: 70%" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" class="progress-bar progress-bar-template dashbg-2"></div>
-                  </div>
-                </div>
+                </a>
               </div>
               <div class="col-md-3 col-sm-6">
-                <div class="statistic-block block">
-                  <div class="progress-details d-flex align-items-end justify-content-between">
-                    <div class="title">
-                      <div class="icon"><i class="icon-paper-and-pencil"></i></div><strong>User Report</strong>
+                <a href="{{ route('admin.show_posts') }}?status=pending" class="statistic-link">
+                  <div class="statistic-block block">
+                    <div class="progress-details d-flex align-items-end justify-content-between">
+                      <div class="title">
+                        <div class="icon"><i class="icon-paper-and-pencil"></i></div><strong>Pending Approval</strong>
+                      </div>
+                      <div class="number dashtext-3">{{ $stats['pendingPosts'] ?? 0 }}</div>
                     </div>
-                    <div class="number dashtext-3">140</div>
+                    <div class="progress progress-template">
+                      @php
+                        $totalPosts = max($stats['totalPosts'] ?? 0, 1);
+                        $pendingPosts = max($stats['pendingPosts'] ?? 0, 0);
+                        $pendingProgress = min(max(($pendingPosts / $totalPosts) * 100, 0), 100);
+                        $pendingProgress = round($pendingProgress, 1);
+                      @endphp
+                      <div role="progressbar" style="width: {{ $pendingProgress }}%" aria-valuenow="{{ $pendingProgress }}" aria-valuemin="0" aria-valuemax="100" class="progress-bar progress-bar-template dashbg-3"></div>
+                    </div>
+                    <small class="text-muted">Needs attention</small>
                   </div>
-                  <div class="progress progress-template">
-                    <div role="progressbar" style="width: 55%" aria-valuenow="55" aria-valuemin="0" aria-valuemax="100" class="progress-bar progress-bar-template dashbg-3"></div>
-                  </div>
-                </div>
+                </a>
               </div>
               <div class="col-md-3 col-sm-6">
-                <div class="statistic-block block">
-                  <div class="progress-details d-flex align-items-end justify-content-between">
-                    <div class="title">
-                      <div class="icon"><i class="icon-writing-whiteboard"></i></div><strong>Approved Posts</strong>
+                <a href="{{ route('admin.show_posts') }}?status=active" class="statistic-link">
+                  <div class="statistic-block block">
+                    <div class="progress-details d-flex align-items-end justify-content-between">
+                      <div class="title">
+                        <div class="icon"><i class="icon-writing-whiteboard"></i></div><strong>Approved Posts</strong>
+                      </div>
+                      <div class="number dashtext-4">{{ $stats['approvedPosts'] ?? 0 }}</div>
                     </div>
-                    <div class="number dashtext-4">41</div>
+                    <div class="progress progress-template">
+                      @php
+                        $totalPosts = max($stats['totalPosts'] ?? 0, 1);
+                        $approvedPosts = max($stats['approvedPosts'] ?? 0, 0);
+                        $approvedProgress = min(max(($approvedPosts / $totalPosts) * 100, 0), 100);
+                        $approvedProgress = round($approvedProgress, 1);
+                      @endphp
+                      <div role="progressbar" style="width: {{ $approvedProgress }}%" aria-valuenow="{{ $approvedProgress }}" aria-valuemin="0" aria-valuemax="100" class="progress-bar progress-bar-template dashbg-4"></div>
+                    </div>
+                    <small class="text-muted">+{{ $stats['recentApproved'] ?? 0 }} this month</small>
                   </div>
-                  <div class="progress progress-template">
-                    <div role="progressbar" style="width: 35%" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100" class="progress-bar progress-bar-template dashbg-4"></div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+        
+        <!-- Recent Activities Section -->
+        <section class="no-padding-bottom">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="recent-posts-block block">
+                  <div class="title">
+                    <strong><i class="fa fa-file-text-o"></i> Recent Posts</strong>
+                    <span class="badge badge-primary">{{ $stats['recentPosts'] ?? 0 }} new</span>
                   </div>
+                  @if(isset($recentPosts) && $recentPosts instanceof \Illuminate\Support\Collection && $recentPosts->count() > 0)
+                    <div class="recent-posts-list">
+                      @foreach($recentPosts as $post)
+                        <div class="recent-post-item d-flex align-items-center">
+                          <div class="post-image">
+                            @if($post->image)
+                              <img src="{{ asset('postimage/' . $post->image) }}" alt="Post Image" class="img-fluid">
+                            @else
+                              <div class="no-image"><i class="fa fa-file-text"></i></div>
+                            @endif
+                          </div>
+                          <div class="post-content">
+                            <strong class="d-block">{{ Str::limit($post->title, 40) }}</strong>
+                            <span class="d-block text-muted">by {{ $post->name }}</span>
+                            <small class="date d-block">{{ $post->created_at->diffForHumans() }}</small>
+                            <span class="status-badge status-{{ $post->post_status }}">{{ ucfirst($post->post_status) }}</span>
+                          </div>
+                        </div>
+                      @endforeach
+                    </div>
+                  @else
+                    <div class="text-center text-muted py-4">
+                      <i class="fa fa-file-text-o fa-3x mb-3"></i>
+                      <p>No recent posts found</p>
+                    </div>
+                  @endif
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="recent-users-block block">
+                  <div class="title">
+                    <strong><i class="fa fa-users"></i> Recent Users</strong>
+                    <span class="badge badge-success">{{ $stats['recentUsers'] ?? 0 }} new</span>
+                  </div>
+                  @if(isset($recentUsers) && $recentUsers instanceof \Illuminate\Support\Collection && $recentUsers->count() > 0)
+                    <div class="recent-users-list">
+                      @foreach($recentUsers as $user)
+                        <div class="recent-user-item d-flex align-items-center">
+                          <div class="user-avatar">
+                            @if($user->profile_photo_path)
+                              <img src="{{ asset('storage/' . $user->profile_photo_path) }}" alt="User Avatar" class="img-fluid rounded-circle">
+                            @else
+                              <div class="default-avatar"><i class="fa fa-user"></i></div>
+                            @endif
+                          </div>
+                          <div class="user-content">
+                            <strong class="d-block">{{ $user->name }}</strong>
+                            <span class="d-block text-muted">{{ $user->email }}</span>
+                            <small class="date d-block">Joined {{ $user->created_at->diffForHumans() }}</small>
+                            <span class="user-type-badge">{{ ucfirst($user->usertype) }}</span>
+                          </div>
+                        </div>
+                      @endforeach
+                    </div>
+                  @else
+                    <div class="text-center text-muted py-4">
+                      <i class="fa fa-users fa-3x mb-3"></i>
+                      <p>No recent users found</p>
+                    </div>
+                  @endif
                 </div>
               </div>
             </div>
           </div>
         </section>
+
+        <!-- Quick Actions & Overview Section -->
         <section class="no-padding-bottom">
           <div class="container-fluid">
             <div class="row">
               <div class="col-lg-4">
-                <div class="bar-chart block no-margin-bottom">
-                  <canvas id="barChartExample1"></canvas>
-                </div>
-                <div class="bar-chart block">
-                  <canvas id="barChartExample2"></canvas>
+                <div class="quick-stats-block block">
+                  <div class="title"><strong><i class="fa fa-bolt"></i> Quick Stats</strong></div>
+                  <div class="quick-stats-content">
+                    <div class="stat-row d-flex justify-content-between align-items-center">
+                      <span><i class="fa fa-eye text-info"></i> Today's Views</span>
+                      <strong class="text-info">{{ $stats['todayViews'] ?? 0 }}</strong>
+                    </div>
+                    <div class="stat-row d-flex justify-content-between align-items-center">
+                      <span><i class="fa fa-clock-o text-warning"></i> Pending Posts</span>
+                      <strong class="text-warning">{{ $stats['pendingPosts'] ?? 0 }}</strong>
+                    </div>
+                    <div class="stat-row d-flex justify-content-between align-items-center">
+                      <span><i class="fa fa-star text-success"></i> Featured Posts</span>
+                      <strong class="text-success">{{ $stats['featuredPosts'] ?? 0 }}</strong>
+                    </div>
+                    <div class="stat-row d-flex justify-content-between align-items-center">
+                      <span><i class="fa fa-comments text-primary"></i> Total Comments</span>
+                      <strong class="text-primary">{{ $stats['totalComments'] ?? 0 }}</strong>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div class="col-lg-8">
-                <div class="line-cahrt block">
-                  <canvas id="lineCahrt"></canvas>
+              <div class="col-lg-4">
+                <div class="activity-summary-block block">
+                  <div class="title"><strong><i class="fa fa-activity"></i> This Week's Activity</strong></div>
+                  <div class="activity-content">
+                    <div class="activity-item">
+                      <div class="activity-icon bg-success"><i class="fa fa-plus"></i></div>
+                      <div class="activity-text">
+                        <strong>{{ $stats['weeklyPosts'] ?? 0 }}</strong>
+                        <span>Posts created</span>
+                      </div>
+                    </div>
+                    <div class="activity-item">
+                      <div class="activity-icon bg-info"><i class="fa fa-check"></i></div>
+                      <div class="activity-text">
+                        <strong>{{ $stats['weeklyApproved'] ?? 0 }}</strong>
+                        <span>Posts approved</span>
+                      </div>
+                    </div>
+                    <div class="activity-item">
+                      <div class="activity-icon bg-warning"><i class="fa fa-user-plus"></i></div>
+                      <div class="activity-text">
+                        <strong>{{ $stats['weeklyUsers'] ?? 0 }}</strong>
+                        <span>New users</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-4">
+                <div class="action-center-block block">
+                  <div class="title"><strong><i class="fa fa-cogs"></i> Action Center</strong></div>
+                  <div class="action-buttons">
+                    <a href="{{ route('admin.post_page') }}" class="action-btn btn-create">
+                      <i class="fa fa-plus"></i>
+                      <span>Create New Post</span>
+                    </a>
+                    <a href="{{ route('admin.show_posts', ['status' => 'pending']) }}" class="action-btn btn-review">
+                      <i class="fa fa-clock-o"></i>
+                      <span>Review Pending ({{ $stats['pendingPosts'] ?? 0 }})</span>
+                    </a>
+                    <a href="{{ route('admin.users.index') }}" class="action-btn btn-users">
+                      <i class="fa fa-users"></i>
+                      <span>Manage Users</span>
+                    </a>
+                    <a href="{{ route('admin.analytics') }}" class="action-btn btn-analytics">
+                      <i class="fa fa-bar-chart"></i>
+                      <span>View Analytics</span>
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </section>
-        <section class="no-padding-bottom">
+        <!-- <section class="no-padding-bottom">
           <div class="container-fluid">
             <div class="row">
               <div class="col-lg-6">
@@ -178,8 +357,8 @@
               </div>
             </div>
           </div>
-        </section>
-        <section class="no-padding-bottom">
+        </section> -->
+        <!-- <section class="no-padding-bottom">
           <div class="container-fluid">
             <div class="row">
               <div class="col-lg-4">
@@ -331,8 +510,8 @@
               </div>
             </div>
           </div>
-        </section>
-        <section class="no-padding-bottom">
+        </section> -->
+        <!-- <section class="no-padding-bottom">
           <div class="container-fluid">
             <div class="row">
               <div class="col-lg-6">
@@ -394,8 +573,8 @@
               </div>
             </div>
           </div>
-        </section>
-        <section>
+        </section> -->
+        <!-- <section>
           <div class="container-fluid">
             <div class="row">
               <div class="col-lg-4">
@@ -427,4 +606,4 @@
               </div>
             </div>
           </div>
-        </section
+        </section -->

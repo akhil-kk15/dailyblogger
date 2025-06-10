@@ -27,7 +27,71 @@ class adminController extends Controller
                 return view('home.homepage');
             }
             else if($usertype == 'admin'){
-                return view('admin.adminhome');
+                // Get dynamic statistics for the admin dashboard
+                $totalUsers = User::count();
+                $totalPosts = Posts::count();
+                $approvedPosts = Posts::where('post_status', 'active')->count();
+                $pendingPosts = Posts::where('post_status', 'pending')->count();
+                $rejectedPosts = Posts::where('post_status', 'rejected')->count();
+                
+                // Recent activity (last 30 days)
+                $recentUsersCount = User::where('created_at', '>=', now()->subDays(30))->count();
+                $recentPostsCount = Posts::where('created_at', '>=', now()->subDays(30))->count();
+                $recentApproved = Posts::where('post_status', 'active')
+                                     ->where('updated_at', '>=', now()->subDays(30))
+                                     ->count();
+                
+                // Comments statistics
+                $totalComments = \App\Models\Comment::count();
+                $recentComments = \App\Models\Comment::where('created_at', '>=', now()->subDays(30))->count();
+                
+                // Categories and Tags
+                $totalCategories = Category::count();
+                $totalTags = Tag::count();
+                
+                // Additional statistics
+                $featuredPosts = Posts::where('is_featured', true)->count();
+                $todayViews = 0; // This would need a views tracking system
+                $weeklyPosts = Posts::where('created_at', '>=', now()->subWeek())->count();
+                $weeklyApproved = Posts::where('post_status', 'active')
+                                    ->where('updated_at', '>=', now()->subWeek())
+                                    ->count();
+                $weeklyUsers = User::where('created_at', '>=', now()->subWeek())->count();
+                
+                $stats = [
+                    'totalUsers' => $totalUsers,
+                    'totalPosts' => $totalPosts,
+                    'approvedPosts' => $approvedPosts,
+                    'pendingPosts' => $pendingPosts,
+                    'rejectedPosts' => $rejectedPosts,
+                    'recentUsers' => $recentUsersCount,
+                    'recentPosts' => $recentPostsCount,
+                    'recentApproved' => $recentApproved,
+                    'totalComments' => $totalComments,
+                    'recentComments' => $recentComments,
+                    'totalCategories' => $totalCategories,
+                    'totalTags' => $totalTags,
+                    'featuredPosts' => $featuredPosts,
+                    'todayViews' => $todayViews,
+                    'weeklyPosts' => $weeklyPosts,
+                    'weeklyApproved' => $weeklyApproved,
+                    'weeklyUsers' => $weeklyUsers,
+                ];
+                
+                // Get recent posts (last 30 days, limit 5)
+                $recentPosts = Posts::with('category')
+                    ->where('created_at', '>=', now()->subDays(30))
+                    ->orderBy('created_at', 'desc')
+                    ->limit(5)
+                    ->get();
+                
+                // Get recent users (last 30 days, limit 5)
+                $recentUsers = User::where('created_at', '>=', now()->subDays(30))
+                    ->orderBy('created_at', 'desc')
+                    ->limit(5)
+                    ->get();
+                
+                return view('admin.adminhome', compact('stats', 'recentPosts', 'recentUsers'));
             }
             else{
                 return redirect()->back();
@@ -71,12 +135,32 @@ class adminController extends Controller
         return redirect()->back()->with('message', 'Post added successfully');
     }
 
-    public function show_posts()
+    public function show_posts(Request $request)
     {
-        $posts = Posts::with(['category', 'tags'])
-                     ->orderBy('created_at', 'desc')
-                     ->paginate(10);
-        return view('admin.show_posts', compact('posts'));
+        $query = Posts::with(['category', 'tags']);
+        
+        // Filter by status if provided
+        if ($request->has('status')) {
+            $status = $request->get('status');
+            if (in_array($status, ['active', 'pending', 'rejected'])) {
+                $query->where('post_status', $status);
+            }
+        }
+        
+        $posts = $query->orderBy('created_at', 'desc')->paginate(10);
+        
+        // Pass the current status filter to the view
+        $currentStatus = $request->get('status', 'all');
+        
+        // Get stats for the filter tabs
+        $stats = [
+            'totalPosts' => Posts::count(),
+            'approvedPosts' => Posts::where('post_status', 'active')->count(),
+            'pendingPosts' => Posts::where('post_status', 'pending')->count(),
+            'rejectedPosts' => Posts::where('post_status', 'rejected')->count(),
+        ];
+        
+        return view('admin.show_posts', compact('posts', 'currentStatus', 'stats'));
     }
 
     public function approve_post($id)
@@ -133,8 +217,8 @@ class adminController extends Controller
      */
     public function categories_tags()
     {
-        $categories = Category::withCount('posts')->orderBy('name')->get();
-        $tags = Tag::withCount('posts')->orderBy('name')->get();
+        $categories = Category::orderBy('name')->get();
+        $tags = Tag::orderBy('name')->get();
         
         return view('admin.categories_tags', compact('categories', 'tags'));
     }
@@ -408,5 +492,44 @@ class adminController extends Controller
                 'message' => 'Error updating featured status: ' . $e->getMessage()
             ], 500);
         }
+    }
+
+    public function getDashboardStats()
+    {
+        $totalUsers = User::count();
+        $totalPosts = Posts::count();
+        $approvedPosts = Posts::where('post_status', 'active')->count();
+        $pendingPosts = Posts::where('post_status', 'pending')->count();
+        $rejectedPosts = Posts::where('post_status', 'rejected')->count();
+        
+        // Recent activity (last 30 days)
+        $recentUsersCount = User::where('created_at', '>=', now()->subDays(30))->count();
+        $recentPostsCount = Posts::where('created_at', '>=', now()->subDays(30))->count();
+        $recentApproved = Posts::where('post_status', 'active')
+                             ->where('updated_at', '>=', now()->subDays(30))
+                             ->count();
+        
+        // Comments statistics
+        $totalComments = \App\Models\Comment::count();
+        $recentComments = \App\Models\Comment::where('created_at', '>=', now()->subDays(30))->count();
+        
+        // Categories and Tags
+        $totalCategories = Category::count();
+        $totalTags = Tag::count();
+        
+        return response()->json([
+            'totalUsers' => $totalUsers,
+            'totalPosts' => $totalPosts,
+            'approvedPosts' => $approvedPosts,
+            'pendingPosts' => $pendingPosts,
+            'rejectedPosts' => $rejectedPosts,
+            'recentUsers' => $recentUsersCount,
+            'recentPosts' => $recentPostsCount,
+            'recentApproved' => $recentApproved,
+            'totalComments' => $totalComments,
+            'recentComments' => $recentComments,
+            'totalCategories' => $totalCategories,
+            'totalTags' => $totalTags,
+        ]);
     }
 }

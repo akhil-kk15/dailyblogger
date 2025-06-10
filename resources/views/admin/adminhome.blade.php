@@ -81,25 +81,126 @@
                     }, 500);
                 });
                 
-                // Show welcome notification
-                setTimeout(() => {
-                    showAdminNotification('Welcome to your admin dashboard! Everything is running smoothly.', 'success');
-                }, 1000);
+                // Animation complete - no welcome notification needed
+                
+                // Start real-time updates
+                startRealTimeUpdates();
             });
             
-            // Number animation function
-            function animateNumber(element, start, end, duration) {
-                const range = end - start;
-                const increment = end > start ? 1 : -1;
-                const stepTime = Math.abs(Math.floor(duration / range));
-                let current = start;
+            // Real-time updates function
+            function startRealTimeUpdates() {
+                // Update every 30 seconds
+                setInterval(updateDashboardStats, 30000);
+            }
+            
+            function updateDashboardStats() {
+                fetch('{{ route("admin.dashboard.stats") }}', {
+                    method: 'GET',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Update welcome stats
+                    const welcomeStats = document.querySelectorAll('.stat-number');
+                    if (welcomeStats.length >= 4) {
+                        animateNumber(welcomeStats[0], parseInt(welcomeStats[0].textContent), data.totalPosts, 1000);
+                        animateNumber(welcomeStats[1], parseInt(welcomeStats[1].textContent), data.totalUsers, 1000);
+                        animateNumber(welcomeStats[2], parseInt(welcomeStats[2].textContent), data.approvedPosts, 1000);
+                        animateNumber(welcomeStats[3], parseInt(welcomeStats[3].textContent), data.pendingPosts, 1000);
+                    }
+                    
+                    // Update main statistics
+                    const statNumbers = document.querySelectorAll('.statistic-block .number');
+                    if (statNumbers.length >= 4) {
+                        animateNumber(statNumbers[0], parseInt(statNumbers[0].textContent), data.totalUsers, 1000);
+                        animateNumber(statNumbers[1], parseInt(statNumbers[1].textContent), data.totalPosts, 1000);
+                        animateNumber(statNumbers[2], parseInt(statNumbers[2].textContent), data.pendingPosts, 1000);
+                        animateNumber(statNumbers[3], parseInt(statNumbers[3].textContent), data.approvedPosts, 1000);
+                    }
+                    
+                    // Update progress bars
+                    updateProgressBars(data);
+                    
+                    // Update "this month" text
+                    updateMonthlyStats(data);
+                })
+                .catch(error => {
+                    console.log('Failed to update dashboard stats:', error);
+                });
+            }
+            
+            function updateProgressBars(data) {
+                const progressBars = document.querySelectorAll('.progress-bar-template');
                 
-                const timer = setInterval(() => {
-                    current += increment;
+                if (progressBars.length >= 4) {
+                    // Calculate new progress values
+                    const totalUsers = Math.max(data.totalUsers, 1);
+                    const totalPosts = Math.max(data.totalPosts, 1);
+                    
+                    const userProgress = Math.min(Math.max((data.recentUsers / totalUsers) * 100, 0), 100);
+                    const postProgress = Math.min(Math.max((data.recentPosts / totalPosts) * 100, 0), 100);
+                    const pendingProgress = Math.min(Math.max((data.pendingPosts / totalPosts) * 100, 0), 100);
+                    const approvedProgress = Math.min(Math.max((data.approvedPosts / totalPosts) * 100, 0), 100);
+                    
+                    // Animate progress bars
+                    animateProgressBar(progressBars[0], userProgress);
+                    animateProgressBar(progressBars[1], postProgress);
+                    animateProgressBar(progressBars[2], pendingProgress);
+                    animateProgressBar(progressBars[3], approvedProgress);
+                }
+            }
+            
+            function animateProgressBar(element, targetWidth) {
+                element.style.transition = 'width 1s ease-in-out';
+                element.style.width = targetWidth + '%';
+                element.setAttribute('aria-valuenow', targetWidth);
+            }
+            
+            function updateMonthlyStats(data) {
+                const monthlyTexts = document.querySelectorAll('.text-muted');
+                if (monthlyTexts.length >= 4) {
+                    monthlyTexts[0].textContent = '+' + (data.recentUsers || 0) + ' this month';
+                    monthlyTexts[1].textContent = '+' + (data.recentPosts || 0) + ' this month';
+                    monthlyTexts[2].textContent = 'Needs attention';
+                    monthlyTexts[3].textContent = '+' + (data.recentApproved || 0) + ' this month';
+                }
+            }
+            
+            // Enhanced Number animation function
+            function animateNumber(element, start, end, duration) {
+                // Ensure we have valid numbers
+                start = parseInt(start) || 0;
+                end = parseInt(end) || 0;
+                duration = duration || 2000;
+                
+                // If end is 0 or negative, just set it directly
+                if (end <= 0) {
+                    element.textContent = end;
+                    return;
+                }
+                
+                // Use requestAnimationFrame for smoother animation
+                const startTime = performance.now();
+                
+                function updateNumber(currentTime) {
+                    const elapsed = currentTime - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    
+                    // Use easeOutCubic for better animation feel
+                    const easeProgress = 1 - Math.pow(1 - progress, 3);
+                    const current = Math.floor(start + (end - start) * easeProgress);
+                    
                     element.textContent = current;
                     
-                    if (current === end) {
-                        clearInterval(timer);
+                    if (progress < 1) {
+                        requestAnimationFrame(updateNumber);
+                    } else {
+                        // Ensure final value is correct
+                        element.textContent = end;
+                        
                         // Add a subtle bounce effect
                         element.style.transform = 'scale(1.1)';
                         setTimeout(() => {
@@ -107,7 +208,9 @@
                             element.style.transform = 'scale(1)';
                         }, 150);
                     }
-                }, stepTime);
+                }
+                
+                requestAnimationFrame(updateNumber);
             }
             
             // Enhanced notification system

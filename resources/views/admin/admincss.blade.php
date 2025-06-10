@@ -37,12 +37,36 @@
         --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
     
-    /* Improved Admin Panel Organization */
+    /* Improved Admin Panel Organization - Optimized for Space */
     #sidebar {
+        width: 260px; /* Reduced from default 280px */
         box-shadow: 2px 0 20px rgba(0,0,0,0.1);
         background: var(--sidebar-gradient);
         position: relative;
         overflow: hidden;
+        height: 100vh;
+        overflow-y: auto;
+        /* Custom scrollbar for better aesthetics */
+        scrollbar-width: thin;
+        scrollbar-color: rgba(52, 152, 219, 0.3) transparent;
+    }
+    
+    /* Webkit browsers scrollbar styling */
+    #sidebar::-webkit-scrollbar {
+        width: 6px;
+    }
+    
+    #sidebar::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    
+    #sidebar::-webkit-scrollbar-thumb {
+        background: rgba(52, 152, 219, 0.3);
+        border-radius: 3px;
+    }
+    
+    #sidebar::-webkit-scrollbar-thumb:hover {
+        background: rgba(52, 152, 219, 0.5);
     }
     
     #sidebar::before {
@@ -57,16 +81,17 @@
     }
     
     #sidebar .sidebar-header {
-        padding: 30px 20px;
+        padding: 12px 15px; /* Reduced padding for compactness */
         border-bottom: 1px solid rgba(255,255,255,0.1);
         background: rgba(0,0,0,0.15);
         position: relative;
+        flex-shrink: 0;
     }
     
     #sidebar .sidebar-header .avatar img {
-        width: 50px;
-        height: 50px;
-        border: 3px solid rgba(52, 152, 219, 0.3);
+        width: 35px; /* Reduced from 40px */
+        height: 35px;
+        border: 2px solid rgba(52, 152, 219, 0.3);
         transition: var(--transition);
     }
     
@@ -78,26 +103,28 @@
     #sidebar .sidebar-header .title h1 {
         color: #ecf0f1;
         font-weight: 700;
-        margin-bottom: 5px;
-        font-size: 18px;
+        margin-bottom: 2px;
+        font-size: 15px; /* Reduced from 16px */
+        line-height: 1.2;
     }
     
     #sidebar .sidebar-header .title p {
         color: #bdc3c7;
-        font-size: 12px;
+        font-size: 10px; /* Reduced from 11px */
         opacity: 0.8;
+        margin-bottom: 0;
     }
     
     #sidebar .heading {
         display: block;
-        padding: 25px 20px 12px 20px;
+        padding: 8px 15px 5px 15px; /* Reduced padding */
         color: #3498db;
-        font-size: 11px;
+        font-size: 9px; /* Reduced from 10px */
         font-weight: 700;
         text-transform: uppercase;
-        letter-spacing: 1.2px;
+        letter-spacing: 1px;
         border-top: 1px solid rgba(255,255,255,0.05);
-        margin-top: 15px;
+        margin-top: 6px; /* Reduced margin */
         position: relative;
     }
     
@@ -105,20 +132,21 @@
         content: '';
         position: absolute;
         bottom: 0;
-        left: 20px;
-        right: 20px;
-        height: 2px;
+        left: 15px; /* Adjusted for reduced padding */
+        right: 15px;
+        height: 1px;
         background: linear-gradient(90deg, #3498db, transparent);
         border-radius: 1px;
     }
     
     #sidebar .heading:first-of-type {
         border-top: none;
-        margin-top: 5px;
+        margin-top: 0;
+        padding-top: 8px; /* Reduced padding */
     }
     
     #sidebar ul.list-unstyled {
-        margin-bottom: 15px;
+        margin-bottom: 5px; /* Reduced margin */
     }
     
     #sidebar ul li {
@@ -146,7 +174,7 @@
     #sidebar ul li a {
         display: flex;
         align-items: center;
-        padding: 16px 20px;
+        padding: 10px 15px; /* Reduced padding */
         color: #ecf0f1;
         text-decoration: none;
         transition: var(--transition);
@@ -154,13 +182,15 @@
         position: relative;
         z-index: 2;
         font-weight: 500;
+        font-size: 13px; /* Reduced from 14px */
+        line-height: 1.4;
     }
     
     #sidebar ul li a:hover {
         background: rgba(52, 152, 219, 0.15);
         border-left-color: #3498db;
         color: #ffffff;
-        transform: translateX(8px);
+        transform: translateX(5px); /* Reduced transform */
         box-shadow: inset 0 0 0 1px rgba(52, 152, 219, 0.2);
     }
     
@@ -173,16 +203,23 @@
     }
     
     #sidebar ul li a i {
-        width: 22px;
-        margin-right: 15px;
+        width: 16px; /* Reduced width */
+        margin-right: 10px; /* Reduced margin */
         text-align: center;
-        font-size: 16px;
+        font-size: 13px; /* Reduced from 14px */
         transition: var(--transition);
+        flex-shrink: 0;
     }
     
     #sidebar ul li a:hover i {
         transform: scale(1.1);
         color: #74b9ff;
+    }
+    
+    /* Adjust page content for new sidebar width */
+    .page-content {
+        margin-left: 260px; /* Match new sidebar width */
+        width: calc(100% - 260px);
     }
     
     /* Enhanced Header Design */
@@ -645,6 +682,7 @@
     /* Enhanced Responsive Design */
     @media (max-width: 1199px) {
         #sidebar {
+            width: 260px; /* Maintain compact width on mobile */
             transform: translateX(-100%);
             transition: var(--transition);
             position: fixed;
@@ -666,12 +704,12 @@
             z-index: 1051;
         }
         
-        /* Backdrop for mobile sidebar */
+        /* Backdrop for mobile sidebar - updated for new width */
         #sidebar.active::after {
             content: '';
             position: fixed;
             top: 0;
-            left: 280px;
+            left: 260px; /* Updated to match new sidebar width */
             right: 0;
             bottom: 0;
             background: rgba(0,0,0,0.5);
@@ -695,11 +733,36 @@
         }
         
         #sidebar .heading {
-            padding: 20px 15px 10px 15px;
+            padding: 6px 12px 4px 12px; /* Further reduced for mobile */
+            font-size: 8px;
         }
         
         #sidebar ul li a {
-            padding: 14px 15px;
+            padding: 8px 12px; /* Further reduced for mobile */
+            font-size: 12px;
+        }
+        
+        #sidebar ul li a i {
+            width: 14px;
+            font-size: 12px;
+            margin-right: 8px;
+        }
+        
+        #sidebar .sidebar-header {
+            padding: 10px 12px;
+        }
+        
+        #sidebar .sidebar-header .avatar img {
+            width: 30px;
+            height: 30px;
+        }
+        
+        #sidebar .sidebar-header .title h1 {
+            font-size: 14px;
+        }
+        
+        #sidebar .sidebar-header .title p {
+            font-size: 9px;
         }
         
         .block {
@@ -921,11 +984,11 @@
     }
     
     .stat-label {
+        color: #7f8c8d;
         font-size: 12px;
-        opacity: 0.9;
+        font-weight: 600;
         text-transform: uppercase;
         letter-spacing: 0.5px;
-        font-weight: 600;
     }
     
     /* Enhanced Section Headers */
@@ -1053,19 +1116,30 @@
         color: #74b9ff;
     }
     
-    /* Enhanced Sidebar Toggle Button */
+    /* Enhanced Sidebar Toggle Button - Improved Alignment */
     .sidebar-toggle {
         background: var(--primary-gradient);
         border: none;
         border-radius: 8px;
         color: #ffffff;
-        padding: 10px 12px;
+        padding: 8px 10px; /* More balanced padding */
         font-size: 16px;
         cursor: pointer;
         transition: var(--transition);
         box-shadow: var(--shadow-soft);
         position: relative;
         overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 40px;
+        height: 40px;
+    }
+    
+    .sidebar-toggle i {
+        margin: 0; /* Remove any default margins */
+        line-height: 1;
+        display: block;
     }
     
     .sidebar-toggle::before {
@@ -1261,5 +1335,201 @@
     
     .language-option:hover img {
         transform: scale(1.1);
+    }
+    
+    /* Dynamic Statistics Card Styles */
+    .statistic-link {
+        text-decoration: none;
+        color: inherit;
+        display: block;
+        transition: var(--transition);
+    }
+    
+    .statistic-link:hover {
+        text-decoration: none;
+        color: inherit;
+        transform: translateY(-3px);
+    }
+    
+    .statistic-link .statistic-block {
+        transition: var(--transition);
+        border: 1px solid transparent;
+    }
+    
+    .statistic-link:hover .statistic-block {
+        box-shadow: var(--shadow-hover);
+        border-color: rgba(102, 126, 234, 0.2);
+    }
+    
+    .statistic-block .progress-details .number {
+        font-size: 1.8rem;
+        font-weight: 700;
+        transition: var(--transition);
+    }
+    
+    .statistic-link:hover .number {
+        transform: scale(1.05);
+    }
+    
+    .statistic-block small {
+        display: block;
+        margin-top: 8px;
+        font-size: 0.75rem;
+        opacity: 0.7;
+    }
+    
+    .statistic-block .icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 8px;
+        transition: var(--transition);
+    }
+    
+    .statistic-link:hover .icon {
+        transform: rotate(5deg) scale(1.1);
+    }
+    
+    /* Welcome stats enhancement */
+    .welcome-stats .stat-item {
+        transition: var(--transition);
+        cursor: pointer;
+        padding: 15px;
+        border-radius: var(--border-radius);
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+    }
+    
+    .welcome-stats .stat-item:hover {
+        transform: translateY(-2px);
+        background: rgba(255, 255, 255, 0.2);
+    }
+    
+    .stat-number {
+        font-size: 2rem;
+        font-weight: 700;
+        background: linear-gradient(45deg, #667eea, #764ba2);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    /* Progress bar enhancements */
+    .progress-template {
+        height: 6px;
+        border-radius: 3px;
+        overflow: hidden;
+        background: rgba(0, 0, 0, 0.1);
+    }
+    
+    .progress-bar-template {
+        transition: width 1.5s ease-in-out;
+        border-radius: 3px;
+    }
+    
+    /* Responsive improvements */
+    @media (max-width: 768px) {
+        .statistic-block {
+            margin-bottom: 20px;
+        }
+        
+        .statistic-link:hover {
+            transform: none;
+        }
+        
+        .welcome-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .welcome-stats {
+            grid-template-columns: 1fr;
+        }
+        
+        .stat-number {
+            font-size: 1.5rem;
+        }
+    }
+    
+    /* Additional Sidebar Optimizations for Compact Layout */
+    
+    /* Ensure sidebar fits in viewport without scrolling on most screens */
+    @media (min-height: 700px) {
+        #sidebar {
+            height: 100vh;
+            max-height: 100vh;
+        }
+    }
+    
+    @media (max-height: 699px) {
+        #sidebar {
+            height: 100vh;
+            overflow-y: auto;
+        }
+        
+        #sidebar .sidebar-header {
+            padding: 8px 12px;
+        }
+        
+        #sidebar .heading {
+            padding: 4px 12px 3px 12px;
+            font-size: 8px;
+            margin-top: 4px;
+        }
+        
+        #sidebar ul li a {
+            padding: 6px 12px;
+            font-size: 11px;
+        }
+    }
+    
+    /* Navbar brand alignment improvements */
+    .navbar-header {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+    
+    .navbar-brand {
+        margin-right: 0; /* Remove default margin */
+    }
+    
+    /* Enhanced hamburger menu centering */
+    .sidebar-toggle {
+        margin-left: auto; /* Push to the right if needed */
+    }
+    
+    /* Compact layout utility class */
+    .compact-sidebar #sidebar {
+        width: 240px;
+    }
+    
+    .compact-sidebar .page-content {
+        margin-left: 240px;
+        width: calc(100% - 240px);
+    }
+    
+    /* Animation improvements for better performance */
+    #sidebar ul li a,
+    #sidebar .heading,
+    .sidebar-toggle {
+        will-change: transform;
+    }
+    
+    /* Reduce motion for users who prefer it */
+    @media (prefers-reduced-motion: reduce) {
+        #sidebar ul li a,
+        #sidebar .heading,
+        .sidebar-toggle,
+        #sidebar ul li::before {
+            transition: none;
+            animation: none;
+        }
     }
     </style>

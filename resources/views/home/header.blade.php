@@ -33,6 +33,40 @@
                             <li class="nav-item {{ request()->routeIs('home.my_posts') ? 'active' : '' }}">
                                <a class="nav-link" href="{{ route('home.my_posts') }}">My Posts</a>
                             </li>
+                            <li class="nav-item {{ request()->routeIs('home.notifications') ? 'active' : '' }}">
+                               <a class="nav-link" href="{{ route('home.notifications') }}">
+                                  <i class="fa fa-bell"></i> Notifications
+                                  @php
+                                     $unreadCount = \App\Services\NotificationService::getUnreadCount(Auth::id());
+                                  @endphp
+                                  @if($unreadCount > 0)
+                                     <span class="badge badge-danger notification-badge">{{ $unreadCount }}</span>
+                                  @endif
+                               </a>
+                            </li>
+                            <!-- Profile Dropdown for Mobile -->
+                            <li class="nav-item dropdown">
+                               <a class="nav-link dropdown-toggle" href="#" id="profileDropdownMobile" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                  <i class="fa fa-user"></i> {{ Auth::user()->name }}
+                               </a>
+                               <div class="dropdown-menu" aria-labelledby="profileDropdownMobile">
+                                  <a class="dropdown-item" href="{{ route('profile.show') }}">
+                                     <i class="fa fa-user"></i> Profile
+                                  </a>
+                                  @if(Auth::user()->usertype == 'admin')
+                                     <a class="dropdown-item" href="/home">
+                                        <i class="fa fa-cog"></i> Admin Panel
+                                     </a>
+                                  @endif
+                                  <div class="dropdown-divider"></div>
+                                  <a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form-mobile').submit();">
+                                     <i class="fa fa-sign-out"></i> Logout
+                                  </a>
+                                  <form id="logout-form-mobile" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                     @csrf
+                                  </form>
+                               </div>
+                            </li>
                         @endif
                         @if(!Auth::check())
                             <li class="nav-item {{ request()->routeIs('login') || request()->routeIs('register') ? 'active' : '' }}">
@@ -68,14 +102,42 @@
                             <li class="{{ request()->routeIs('home.create_post') ? 'active' : '' }}"><a href="{{ route('home.create_post') }}">Create Posts</a></li>
                         @endif
                         <li class="{{ request()->routeIs('home.my_posts') ? 'active' : '' }}"><a href="{{ route('home.my_posts') }}">My Posts</a></li>
+                        <li class="{{ request()->routeIs('home.notifications') ? 'active' : '' }}">
+                           <a href="{{ route('home.notifications') }}" style="position: relative;">
+                              <i class="fa fa-bell" style="margin-right: 8px;"></i>Notifications
+                              @php
+                                 $unreadCount = \App\Services\NotificationService::getUnreadCount(Auth::id());
+                              @endphp
+                              @if($unreadCount > 0)
+                                 <span style="background: #ff4757; color: white; border-radius: 50%; padding: 2px 6px; font-size: 12px; position: absolute; top: -5px; right: -10px; min-width: 18px; text-align: center;">{{ $unreadCount }}</span>
+                              @endif
+                           </a>
+                        </li>
                      @endif
                      <!-- user login recognition -->
                      @if(Auth::check())
-                        <li>
-                           <form method="POST" action="{{ route('logout') }}" style="display:inline;">
-                              @csrf
-                              <button type="submit" style="background:none;border:none;padding:0;margin:0;color:inherit;cursor:pointer;">Logout</button>
-                           </form>
+                        <!-- Profile Dropdown for Desktop -->
+                        <li class="dropdown" style="position: relative;">
+                           <a href="#" style="color: #fff; text-decoration: none; padding: 15px 20px; display: block; cursor: pointer;" onclick="toggleDropdown(event)">
+                              <i class="fa fa-user" style="margin-right: 8px;"></i>{{ Auth::user()->name }}
+                              <i class="fa fa-chevron-down" style="margin-left: 8px; font-size: 12px;"></i>
+                           </a>
+                           <div id="profileDropdownDesktop" class="dropdown-menu-custom" style="display: none; position: absolute; top: 100%; right: 0; background: white; border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); min-width: 180px; z-index: 1000;">
+                              <a href="{{ route('profile.show') }}" style="color: #333; text-decoration: none; padding: 10px 15px; display: block; border-bottom: 1px solid #eee;">
+                                 <i class="fa fa-user" style="margin-right: 8px;"></i>Profile
+                              </a>
+                              @if(Auth::user()->usertype == 'admin')
+                                 <a href="/home" style="color: #333; text-decoration: none; padding: 10px 15px; display: block; border-bottom: 1px solid #eee;">
+                                    <i class="fa fa-cog" style="margin-right: 8px;"></i>Admin Panel
+                                 </a>
+                              @endif
+                              <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form-desktop').submit();" style="color: #dc3545; text-decoration: none; padding: 10px 15px; display: block;">
+                                 <i class="fa fa-sign-out" style="margin-right: 8px;"></i>Logout
+                              </a>
+                              <form id="logout-form-desktop" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                 @csrf
+                              </form>
+                           </div>
                         </li>
                      @else
                         <li class="{{ request()->routeIs('login') ? 'active' : '' }}"><a href="{{ route('login') }}">Login</a></li>

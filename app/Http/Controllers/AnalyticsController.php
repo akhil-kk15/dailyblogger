@@ -51,11 +51,10 @@ class AnalyticsController extends Controller
         }
 
         // Get top categories by post count (limit to 5)
-        $topCategories = Category::withCount('posts')
-            ->where('is_active', true)
-            ->orderBy('posts_count', 'desc')
-            ->limit(5)
-            ->get();
+        $topCategories = Category::where('is_active', true)
+            ->get()
+            ->sortByDesc('posts_count')
+            ->take(5);
 
         // Get most active users (limit to 5)
         $topUsers = User::withCount('posts')

@@ -34,7 +34,6 @@ Route::get('/', [homeController::class, 'homepage'])->name('home.homepage');
 Route::get('/posts', [homeController::class, 'all_posts'])->name('home.posts');
 Route::get('/posts/{id}', [homeController::class, 'post_details'])->name('home.post_details');
 
-<<<<<<< HEAD
 // User authenticated routes
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
     Route::get('/my-posts', [homeController::class, 'my_posts'])->name('home.my_posts');
@@ -53,12 +52,6 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     Route::get('/api/notifications/count', [homeController::class, 'getNotificationCount'])->name('api.notifications.count');
     Route::post('/api/notifications/mark-read', [homeController::class, 'markNotificationsAsRead'])->name('api.notifications.mark_read');
 });
-=======
-// Search routes
-Route::get('/search', [SearchController::class, 'index'])->name('home.search');
-Route::get('/search/suggestions', [SearchController::class, 'suggestions'])->name('search.suggestions');
-Route::post('/search', [SearchController::class, 'quickSearch'])->name('search.quick');
->>>>>>> pre-release
 
 // Route::get('/', function () {
 //     return view('welcome');

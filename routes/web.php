@@ -58,12 +58,13 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
-});
-
-// Admin routes (protected with auth middleware)
+});    // Admin routes (protected with auth middleware)
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
     Route::get('/post_page', [adminController::class, 'post_page'])->name('admin.post_page');
     Route::post('/add_post', [adminController::class, 'add_post'])->name('admin.add_post');
+    
+    // Admin dashboard stats API
+    Route::get('/admin/dashboard/stats', [adminController::class, 'getDashboardStats'])->name('admin.dashboard.stats');
     
     // Admin posts management routes
     Route::get('/show_posts', [adminController::class, 'show_posts'])->name('admin.show_posts');
@@ -91,6 +92,12 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     Route::get('/edit-post/{id}', [UserPostController::class, 'edit'])->name('home.edit_post');
     Route::put('/update-post/{id}', [UserPostController::class, 'update'])->name('home.update_post');
     Route::delete('/delete-post/{id}', [UserPostController::class, 'destroy'])->name('home.delete_post');
+    
+    // Notifications routes
+    Route::get('/notifications', [homeController::class, 'notifications'])->name('home.notifications');
+    Route::get('/notifications/count', [homeController::class, 'getNotificationCount'])->name('notifications.count');
+    Route::post('/notifications/mark-read/{id}', [homeController::class, 'markNotificationRead'])->name('notifications.mark_read');
+    Route::post('/notifications/mark-all-read', [homeController::class, 'markAllNotificationsRead'])->name('notifications.mark_all_read');
     
     // Comment management routes
     Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
