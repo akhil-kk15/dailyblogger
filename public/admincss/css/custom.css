@@ -1,1 +1,165 @@
-/* your styles go here */
+/* Custom Admin Panel Improvements */
+
+/* Remove whitespace between sidebar and content */
+body {
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow-x: hidden !important;
+}
+
+.d-flex.align-items-stretch {
+    margin: 0 !important;
+    padding: 0 !important;
+    gap: 0 !important;
+    width: 100% !important;
+}
+
+#sidebar {
+    flex-shrink: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.page-content {
+    flex: 1 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: auto !important;
+}
+
+/* Fix transparent dropdowns */
+.dropdown-menu {
+    background-color: #ffffff !important;
+    border: 1px solid rgba(0,0,0,0.15) !important;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15) !important;
+    opacity: 1 !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    border-radius: 8px !important;
+}
+
+.dropdown-menu.language-menu {
+    background-color: #ffffff !important;
+    border: 1px solid rgba(0,0,0,0.15) !important;
+    min-width: 150px !important;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.18) !important;
+    border-radius: 8px !important;
+    overflow: hidden !important;
+    margin-top: -29px !important;
+}
+
+.dropdown-item {
+    background-color: transparent !important;
+    color: #333 !important;
+    padding: 8px 16px !important;
+    transition: all 0.2s ease !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+    background-color: #f8f9fa !important;
+    color: #495057 !important;
+    text-decoration: none !important;
+}
+
+/* Language dropdown specific styling */
+.language-option {
+    padding: 10px 15px !important;
+}
+
+.language-option .flag-icon {
+    margin-right: 10px !important;
+    width: 16px !important;
+    height: 12px !important;
+    border-radius: 2px !important;
+}
+
+/* User dropdown styling */
+.dropdown-menu-right {
+    background-color: #ffffff !important;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.18) !important;
+    border: 1px solid rgba(0,0,0,0.15) !important;
+    border-radius: 8px !important;
+}
+
+/* Header improvements */
+.header {
+    background: rgba(52, 58, 64, 0.95) !important;
+    backdrop-filter: blur(10px) !important;
+    border-bottom: 2px solid rgba(102, 126, 234, 0.3) !important;
+}
+
+/* Ensure dropdowns appear above other elements */
+.dropdown-menu {
+    z-index: 1050 !important;
+}
+
+/* Flag icons improvements */
+.flag-icon {
+    background-size: contain !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    display: inline-block !important;
+    vertical-align: middle !important;
+}
+
+/* Responsive improvements */
+@media (max-width: 768px) {
+    .dropdown-menu.language-menu {
+        min-width: 120px !important;
+    }
+    
+    .dropdown-item {
+        padding: 6px 12px !important;
+        font-size: 0.9rem !important;
+    }
+}
+
+/* Animation improvements */
+.dropdown-menu {
+    animation: fadeInDown 0.2s ease-out !important;
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Additional fixes for dropdown positioning */
+.dropdown {
+    position: relative !important;
+}
+
+.dropdown-toggle::after {
+    border-top: 0.3em solid !important;
+    border-right: 0.3em solid transparent !important;
+    border-bottom: 0 !important;
+    border-left: 0.3em solid transparent !important;
+}
+
+/* Ensure proper contrast for dropdown text */
+.dropdown-item {
+    color: #212529 !important;
+    font-weight: 500 !important;
+}
+
+.dropdown-item:hover {
+    background-color: #e9ecef !important;
+    color: #16181b !important;
+}
+
+/* Style for dropdown dividers */
+.dropdown-divider {
+    height: 0 !important;
+    margin: 0.5rem 0 !important;
+    overflow: hidden !important;
+    border-top: 1px solid #e9ecef !important;
+}

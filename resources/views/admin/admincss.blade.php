@@ -35,6 +35,78 @@
         --shadow-hover: 0 8px 30px rgba(0,0,0,0.12);
         --border-radius: 12px;
         --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        --bg-main: #f8f9fa;
+        --bg-secondary: #e9ecef;
+        --bg-dark: #343a40;
+        --bg-darker: #2c3034;
+    }
+
+    /* Fix for transparent dropdowns */
+    .dropdown-menu {
+        background-color: #ffffff !important;
+        border: 1px solid rgba(0,0,0,0.15) !important;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.15) !important;
+        opacity: 1 !important;
+        backdrop-filter: blur(10px) !important;
+        -webkit-backdrop-filter: blur(10px) !important;
+    }
+
+    .dropdown-menu.language-menu {
+        background-color: #ffffff !important;
+        border: 1px solid rgba(0,0,0,0.15) !important;
+        min-width: 150px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.18) !important;
+        border-radius: 8px !important;
+        overflow: hidden;
+    }
+
+    .dropdown-item {
+        background-color: transparent !important;
+        color: #333 !important;
+        padding: 8px 16px !important;
+        transition: all 0.2s ease !important;
+    }
+
+    .dropdown-item:hover,
+    .dropdown-item:focus {
+        background-color: #f8f9fa !important;
+        color: #495057 !important;
+    }
+
+    /* Page layout fixes - Remove white space between sidebar and content */
+    .d-flex.align-items-stretch {
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        min-height: 100vh;
+    }
+
+    .page-content {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+        min-height: 100vh;
+        position: relative;
+        flex: 1 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        width: auto !important; /* Let flexbox handle the width */
+        max-width: none !important;
+        overflow-x: hidden !important;
+    }
+
+    .page-content::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(52, 58, 64, 0.95);
+        z-index: 0;
+    }
+
+    .page-content > * {
+        position: relative;
+        z-index: 1;
     }
     
     /* Improved Admin Panel Organization - Optimized for Space */
@@ -46,6 +118,9 @@
         overflow: hidden;
         height: 100vh;
         overflow-y: auto;
+        flex-shrink: 0 !important; /* Prevent sidebar from shrinking */
+        margin: 0 !important;
+        padding: 0 !important;
         /* Custom scrollbar for better aesthetics */
         scrollbar-width: thin;
         scrollbar-color: rgba(52, 152, 219, 0.3) transparent;
@@ -1520,6 +1595,286 @@
     #sidebar .heading,
     .sidebar-toggle {
         will-change: transform;
+    }
+    
+    /* Enhanced Dark Theme for Admin Panel */
+    .page-header {
+        background: rgba(52, 58, 64, 0.95) !important;
+        border-bottom: 2px solid rgba(102, 126, 234, 0.3);
+        margin-bottom: 20px !important;
+        padding: 20px 0 !important;
+    }
+
+    .dashboard-welcome {
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.9) 0%, rgba(118, 75, 162, 0.9) 100%);
+        border-radius: 15px;
+        padding: 25px;
+        margin-bottom: 0 !important;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    .dashboard-title {
+        color: #ffffff !important;
+        font-size: 2rem !important;
+        font-weight: 700 !important;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .dashboard-subtitle {
+        color: rgba(255,255,255,0.9) !important;
+        font-size: 1rem !important;
+    }
+
+    /* Reduce white space and improve blocks */
+    .block {
+        background: rgba(255, 255, 255, 0.95) !important;
+        border-radius: 12px !important;
+        padding: 20px !important;
+        margin-bottom: 20px !important;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15) !important;
+        border: 1px solid rgba(255,255,255,0.2);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+    }
+
+    .statistic-block {
+        background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,249,250,0.95) 100%) !important;
+        transition: all 0.3s ease !important;
+    }
+
+    .statistic-block:hover {
+        transform: translateY(-5px) !important;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.2) !important;
+    }
+
+    /* Compact sections */
+    section {
+        padding: 15px 0 !important;
+    }
+
+    section.no-padding-bottom {
+        padding-bottom: 0 !important;
+    }
+
+    section.no-padding-top {
+        padding-top: 0 !important;
+    }
+
+    /* Enhanced cards */
+    .recent-posts-block,
+    .recent-users-block,
+    .quick-stats-block,
+    .activity-summary-block,
+    .action-center-block {
+        background: rgba(255, 255, 255, 0.95) !important;
+        border-radius: 12px !important;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15) !important;
+        border: 1px solid rgba(255,255,255,0.3);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        margin-bottom: 20px !important;
+    }
+
+    /* Quick action buttons */
+    .quick-action-btn,
+    .action-btn {
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.9) 0%, rgba(118, 75, 162, 0.9) 100%) !important;
+        color: #ffffff !important;
+        border: none !important;
+        border-radius: 8px !important;
+        padding: 10px 20px !important;
+        font-weight: 600 !important;
+        text-decoration: none !important;
+        transition: all 0.3s ease !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+        margin: 5px !important;
+    }
+
+    .quick-action-btn:hover,
+    .action-btn:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4) !important;
+        color: #ffffff !important;
+        text-decoration: none !important;
+    }
+
+    /* Progress bars */
+    .progress {
+        background-color: rgba(52, 58, 64, 0.2) !important;
+        border-radius: 8px !important;
+        overflow: hidden;
+    }
+
+    .progress-bar {
+        border-radius: 8px !important;
+        transition: width 0.6s ease !important;
+    }
+
+    /* Enhanced table styling */
+    .table {
+        background: rgba(255, 255, 255, 0.95) !important;
+        border-radius: 12px !important;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1) !important;
+    }
+
+    .table thead th {
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.9) 0%, rgba(118, 75, 162, 0.9) 100%) !important;
+        color: #ffffff !important;
+        border: none !important;
+        font-weight: 600 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.5px !important;
+        font-size: 0.85rem !important;
+        padding: 15px 12px !important;
+    }
+
+    .table tbody tr {
+        transition: all 0.2s ease !important;
+    }
+
+    .table tbody tr:hover {
+        background-color: rgba(102, 126, 234, 0.05) !important;
+    }
+
+    .table tbody td {
+        padding: 12px !important;
+        border-top: 1px solid rgba(0,0,0,0.05) !important;
+        vertical-align: middle !important;
+    }
+
+    /* Body and html reset for admin pages */
+    body {
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow-x: hidden !important;
+    }
+
+    /* Remove any default Bootstrap margins/padding that might cause gaps */
+    * {
+        box-sizing: border-box !important;
+    }
+
+    /* Header styling */
+    .header {
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        z-index: 1000;
+        position: relative;
+    }
+
+    /* Main container adjustments */
+    .d-flex.align-items-stretch {
+        margin: 0 !important;
+        padding: 0 !important;
+        gap: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+    }
+
+    /* Remove any potential margins from main wrapper */
+    .d-flex.align-items-stretch > * {
+        margin: 0 !important;
+    }
+
+    /* Container adjustments */
+    .container-fluid {
+        padding-left: 20px !important;
+        padding-right: 20px !important;
+        margin: 0 !important;
+        max-width: 100% !important;
+    }
+
+    /* Row spacing */
+    .row {
+        margin-left: -10px !important;
+        margin-right: -10px !important;
+    }
+
+    .row > [class*="col-"] {
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+    }
+
+    /* Recent items styling */
+    .recent-post-item,
+    .recent-user-item {
+        padding: 12px !important;
+        border-bottom: 1px solid rgba(0,0,0,0.05) !important;
+        transition: all 0.2s ease !important;
+    }
+
+    .recent-post-item:hover,
+    .recent-user-item:hover {
+        background-color: rgba(102, 126, 234, 0.05) !important;
+        transform: translateX(5px) !important;
+    }
+
+    /* Activity items */
+    .activity-item {
+        display: flex !important;
+        align-items: center !important;
+        padding: 10px 0 !important;
+        border-bottom: 1px solid rgba(0,0,0,0.05) !important;
+        gap: 15px !important;
+    }
+
+    .activity-icon {
+        width: 40px !important;
+        height: 40px !important;
+        border-radius: 50% !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        color: #ffffff !important;
+        font-weight: bold !important;
+        flex-shrink: 0 !important;
+    }
+
+    /* Stat numbers */
+    .stat-number {
+        font-size: 2rem !important;
+        font-weight: 700 !important;
+        color: rgba(102, 126, 234, 1) !important;
+        line-height: 1 !important;
+    }
+
+    .stat-label {
+        font-size: 0.85rem !important;
+        color: rgba(52, 58, 64, 0.7) !important;
+        font-weight: 500 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.5px !important;
+    }
+
+    /* Welcome stats */
+    .welcome-stats {
+        display: grid !important;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)) !important;
+        gap: 20px !important;
+        margin-top: 20px !important;
+    }
+
+    .stat-item {
+        text-align: center !important;
+        padding: 15px !important;
+        background: rgba(255, 255, 255, 0.2) !important;
+        border-radius: 10px !important;
+        backdrop-filter: blur(10px) !important;
+        border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    }
+
+    .stat-item .stat-number {
+        color: #ffffff !important;
+        font-size: 1.5rem !important;
+    }
+
+    .stat-item .stat-label {
+        color: rgba(255, 255, 255, 0.9) !important;
+        font-size: 0.75rem !important;
     }
     
     /* Reduce motion for users who prefer it */
