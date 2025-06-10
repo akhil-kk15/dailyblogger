@@ -30,7 +30,8 @@ class homeController extends Controller
     public function homepage()
     {
         $posts = Posts::where('post_status', 'active')->latest()->limit(6)->get();
-        return view('home.homepage', compact('posts'));
+        $featuredPosts = Posts::activeFeatured()->latest('featured_at')->limit(3)->get();
+        return view('home.homepage', compact('posts', 'featuredPosts'));
     }
     
     public function all_posts()

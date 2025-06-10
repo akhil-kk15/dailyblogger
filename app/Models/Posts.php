@@ -18,7 +18,14 @@ class Posts extends Model
         'category_id',
         'post_status',
         'usertype',
-        'rejection_reason'
+        'rejection_reason',
+        'is_featured',
+        'featured_at'
+    ];
+
+    protected $casts = [
+        'is_featured' => 'boolean',
+        'featured_at' => 'datetime',
     ];
 
     public function user()
@@ -44,5 +51,17 @@ class Posts extends Model
     public function comments()
     {
         return $this->hasMany(Comment::class, 'post_id');
+    }
+
+    // Scope for featured posts
+    public function scopeFeatured($query)
+    {
+        return $query->where('is_featured', true);
+    }
+
+    // Scope for active featured posts
+    public function scopeActiveFeatured($query)
+    {
+        return $query->where('is_featured', true)->where('post_status', 'active');
     }
 }

@@ -1,5 +1,9 @@
-<nav id="sidebar">
-        <!-- Sidebar Header-->
+<nav id="sidebar">                <li class="{{ request()->routeIs('admin.show_posts') ? 'active' : '' }}">
+                    <a href="{{ route('admin.show_posts') }}"> <i class="icon-grid"></i>Show Posts </a>
+                </li>
+                <li class="{{ request()->routeIs('admin.categories_tags') ? 'active' : '' }}">
+                    <a href="{{ route('admin.categories_tags') }}"> <i class="icon-grid"></i>Categories & Tags </a>
+                </li>      <!-- Sidebar Header-->
         <div class="sidebar-header d-flex align-items-center">
           <div class="avatar"><img src="admincss/img/setting.png" alt="..." class="img-fluid rounded-circle"></div>
           <div class="title">
@@ -30,8 +34,10 @@
                 </li>
         </ul><span class="heading">Analytics</span>
         <ul class="list-unstyled">
-          <li> <a href="#" onclick="showComingSoon('Stats')"> <i class="fa fa-bar-chart"></i>Stats </a></li>
-          <li> <a href="#" onclick="showComingSoon('Charts')"> <i class="fa fa-line-chart"></i>Charts </a></li>
+          <li class="{{ request()->routeIs('admin.analytics') ? 'active' : '' }}"> 
+            <a href="{{ route('admin.analytics') }}"> <i class="fa fa-bar-chart"></i>Dashboard </a>
+          </li>
+          <li> <a href="#" onclick="showComingSoon('Advanced Reports')"> <i class="fa fa-line-chart"></i>Reports </a></li>
         </ul><span class="heading">Settings</span>
         <ul class="list-unstyled">
           <li> <a href="#" onclick="showComingSoon('Settings')"> <i class="icon-settings"></i>Settings </a></li>

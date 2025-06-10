@@ -9,6 +9,7 @@ use App\Http\Controllers\SearchController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\adminController;
 use App\Http\Controllers\AnnouncementController;
+use App\Http\Controllers\AnalyticsController;
 
 // Public routes
 Route::get('/', [homeController::class, 'homepage'])->name('home.homepage');
@@ -83,10 +84,19 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     Route::delete('/admin/comments/{id}', [CommentController::class, 'adminDestroy'])->name('admin.comments.destroy');
     
     // Admin categories and tags management routes
+    Route::get('/admin/categories-tags', [adminController::class, 'categories_tags'])->name('admin.categories_tags');
     Route::post('/admin/categories', [adminController::class, 'add_category'])->name('admin.add_category');
+    Route::put('/admin/categories/{id}', [adminController::class, 'edit_category'])->name('admin.edit_category');
     Route::delete('/admin/categories/{id}', [adminController::class, 'delete_category'])->name('admin.delete_category');
     Route::post('/admin/tags', [adminController::class, 'add_tag'])->name('admin.add_tag');
+    Route::put('/admin/tags/{id}', [adminController::class, 'edit_tag'])->name('admin.edit_tag');
     Route::delete('/admin/tags/{id}', [adminController::class, 'delete_tag'])->name('admin.delete_tag');
+    
+    // Featured posts management
+    Route::post('/admin/posts/{id}/toggle-featured', [adminController::class, 'toggle_featured'])->name('admin.toggle_featured');
+    
+    // Analytics dashboard
+    Route::get('/admin/analytics', [AnalyticsController::class, 'dashboard'])->name('admin.analytics');
 });
 
 // Custom Profile route (override Jetstream default before it loads)

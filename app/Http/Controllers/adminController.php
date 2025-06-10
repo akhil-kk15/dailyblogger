@@ -129,6 +129,17 @@ class adminController extends Controller
     }
     
     /**
+     * Show categories and tags management page
+     */
+    public function categories_tags()
+    {
+        $categories = Category::withCount('posts')->orderBy('name')->get();
+        $tags = Tag::withCount('posts')->orderBy('name')->get();
+        
+        return view('admin.categories_tags', compact('categories', 'tags'));
+    }
+    
+    /**
      * Add a new category (Admin only)
      */
     public function add_category(Request $request)
@@ -139,13 +150,15 @@ class adminController extends Controller
         }
         
         $request->validate([
-            'name' => 'required|string|max:255|unique:categories,name'
+            'name' => 'required|string|max:255|unique:categories,name',
+            'description' => 'nullable|string|max:500'
         ]);
         
         try {
             $category = Category::create([
                 'name' => $request->name,
                 'slug' => Str::slug($request->name),
+                'description' => $request->description,
                 'is_active' => true
             ]);
             
@@ -158,6 +171,42 @@ class adminController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Error adding category: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+    
+    /**
+     * Edit a category (Admin only)
+     */
+    public function edit_category(Request $request, $id)
+    {
+        // Check if user is admin
+        if (!Auth::check() || Auth::user()->usertype !== 'admin') {
+            return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
+        }
+        
+        $request->validate([
+            'name' => 'required|string|max:255|unique:categories,name,' . $id,
+            'description' => 'nullable|string|max:500'
+        ]);
+        
+        try {
+            $category = Category::findOrFail($id);
+            $category->update([
+                'name' => $request->name,
+                'slug' => Str::slug($request->name),
+                'description' => $request->description,
+            ]);
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Category updated successfully',
+                'category' => $category
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error updating category: ' . $e->getMessage()
             ], 500);
         }
     }
@@ -246,6 +295,40 @@ class adminController extends Controller
     }
     
     /**
+     * Edit a tag (Admin only)
+     */
+    public function edit_tag(Request $request, $id)
+    {
+        // Check if user is admin
+        if (!Auth::check() || Auth::user()->usertype !== 'admin') {
+            return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
+        }
+        
+        $request->validate([
+            'name' => 'required|string|max:255|unique:tags,name,' . $id
+        ]);
+        
+        try {
+            $tag = Tag::findOrFail($id);
+            $tag->update([
+                'name' => $request->name,
+                'slug' => Str::slug($request->name),
+            ]);
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Tag updated successfully',
+                'tag' => $tag
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error updating tag: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+    
+    /**
      * Delete a tag (Admin only)
      */
     public function delete_tag(Request $request, $id)
@@ -290,6 +373,39 @@ class adminController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Error deleting tag: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+    
+    /**
+     * Toggle featured status of a post (Admin only)
+     */
+    public function toggle_featured($id)
+    {
+        // Check if user is admin
+        if (!Auth::check() || Auth::user()->usertype !== 'admin') {
+            abort(403, 'Unauthorized');
+        }
+
+        try {
+            $post = Posts::findOrFail($id);
+            
+            // Toggle featured status
+            $post->is_featured = !$post->is_featured;
+            $post->featured_at = $post->is_featured ? now() : null;
+            $post->save();
+
+            $message = $post->is_featured ? 'Post has been featured successfully!' : 'Post has been unfeatured successfully!';
+
+            return response()->json([
+                'success' => true,
+                'message' => $message,
+                'is_featured' => $post->is_featured
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error updating featured status: ' . $e->getMessage()
             ], 500);
         }
     }
