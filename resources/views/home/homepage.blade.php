@@ -47,6 +47,11 @@
       <!-- services section start -->
       @include('home.services')
       <!-- services section end -->
+      <!-- featured posts section start -->
+      @if($featuredPosts->count() > 0)
+         @include('home.featured_posts')
+      @endif
+      <!-- featured posts section end -->
       <!-- about section start -->
       @include('home.about')
       <!-- about section end -->

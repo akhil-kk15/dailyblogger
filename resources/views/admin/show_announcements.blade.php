@@ -171,12 +171,20 @@
                                 <td class="announcement_title">{{ $announcement->title }}</td>
                                 <td class="announcement_content">{{ Str::limit($announcement->content, 100) }}</td>
                                 <td>
-                                    <span class="priority_badge" style="background-color: {{ $announcement->priority_color }}">
+                                    <span class="priority_badge" style="background-color: 
+                                        @if($announcement->priority == 'urgent') #dc3545
+                                        @elseif($announcement->priority == 'high') #fd7e14
+                                        @elseif($announcement->priority == 'normal') #007bff
+                                        @else #28a745 @endif">
                                         {{ ucfirst($announcement->priority) }}
                                     </span>
                                 </td>
                                 <td>
-                                    <span class="type_badge" style="background-color: {{ $announcement->type_color }}">
+                                    <span class="type_badge" style="background-color: 
+                                        @if($announcement->type == 'important') #dc3545
+                                        @elseif($announcement->type == 'maintenance') #ffc107
+                                        @elseif($announcement->type == 'feature') #20c997
+                                        @else #6f42c1 @endif">
                                         {{ ucfirst($announcement->type) }}
                                     </span>
                                 </td>

@@ -10,7 +10,6 @@ class Tag extends Model
     protected $fillable = [
         'name',
         'slug',
-        'color',
         'is_active'
     ];
 

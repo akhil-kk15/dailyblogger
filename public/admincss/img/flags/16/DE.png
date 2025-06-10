@@ -1,0 +1,6 @@
+<svg width="20" height="15" viewBox="0 0 20 15" xmlns="http://www.w3.org/2000/svg">
+  <!-- German Flag -->
+  <rect width="20" height="5" fill="#000"/>
+  <rect y="5" width="20" height="5" fill="#DD0000"/>
+  <rect y="10" width="20" height="5" fill="#FFCC00"/>
+</svg>

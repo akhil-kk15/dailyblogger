@@ -6,18 +6,18 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Posts;
+use App\Models\Category;
+use App\Models\Tag;
 use App\Services\NotificationService;
+use Illuminate\Support\Str;
 
 class adminController extends Controller
 {
-
     public function post_page()
     {
-        $categories = \App\Models\Category::active()->orderBy('name')->get();
-        $tags = \App\Models\Tag::active()->orderBy('name')->get();
-        
-        return view('admin.post_page', compact('categories', 'tags'));
+        return view('admin.post_page');
     }
+
     public function index()
     {
         if(Auth::id()){
@@ -27,23 +27,14 @@ class adminController extends Controller
                 return view('home.homepage');
             }
             else if($usertype == 'admin'){
-                // Get post statistics for admin dashboard
-                $totalPosts = Posts::count();
-                $activePosts = Posts::where('post_status', 'active')->count();
-                $pendingPosts = Posts::where('post_status', 'pending')->count();
-                $rejectedPosts = Posts::where('post_status', 'rejected')->count();
-                $totalUsers = User::count();
-                
-                return view('admin.adminhome', compact('totalPosts', 'activePosts', 'pendingPosts', 'rejectedPosts', 'totalUsers'));
+                return view('admin.adminhome');
             }
             else{
                 return redirect()->back();
             }
          }
-        // else {
-        //     return redirect()->route('login');
-        // }
     }
+
     public function add_post(Request $request)
     {
         if (!Auth::check()) {
@@ -52,28 +43,21 @@ class adminController extends Controller
 
         $request->validate([
             'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'category_id' => 'nullable|exists:categories,id',
-            'tags' => 'nullable|array',
-            'tags.*' => 'exists:tags,id',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+            'description' => 'required|string|min:10',
+            'category' => 'required|string|max:255',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:5120', // 5MB limit, JPEG/PNG only
+        ], [
+            'image.mimes' => 'The image must be a JPEG or PNG file.',
+            'image.max' => 'The image file size must not exceed 5MB.',
         ]);
 
         $post = new Posts;
         $post->title = $request->title;
         $post->description = $request->description;
-        $post->category_id = $request->category_id;
-        
-        // Set post status based on user type
-        if(Auth::user()->usertype == 'admin') {
-            $post->post_status = 'active'; // Admin posts are automatically approved
-        } else {
-            $post->post_status = 'pending'; // User posts need approval
-        }
+        $post->post_status = 'active';
         
         $image = $request->image;
-        if($image)
-        {
+        if($image) {
             $imagename = time().'.'.$image->getClientOriginalExtension();
             $request->image->move('postimage', $imagename);
             $post->image = $imagename;
@@ -83,11 +67,6 @@ class adminController extends Controller
         $post->user_id = Auth::id();
         $post->usertype = Auth::user()->usertype;
         $post->save();
-        
-        // Attach tags to the post
-        if ($request->has('tags') && is_array($request->tags)) {
-            $post->tags()->attach($request->tags);
-        }
         
         return redirect()->back()->with('message', 'Post added successfully');
     }
@@ -106,7 +85,6 @@ class adminController extends Controller
         $post->post_status = 'active';
         $post->save();
         
-        // Create notification for post approval
         NotificationService::createPostApprovedNotification($post);
         
         return redirect()->back()->with('message', 'Post approved successfully');
@@ -132,7 +110,6 @@ class adminController extends Controller
         $post->rejection_reason = $request->rejection_reason;
         $post->save();
         
-        // Create notification for post rejection
         NotificationService::createPostRejectedNotification($post);
         
         return redirect()->back()->with('message', 'Post rejected with reason successfully');
@@ -142,7 +119,6 @@ class adminController extends Controller
     {
         $post = Posts::findOrFail($id);
         
-        // Delete the image file if it exists
         if($post->image && file_exists(public_path('postimage/' . $post->image))) {
             unlink(public_path('postimage/' . $post->image));
         }
@@ -150,5 +126,287 @@ class adminController extends Controller
         $post->delete();
         
         return redirect()->back()->with('message', 'Post deleted successfully');
+    }
+    
+    /**
+     * Show categories and tags management page
+     */
+    public function categories_tags()
+    {
+        $categories = Category::withCount('posts')->orderBy('name')->get();
+        $tags = Tag::withCount('posts')->orderBy('name')->get();
+        
+        return view('admin.categories_tags', compact('categories', 'tags'));
+    }
+    
+    /**
+     * Add a new category (Admin only)
+     */
+    public function add_category(Request $request)
+    {
+        // Check if user is admin
+        if (!Auth::check() || Auth::user()->usertype !== 'admin') {
+            return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
+        }
+        
+        $request->validate([
+            'name' => 'required|string|max:255|unique:categories,name',
+            'description' => 'nullable|string|max:500'
+        ]);
+        
+        try {
+            $category = Category::create([
+                'name' => $request->name,
+                'slug' => Str::slug($request->name),
+                'description' => $request->description,
+                'is_active' => true
+            ]);
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Category added successfully',
+                'category' => $category
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error adding category: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+    
+    /**
+     * Edit a category (Admin only)
+     */
+    public function edit_category(Request $request, $id)
+    {
+        // Check if user is admin
+        if (!Auth::check() || Auth::user()->usertype !== 'admin') {
+            return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
+        }
+        
+        $request->validate([
+            'name' => 'required|string|max:255|unique:categories,name,' . $id,
+            'description' => 'nullable|string|max:500'
+        ]);
+        
+        try {
+            $category = Category::findOrFail($id);
+            $category->update([
+                'name' => $request->name,
+                'slug' => Str::slug($request->name),
+                'description' => $request->description,
+            ]);
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Category updated successfully',
+                'category' => $category
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error updating category: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+    
+    /**
+     * Delete a category (Admin only)
+     */
+    public function delete_category(Request $request, $id)
+    {
+        // Check if user is admin
+        if (!Auth::check() || Auth::user()->usertype !== 'admin') {
+            return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
+        }
+        
+        try {
+            $category = Category::findOrFail($id);
+            
+            // Check if category has posts
+            $postsCount = Posts::where('category_id', $id)->count();
+            $forceDelete = $request->input('force', false);
+            
+            if ($postsCount > 0 && !$forceDelete) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'This category has ' . $postsCount . ' posts associated with it.',
+                    'posts_count' => $postsCount,
+                    'require_confirmation' => true
+                ], 400);
+            }
+            
+            // If force delete, set all posts in this category to null (uncategorized)
+            if ($postsCount > 0 && $forceDelete) {
+                Posts::where('category_id', $id)->update(['category_id' => null]);
+            }
+            
+            $category->delete();
+            
+            $message = $postsCount > 0 ? 
+                "Category deleted successfully. {$postsCount} posts have been moved to 'Uncategorized'." :
+                'Category deleted successfully';
+            
+            return response()->json([
+                'success' => true,
+                'message' => $message
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error deleting category: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+    
+    /**
+     * Add a new tag (Admin only)
+     */
+    public function add_tag(Request $request)
+    {
+        // Check if user is admin
+        if (!Auth::check() || Auth::user()->usertype !== 'admin') {
+            return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
+        }
+        
+        $request->validate([
+            'name' => 'required|string|max:255|unique:tags,name'
+        ]);
+        
+        try {
+            $tag = Tag::create([
+                'name' => $request->name,
+                'slug' => Str::slug($request->name),
+                'is_active' => true
+            ]);
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Tag added successfully',
+                'tag' => $tag
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error adding tag: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+    
+    /**
+     * Edit a tag (Admin only)
+     */
+    public function edit_tag(Request $request, $id)
+    {
+        // Check if user is admin
+        if (!Auth::check() || Auth::user()->usertype !== 'admin') {
+            return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
+        }
+        
+        $request->validate([
+            'name' => 'required|string|max:255|unique:tags,name,' . $id
+        ]);
+        
+        try {
+            $tag = Tag::findOrFail($id);
+            $tag->update([
+                'name' => $request->name,
+                'slug' => Str::slug($request->name),
+            ]);
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Tag updated successfully',
+                'tag' => $tag
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error updating tag: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+    
+    /**
+     * Delete a tag (Admin only)
+     */
+    public function delete_tag(Request $request, $id)
+    {
+        // Check if user is admin
+        if (!Auth::check() || Auth::user()->usertype !== 'admin') {
+            return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
+        }
+        
+        try {
+            $tag = Tag::findOrFail($id);
+            
+            // Check if tag has posts
+            $postsCount = $tag->posts()->count();
+            $forceDelete = $request->input('force', false);
+            
+            if ($postsCount > 0 && !$forceDelete) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'This tag is associated with ' . $postsCount . ' posts.',
+                    'posts_count' => $postsCount,
+                    'require_confirmation' => true
+                ], 400);
+            }
+            
+            // If force delete, detach tag from all posts
+            if ($postsCount > 0 && $forceDelete) {
+                $tag->posts()->detach();
+            }
+            
+            $tag->delete();
+            
+            $message = $postsCount > 0 ? 
+                "Tag deleted successfully. It has been removed from {$postsCount} posts." :
+                'Tag deleted successfully';
+            
+            return response()->json([
+                'success' => true,
+                'message' => $message
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error deleting tag: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+    
+    /**
+     * Toggle featured status of a post (Admin only)
+     */
+    public function toggle_featured($id)
+    {
+        // Check if user is admin
+        if (!Auth::check() || Auth::user()->usertype !== 'admin') {
+            abort(403, 'Unauthorized');
+        }
+
+        try {
+            $post = Posts::findOrFail($id);
+            
+            // Toggle featured status
+            $post->is_featured = !$post->is_featured;
+            $post->featured_at = $post->is_featured ? now() : null;
+            $post->save();
+
+            $message = $post->is_featured ? 'Post has been featured successfully!' : 'Post has been unfeatured successfully!';
+
+            return response()->json([
+                'success' => true,
+                'message' => $message,
+                'is_featured' => $post->is_featured
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error updating featured status: ' . $e->getMessage()
+            ], 500);
+        }
     }
 }

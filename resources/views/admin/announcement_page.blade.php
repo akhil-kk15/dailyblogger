@@ -2,101 +2,109 @@
 <html>
   <head> 
    @include('admin.admincss')
-   <style type ="text/css">
-
-.page-content{
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    min-height: 100vh;
-}    
-.announcement_title{
-        font-size: 60px;
-        text-align: center;
+   <style type="text/css">
+    .page-content {
         padding: 30px;
-        font-family: "Muli",sans-serif;
+        min-height: 80vh;
     }
-     .div_center{
+    .announcement_title {
+        font-size: 30px;
         text-align: center;
-        padding: 10px;
-        width: 100%;
+        padding: 20px;
+        font-family: "Muli", sans-serif;
+        color: #333;
+        margin-bottom: 30px;
     }
-    
     .form-container {
+        max-width: 800px;
+        margin: 0 auto;
         background: #fff;
         padding: 40px;
         border-radius: 10px;
         box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        max-width: 800px;
-        width: 100%;
     }
-    
     .form-group {
-        margin-bottom: 20px;
-        text-align: left;
+        margin-bottom: 25px;
     }
-    
     .form-group label {
         display: block;
+        color: #2c3e50;
         font-weight: 600;
         margin-bottom: 8px;
-        color: #333;
+        font-size: 1rem;
     }
-    
     .form-group input,
     .form-group select,
     .form-group textarea {
         width: 100%;
-        padding: 12px;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        font-size: 14px;
+        padding: 12px 15px;
+        border: 2px solid #e1e8ed;
+        border-radius: 8px;
+        font-size: 1rem;
+        color: #2c3e50;
+        transition: border-color 0.3s ease;
     }
-    
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+        outline: none;
+        border-color: #3498db;
+        box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+    }
     .form-group textarea {
-        height: 120px;
+        min-height: 120px;
         resize: vertical;
     }
-    
-    .priority-info, .type-info {
-        font-size: 12px;
-        color: #666;
-        margin-top: 5px;
-    }
-    
-    .btn-submit {
-        background: #007bff;
+    .submit-btn {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         color: white;
-        padding: 12px 30px;
+        padding: 15px 40px;
         border: none;
-        border-radius: 5px;
-        font-size: 16px;
+        border-radius: 8px;
+        font-size: 1.1rem;
+        font-weight: 600;
         cursor: pointer;
-        margin-top: 20px;
+        transition: all 0.3s ease;
+        width: 100%;
     }
-    
-    .btn-submit:hover {
-        background: #0056b3;
+    .submit-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
     }
-    
     .alert {
         padding: 15px;
         margin-bottom: 20px;
         border: 1px solid transparent;
         border-radius: 4px;
     }
-    
     .alert-success {
         color: #155724;
         background-color: #d4edda;
         border-color: #c3e6cb;
     }
+    .requirements {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 30px;
+    }
+    .requirements h4 {
+        color: #2c3e50;
+        margin-bottom: 15px;
+    }
+    .requirements ul {
+        margin: 0;
+        padding-left: 20px;
+    }
+    .requirements li {
+        color: #7f8c8d;
+        margin-bottom: 5px;
+    }
     </style>
   </head>
   <body>
     <header class="header">   
-     @include('admin.header ')
+     @include('admin.header')
     </header>
     <div class="d-flex align-items-stretch">
       <!-- Sidebar Navigation-->
@@ -110,6 +118,16 @@
                 {{ session('message') }}
             </div>
         @endif
+        
+        <div class="requirements">
+            <h4>📢 Announcement Guidelines</h4>
+            <ul>
+                <li>Announcements will be visible to all users on the platform</li>
+                <li>Use appropriate priority levels - urgent should be used sparingly</li>
+                <li>Set expiration dates for time-sensitive announcements</li>
+                <li>Keep content clear and concise for better user engagement</li>
+            </ul>
+        </div>
         
         <div class="form-container">
             <form action="{{ route('admin.store_announcement') }}" method="POST">
@@ -142,9 +160,6 @@
                         <option value="high" {{ old('priority') == 'high' ? 'selected' : '' }}>High</option>
                         <option value="urgent" {{ old('priority') == 'urgent' ? 'selected' : '' }}>Urgent</option>
                     </select>
-                    <div class="priority-info">
-                        Low: General information | Normal: Regular updates | High: Important notices | Urgent: Critical alerts
-                    </div>
                     @error('priority')
                         <span style="color: #dc3545; font-size: 12px;">{{ $message }}</span>
                     @enderror
@@ -159,35 +174,32 @@
                         <option value="feature" {{ old('type') == 'feature' ? 'selected' : '' }}>New Feature</option>
                         <option value="important" {{ old('type') == 'important' ? 'selected' : '' }}>Important</option>
                     </select>
-                    <div class="type-info">
-                        General: Regular announcements | Maintenance: System updates | Feature: New features | Important: Critical information
-                    </div>
                     @error('type')
                         <span style="color: #dc3545; font-size: 12px;">{{ $message }}</span>
                     @enderror
                 </div>
                 
                 <div class="form-group">
-                    <label for="expires_at">Expiry Date (Optional)</label>
+                    <label for="expires_at">Expiration Date (Optional)</label>
                     <input type="datetime-local" id="expires_at" name="expires_at" 
-                           value="{{ old('expires_at') }}"
+                           value="{{ old('expires_at') }}" 
                            min="{{ now()->format('Y-m-d\TH:i') }}">
-                    <div class="priority-info">
-                        Leave empty for permanent announcement. After expiry, announcement will be automatically hidden.
-                    </div>
                     @error('expires_at')
                         <span style="color: #dc3545; font-size: 12px;">{{ $message }}</span>
                     @enderror
+                    <small style="color: #6c757d; font-size: 0.85rem;">Leave blank if the announcement should not expire</small>
                 </div>
                 
-                <div class="div_center">
-                    <button type="submit" class="btn-submit">
-                        📢 Create Announcement & Notify Users
+                <div class="form-group">
+                    <button type="submit" class="submit-btn">
+                        📢 Create Announcement
                     </button>
                 </div>
             </form>
-        </div>    
+        </div>
+        
+      </div>
     </div>
-      @include('admin.footer')
+    @include('admin.footer')
   </body>
 </html>

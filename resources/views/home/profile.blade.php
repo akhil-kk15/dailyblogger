@@ -2,7 +2,7 @@
 <html lang="en">
    <head>
       @include('home.homecss')
-       </head>
+   </head>
    <body>
       <!-- header section start -->
       <div class="header_section">
@@ -27,17 +27,6 @@
                               <form method="POST" action="{{ route('user-profile-information.update') }}" enctype="multipart/form-data">
                                   @csrf
                                   @method('PUT')
-                                  
-                                  <!-- Profile Photo -->
-                                  @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
-                                  <div class="profile_photo_section">
-                                      <label class="profile_label">Photo</label>
-                                      <div class="profile_photo_container">
-                                          <img src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" class="current_profile_photo">
-                                          <input type="file" name="photo" accept="image/*" class="profile_photo_input">
-                                      </div>
-                                  </div>
-                                  @endif
                                   
                                   <!-- Name -->
                                   <div class="profile_input_group">
@@ -137,31 +126,32 @@
           .profile_card {
               background: #fff;
               border-radius: 8px;
-              box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-              overflow: hidden;
+              box-shadow: 0 0 15px rgba(0,0,0,0.1);
+              padding: 30px;
               margin-bottom: 30px;
           }
           
           .profile_section_item {
-              padding: 30px;
+              margin-bottom: 40px;
+              padding-bottom: 30px;
               border-bottom: 1px solid #eee;
           }
           
           .profile_section_item:last-child {
+              margin-bottom: 0;
+              padding-bottom: 0;
               border-bottom: none;
           }
           
           .profile_section_title {
               font-size: 24px;
-              font-weight: bold;
-              margin-bottom: 10px;
               color: #333;
+              margin-bottom: 10px;
           }
           
           .profile_section_description {
               color: #666;
-              margin-bottom: 30px;
-              line-height: 1.5;
+              margin-bottom: 20px;
           }
           
           .profile_input_group {
@@ -170,24 +160,16 @@
           
           .profile_label {
               display: block;
-              font-weight: 500;
-              margin-bottom: 8px;
+              margin-bottom: 5px;
               color: #333;
           }
           
           .profile_input {
               width: 100%;
-              padding: 12px 15px;
+              padding: 8px 12px;
               border: 1px solid #ddd;
-              border-radius: 6px;
+              border-radius: 4px;
               font-size: 16px;
-              transition: border-color 0.3s ease;
-          }
-          
-          .profile_input:focus {
-              outline: none;
-              border-color: #007bff;
-              box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
           }
           
           .profile_error {
@@ -197,105 +179,41 @@
               display: block;
           }
           
-          .profile_photo_section {
-              margin-bottom: 30px;
-          }
-          
-          .profile_photo_container {
-              display: flex;
-              align-items: center;
-              gap: 20px;
-          }
-          
-          .current_profile_photo {
-              width: 80px;
-              height: 80px;
-              border-radius: 50%;
-              object-fit: cover;
-              border: 3px solid #eee;
-          }
-          
-          .profile_photo_input {
-              flex: 1;
-              padding: 10px;
-              border: 1px solid #ddd;
-              border-radius: 6px;
-          }
-          
           .profile_actions {
-              margin-top: 30px;
+              margin-top: 20px;
           }
           
           .account_actions {
               display: flex;
-              gap: 15px;
+              gap: 10px;
               flex-wrap: wrap;
           }
           
           .btn {
-              padding: 12px 24px;
-              border: none;
-              border-radius: 6px;
+              padding: 8px 16px;
+              border-radius: 4px;
               font-size: 16px;
-              font-weight: 500;
-              text-decoration: none;
               cursor: pointer;
-              transition: all 0.3s ease;
-              display: inline-block;
+              border: none;
           }
           
           .btn-primary {
               background: #007bff;
-              color: white;
-          }
-          
-          .btn-primary:hover {
-              background: #0056b3;
-              transform: translateY(-2px);
+              color: #fff;
           }
           
           .btn-secondary {
               background: #6c757d;
-              color: white;
-          }
-          
-          .btn-secondary:hover {
-              background: #545b62;
-              transform: translateY(-2px);
+              color: #fff;
           }
           
           .btn-danger {
               background: #dc3545;
-              color: white;
+              color: #fff;
           }
           
-          .btn-danger:hover {
-              background: #c82333;
-              transform: translateY(-2px);
-          }
-          
-          @media (max-width: 768px) {
-              .profile_card {
-                  margin: 0 15px;
-              }
-              
-              .profile_section_item {
-                  padding: 20px;
-              }
-              
-              .profile_photo_container {
-                  flex-direction: column;
-                  align-items: flex-start;
-              }
-              
-              .account_actions {
-                  flex-direction: column;
-              }
-              
-              .account_actions .btn {
-                  width: 100%;
-                  text-align: center;
-              }
+          .btn:hover {
+              opacity: 0.9;
           }
       </style>
    </body>

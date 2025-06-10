@@ -252,219 +252,128 @@
               margin: 0;
               padding: 0;
               font-family: 'Poppins', sans-serif;
+              transition: background-color 0.3s ease, color 0.3s ease;
           }
           
           .layout_padding {
               padding: 90px 0;
           }
           
-          /* Dropdown Styles */
-          .dropdown {
-              position: relative;
-              display: inline-block;
+          /* Dark Mode Styles */
+          body.dark-mode {
+              background-color: #1a1a1a;
+              color: #e1e1e1;
           }
           
-          .dropdown-toggle {
-              cursor: pointer;
-              text-decoration: none;
+          body.dark-mode .header_section {
+              background: #2d2d2d;
+              box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+          }
+          
+          body.dark-mode .menu_main {
+              background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
+          }
+          
+          body.dark-mode .mobile_menu {
+              background: #2d2d2d;
+              border-bottom: 1px solid #444;
+          }
+          
+          body.dark-mode .mobile_menu .navbar {
+              background-color: #2d2d2d !important;
+          }
+          
+          body.dark-mode .mobile_menu .nav-link {
+              color: #e1e1e1 !important;
+          }
+          
+          body.dark-mode .mobile_menu .nav-link:hover,
+          body.dark-mode .mobile_menu .nav-item.active .nav-link {
+              background-color: #667eea;
               color: #fff !important;
-              display: flex;
-              align-items: center;
-              gap: 5px;
           }
           
-          .dropdown-menu {
-              display: none;
-              position: absolute;
-              top: 100%;
-              right: 0;
-              background-color: #fff;
-              min-width: 200px;
-              box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-              z-index: 1000;
-              border-radius: 4px;
-              overflow: hidden;
-              list-style: none;
-              margin: 0;
-              padding: 0;
+          body.dark-mode .services_section {
+              background-color: #2d2d2d;
           }
           
-          .dropdown-menu.show {
-              display: block;
+          body.dark-mode .services_taital {
+              color: #e1e1e1;
           }
           
-          .dropdown-menu li {
-              margin: 0;
+          body.dark-mode .services_text {
+              color: #b0b0b0;
           }
           
-          .dropdown-menu li a {
-              color: #333 !important;
-              padding: 12px 16px;
-              text-decoration: none;
-              display: block;
-              transition: background-color 0.3s ease;
+          /* Dark Mode Toggle Button Styles */
+          #darkModeToggleDesktop:hover {
+              background-color: rgba(255,255,255,0.2) !important;
+              border-color: rgba(255,255,255,0.3) !important;
+              transform: translateY(-2px);
+              box-shadow: 0 4px 15px rgba(0,0,0,0.2);
           }
           
-          .dropdown-menu li a:hover {
-              background-color: #f1f1f1;
+          body.dark-mode #darkModeToggleDesktop {
+              color: #ffd700 !important;
           }
           
-          .dropdown-divider,
-          .divider {
-              height: 1px;
-              background-color: #e9ecef;
-              margin: 5px 0;
-          }
-          
-          /* Desktop dropdown menu styles */
-          .menu_main .dropdown {
-              position: relative;
-          }
-          
-          .menu_main .dropdown-menu {
-              position: absolute;
-              top: 100%;
-              left: 0;
-              z-index: 1000;
-              display: none;
-              float: left;
-              min-width: 200px;
-              padding: 0.5rem 0;
-              margin: 0.125rem 0 0;
-              font-size: 1rem;
-              color: #212529;
-              text-align: left;
-              list-style: none;
-              background-color: #fff;
-              background-clip: padding-box;
-              border: 1px solid rgba(0,0,0,.15);
-              border-radius: 0.375rem;
-              box-shadow: 0 0.5rem 1rem rgba(0,0,0,.175);
-          }
-          
-          .menu_main .dropdown-menu.show {
-              display: block;
-          }
-          
-          .menu_main .dropdown-menu li {
-              margin: 0;
-          }
-          
-          .menu_main .dropdown-menu li a {
-              color: #212529 !important;
-              padding: 0.5rem 1rem;
-              display: block;
-              white-space: nowrap;
-              background-color: transparent;
-              text-decoration: none;
-              font-size: 14px;
-              font-weight: normal;
-              border: none !important;
-          }
-          
-          .menu_main .dropdown-menu li a:hover {
-              background-color: #f8f9fa;
-              color: #16181b !important;
-          }
-          
-          .menu_main .dropdown-menu li button {
-              color: #212529 !important;
-              padding: 0.5rem 1rem;
-              display: block;
-              white-space: nowrap;
-              background-color: transparent;
-              text-decoration: none;
-              font-size: 14px;
-              font-weight: normal;
-              border: none !important;
-              width: 100%;
-              text-align: left;
-              cursor: pointer;
-          }
-          
-          .menu_main .dropdown-menu li button:hover {
-              background-color: #f8f9fa;
-              color: #16181b !important;
-          }
-          
-          .menu_main .dropdown-menu .divider {
-              height: 1px;
-              margin: 0.5rem 0;
-              overflow: hidden;
-              background-color: #e9ecef;
-          }
-          
-          .caret {
-              display: inline-block;
-              width: 0;
-              height: 0;
-              margin-left: 2px;
-              vertical-align: middle;
-              border-top: 4px solid;
-              border-right: 4px solid transparent;
-              border-left: 4px solid transparent;
-          }
-          
-          /* Mobile dropdown styles */
-          .nav-item.dropdown .dropdown-menu {
-              position: absolute;
-              top: 100%;
-              left: 0;
-              z-index: 1000;
-              display: none;
-              float: left;
-              min-width: 200px;
-              padding: 0.5rem 0;
-              margin: 0.125rem 0 0;
-              font-size: 1rem;
-              color: #212529;
-              text-align: left;
-              list-style: none;
-              background-color: #fff;
-              background-clip: padding-box;
-              border: 1px solid rgba(0,0,0,.15);
-              border-radius: 0.375rem;
-              box-shadow: 0 0.5rem 1rem rgba(0,0,0,.175);
-          }
-          
-          .nav-item.dropdown:hover .dropdown-menu,
-          .nav-item.dropdown .dropdown-menu.show {
-              display: block;
-          }
-          
-          .nav-item.dropdown .dropdown-item {
-              color: #212529;
-              padding: 0.5rem 1rem;
-              display: block;
-              background-color: transparent;
-              text-decoration: none;
-              font-weight: normal;
-          }
-          
-          .nav-item.dropdown .dropdown-item:hover {
-              background-color: #f8f9fa;
-              color: #16181b;
-          }
-          
-          @media (max-width: 768px) {
-              .nav-item.dropdown .dropdown-menu {
-                  position: static;
-                  display: none;
-                  float: none;
-                  width: 100%;
-                  margin-top: 0;
-                  background-color: #f8f9fa;
-                  border: 0;
-                  box-shadow: none;
-              }
-              
-              .nav-item.dropdown .dropdown-menu.show {
-                  display: block !important;
-              }
-              
-              .nav-item.dropdown .dropdown-menu .dropdown-item {
-                  color: #333 !important;
-                  padding-left: 2rem;
-              }
+          body.dark-mode #darkModeToggleMobile {
+              color: #ffd700 !important;
           }
       </style>
+      
+      <script>
+          // Dark mode functionality for home layout
+          document.addEventListener('DOMContentLoaded', function() {
+              const html = document.documentElement;
+              const body = document.body;
+              const toggleDesktop = document.getElementById('darkModeToggleDesktop');
+              const toggleMobile = document.getElementById('darkModeToggleMobile');
+              const iconDesktop = document.getElementById('darkModeIconDesktop');
+              const iconMobile = document.getElementById('darkModeIconMobile');
+              const textDesktop = document.getElementById('darkModeTextDesktop');
+              const textMobile = document.getElementById('darkModeTextMobile');
+              
+              // Clean up old theme keys
+              localStorage.removeItem('theme'); // Remove old key
+              
+              // Initialize with light mode as default
+              let isDarkMode = localStorage.getItem('app-theme') === 'dark';
+              
+              function updateTheme() {
+                  if (isDarkMode) {
+                      body.classList.add('dark-mode');
+                      iconDesktop.className = 'fa fa-sun-o';
+                      iconMobile.className = 'fa fa-sun-o';
+                      textDesktop.textContent = 'Light';
+                      textMobile.textContent = 'Light Mode';
+                      localStorage.setItem('app-theme', 'dark');
+                  } else {
+                      body.classList.remove('dark-mode');
+                      iconDesktop.className = 'fa fa-moon-o';
+                      iconMobile.className = 'fa fa-moon-o';
+                      textDesktop.textContent = 'Dark';
+                      textMobile.textContent = 'Dark Mode';
+                      localStorage.setItem('app-theme', 'light');
+                  }
+              }
+              
+              // Initialize theme
+              updateTheme();
+              
+              // Add event listeners
+              if (toggleDesktop) {
+                  toggleDesktop.addEventListener('click', function() {
+                      isDarkMode = !isDarkMode;
+                      updateTheme();
+                  });
+              }
+              
+              if (toggleMobile) {
+                  toggleMobile.addEventListener('click', function() {
+                      isDarkMode = !isDarkMode;
+                      updateTheme();
+                  });
+              }
+          });
+      </script>

@@ -2,6 +2,7 @@
 <html>
   <head> 
    @include('admin.admincss')
+   <meta name="csrf-token" content="{{ csrf_token() }}">
    <style type="text/css">
     .page-content {
         padding: 30px;
@@ -112,6 +113,22 @@
         background: #c82333;
         color: white;
     }
+    .btn_feature {
+        background: #17a2b8;
+        color: white;
+    }
+    .btn_feature:hover {
+        background: #138496;
+        color: white;
+    }
+    .btn_featured {
+        background: #ffc107;
+        color: #212529;
+    }
+    .btn_featured:hover {
+        background: #e0a800;
+        color: #212529;
+    }
     .alert {
         padding: 15px;
         margin-bottom: 20px;
@@ -212,6 +229,17 @@
         background: #6c757d;
         color: white;
     }
+    .featured_badge {
+        background: #ffc107;
+        color: #212529;
+        padding: 2px 8px;
+        border-radius: 10px;
+        font-size: 10px;
+        font-weight: 600;
+        text-transform: uppercase;
+        margin-top: 5px;
+        display: inline-block;
+    }
    </style>
   </head>
   <body>
@@ -287,6 +315,9 @@
                                     <span class="status_badge status_{{ $post->post_status }}">
                                         {{ ucfirst($post->post_status) }}
                                     </span>
+                                    @if($post->is_featured)
+                                        <br><span class="featured_badge">★ Featured</span>
+                                    @endif
                                 </td>
                                 <td>{{ $post->created_at->format('M d, Y') }}</td>
                                 <td>
@@ -363,6 +394,18 @@
                                             @endif
                                         @endif
                                         
+                                        <!-- Featured Toggle Button -->
+                                        @if($post->post_status == 'active')
+                                            <button type="button" 
+                                                    class="btn_action {{ $post->is_featured ? 'btn_featured' : 'btn_feature' }}" 
+                                                    data-post-id="{{ $post->id }}"
+                                                    data-is-featured="{{ $post->is_featured ? 'true' : 'false' }}"
+                                                    onclick="toggleFeatured(this)"
+                                                    id="feature-btn-{{ $post->id }}">
+                                                {{ $post->is_featured ? '★ Unfeature' : '☆ Feature' }}
+                                            </button>
+                                        @endif
+                                        
                                         <form action="{{ route('admin.delete_post', $post->id) }}" method="POST" style="display: inline;">
                                             @csrf
                                             @method('DELETE')
@@ -412,17 +455,90 @@
             
             if (select.value === 'custom') {
                 textarea.value = '';
-                textarea.placeholder = 'Enter custom rejection reason...';
+                textarea.placeholder = 'Enter your custom reason...';
                 textarea.focus();
             } else if (select.value !== '') {
                 textarea.value = select.value;
-            } else {
-                textarea.value = '';
-                textarea.placeholder = 'Enter rejection reason...';
             }
         }
         
-        // Close dropdowns when clicking outside
+        // Toggle featured status function
+        function toggleFeatured(button) {
+            const postId = button.getAttribute('data-post-id');
+            const isFeatured = button.getAttribute('data-is-featured') === 'true';
+            
+            fetch(`/admin/posts/${postId}/toggle-featured`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Update button appearance
+                    if (data.is_featured) {
+                        button.className = 'btn_action btn_featured';
+                        button.innerHTML = '★ Unfeature';
+                        button.setAttribute('data-is-featured', 'true');
+                        
+                        // Add featured badge to status column
+                        const statusCell = button.closest('tr').querySelector('td:nth-child(6)');
+                        if (!statusCell.querySelector('.featured_badge')) {
+                            statusCell.innerHTML += '<br><span class="featured_badge">★ Featured</span>';
+                        }
+                    } else {
+                        button.className = 'btn_action btn_feature';
+                        button.innerHTML = '☆ Feature';
+                        button.setAttribute('data-is-featured', 'false');
+                        
+                        // Remove featured badge
+                        const featuredBadge = button.closest('tr').querySelector('.featured_badge');
+                        if (featuredBadge) {
+                            featuredBadge.parentElement.removeChild(featuredBadge);
+                        }
+                    }
+                    
+                    // Show success message
+                    showAlert(data.message, 'success');
+                } else {
+                    showAlert(data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showAlert('An error occurred while updating featured status.', 'error');
+            });
+        }
+        
+        // Show alert function
+        function showAlert(message, type) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type === 'success' ? 'success' : 'danger'}`;
+            alertDiv.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                z-index: 9999;
+                max-width: 400px;
+                padding: 15px;
+                border-radius: 4px;
+                font-weight: 600;
+            `;
+            alertDiv.textContent = message;
+            
+            document.body.appendChild(alertDiv);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                if (alertDiv.parentNode) {
+                    alertDiv.parentNode.removeChild(alertDiv);
+                }
+            }, 3000);
+        }
+        
+        // Close reject forms when clicking outside
         document.addEventListener('click', function(event) {
             if (!event.target.closest('.reject_dropdown')) {
                 document.querySelectorAll('.reject_content').forEach(form => {

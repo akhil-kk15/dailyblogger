@@ -1,19 +1,71 @@
 <div class="page-content">
+        <!-- Enhanced Dashboard Header -->
         <div class="page-header">
           <div class="container-fluid">
-            <h2 class="h5 no-margin-bottom">Dashboard</h2>
+            <div class="dashboard-welcome">
+              <div class="welcome-content">
+                <h1 class="dashboard-title">
+                  <i class="fa fa-tachometer" aria-hidden="true"></i>
+                  {{ __('admin.welcome') }} {{ __('admin.admin_panel') }}
+                </h1>
+                <p class="dashboard-subtitle">
+                  <i class="fa fa-calendar" aria-hidden="true"></i>
+                  {{ date('l, F j, Y') }} | 
+                  <i class="fa fa-clock-o" aria-hidden="true"></i>
+                  <span id="current-time"></span>
+                </p>
+                <div class="quick-actions">
+                  <a href="{{ route('admin.post_page') }}" class="quick-action-btn">
+                    <i class="fa fa-plus"></i>
+                    {{ __('admin.create_post') }}
+                  </a>
+                  <a href="{{ route('admin.analytics') }}" class="quick-action-btn">
+                    <i class="fa fa-bar-chart"></i>
+                    {{ __('admin.analytics') }}
+                  </a>
+                  <a href="{{ route('admin.show_posts') }}" class="quick-action-btn">
+                    <i class="fa fa-list"></i>
+                    {{ __('admin.manage_posts') }}
+                  </a>
+                </div>
+              </div>
+              <div class="welcome-stats">
+                <div class="stat-item">
+                  <div class="stat-number">{{ \App\Models\Posts::count() }}</div>
+                  <div class="stat-label">{{ __('admin.total_posts') }}</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-number">{{ \App\Models\User::count() }}</div>
+                  <div class="stat-label">{{ __('admin.total_users') }}</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-number">{{ \App\Models\Posts::where('post_status', 'active')->count() }}</div>
+                  <div class="stat-label">Published</div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
+
+        <!-- Enhanced Statistics Section -->
         <section class="no-padding-top no-padding-bottom">
           <div class="container-fluid">
+            <div class="section-header">
+              <h3 class="section-title">
+                <i class="fa fa-line-chart"></i>
+                Performance Overview
+              </h3>
+              <p class="section-subtitle">Real-time insights into your blog's performance</p>
+            </div>
+            
             <div class="row">
               <div class="col-md-3 col-sm-6">
                 <div class="statistic-block block">
                   <div class="progress-details d-flex align-items-end justify-content-between">
                     <div class="title">
-                      <div class="icon"><i class="icon-user-1"></i></div><strong>Total Users</strong>
+                      <div class="icon"><i class="icon-user-1"></i></div><strong>New Users</strong>
                     </div>
-                    <div class="number dashtext-1">{{ $totalUsers ?? 0 }}</div>
+                    <div class="number dashtext-1">27</div>
                   </div>
                   <div class="progress progress-template">
                     <div role="progressbar" style="width: 30%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" class="progress-bar progress-bar-template dashbg-1"></div>
@@ -24,9 +76,9 @@
                 <div class="statistic-block block">
                   <div class="progress-details d-flex align-items-end justify-content-between">
                     <div class="title">
-                      <div class="icon"><i class="icon-contract"></i></div><strong>Total Posts</strong>
+                      <div class="icon"><i class="icon-contract"></i></div><strong>New Posts</strong>
                     </div>
-                    <div class="number dashtext-2">{{ $totalPosts ?? 0 }}</div>
+                    <div class="number dashtext-2">375</div>
                   </div>
                   <div class="progress progress-template">
                     <div role="progressbar" style="width: 70%" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" class="progress-bar progress-bar-template dashbg-2"></div>
@@ -37,9 +89,9 @@
                 <div class="statistic-block block">
                   <div class="progress-details d-flex align-items-end justify-content-between">
                     <div class="title">
-                      <div class="icon"><i class="icon-paper-and-pencil"></i></div><strong>Pending Posts</strong>
+                      <div class="icon"><i class="icon-paper-and-pencil"></i></div><strong>User Report</strong>
                     </div>
-                    <div class="number dashtext-3">{{ $pendingPosts ?? 0 }}</div>
+                    <div class="number dashtext-3">140</div>
                   </div>
                   <div class="progress progress-template">
                     <div role="progressbar" style="width: 55%" aria-valuenow="55" aria-valuemin="0" aria-valuemax="100" class="progress-bar progress-bar-template dashbg-3"></div>
@@ -50,9 +102,9 @@
                 <div class="statistic-block block">
                   <div class="progress-details d-flex align-items-end justify-content-between">
                     <div class="title">
-                      <div class="icon"><i class="icon-writing-whiteboard"></i></div><strong>Active Posts</strong>
+                      <div class="icon"><i class="icon-writing-whiteboard"></i></div><strong>Approved Posts</strong>
                     </div>
-                    <div class="number dashtext-4">{{ $activePosts ?? 0 }}</div>
+                    <div class="number dashtext-4">41</div>
                   </div>
                   <div class="progress progress-template">
                     <div role="progressbar" style="width: 35%" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100" class="progress-bar progress-bar-template dashbg-4"></div>
@@ -81,7 +133,7 @@
             </div>
           </div>
         </section>
-        <!-- <section class="no-padding-bottom">
+        <section class="no-padding-bottom">
           <div class="container-fluid">
             <div class="row">
               <div class="col-lg-6">
@@ -227,8 +279,8 @@
                 </div>
               </div>
             </div>
-          </div> -->
-        <!-- </section>
+          </div>
+        </section>
         <section class="margin-bottom-sm">
           <div class="container-fluid">
             <div class="row d-flex align-items-stretch">
@@ -375,4 +427,4 @@
               </div>
             </div>
           </div>
-        </section> -->
+        </section

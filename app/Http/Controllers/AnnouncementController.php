@@ -10,17 +10,28 @@ use App\Services\NotificationService;
 
 class AnnouncementController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function announcement_page()
     {
+        // Check if user is admin
+        if (!Auth::check() || Auth::user()->usertype !== 'admin') {
+            return redirect('/dashboard')->with('error', 'Access denied.');
+        }
+        
         return view('admin.announcement_page');
     }
     
     public function store_announcement(Request $request)
     {
+        // Check if user is admin
         if (!Auth::check() || Auth::user()->usertype !== 'admin') {
-            return redirect()->route('login');
+            return redirect('/dashboard')->with('error', 'Access denied.');
         }
-
+        
         $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
@@ -46,6 +57,11 @@ class AnnouncementController extends Controller
     
     public function show_announcements()
     {
+        // Check if user is admin
+        if (!Auth::check() || Auth::user()->usertype !== 'admin') {
+            return redirect('/dashboard')->with('error', 'Access denied.');
+        }
+        
         $announcements = Announcement::with('creator')
                                    ->orderBy('created_at', 'desc')
                                    ->paginate(10);
@@ -54,6 +70,11 @@ class AnnouncementController extends Controller
     
     public function toggle_announcement($id)
     {
+        // Check if user is admin
+        if (!Auth::check() || Auth::user()->usertype !== 'admin') {
+            return redirect('/dashboard')->with('error', 'Access denied.');
+        }
+        
         $announcement = Announcement::findOrFail($id);
         $announcement->is_active = !$announcement->is_active;
         $announcement->save();
@@ -64,6 +85,11 @@ class AnnouncementController extends Controller
     
     public function delete_announcement($id)
     {
+        // Check if user is admin
+        if (!Auth::check() || Auth::user()->usertype !== 'admin') {
+            return redirect('/dashboard')->with('error', 'Access denied.');
+        }
+        
         $announcement = Announcement::findOrFail($id);
         $announcement->delete();
         
