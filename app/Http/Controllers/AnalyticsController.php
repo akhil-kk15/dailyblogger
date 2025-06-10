@@ -50,24 +50,25 @@ class AnalyticsController extends Controller
             ];
         }
 
-        // Get top categories by post count
+        // Get top categories by post count (limit to 5)
         $topCategories = Category::withCount('posts')
             ->where('is_active', true)
             ->orderBy('posts_count', 'desc')
             ->limit(5)
             ->get();
 
-        // Get most active users
+        // Get most active users (limit to 5)
         $topUsers = User::withCount('posts')
             ->where('usertype', 'user')
             ->orderBy('posts_count', 'desc')
             ->limit(5)
             ->get();
 
-        // Get recent activity (last 10 posts)
-        $recentPosts = Posts::with(['user', 'category'])
+        // Get recent activity (limit to 5 recent posts)
+        $recentPosts = Posts::with(['user:id,name', 'category:id,name'])
+            ->select('id', 'title', 'user_id', 'category_id', 'post_status', 'is_featured', 'created_at')
             ->latest()
-            ->limit(10)
+            ->limit(5)
             ->get();
 
         return view('admin.analytics', compact(

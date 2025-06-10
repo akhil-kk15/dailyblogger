@@ -1,0 +1,171 @@
+<?php
+
+return [
+    // Navigation
+    'main_dashboard' => 'Main Dashboard',
+    'dashboard_home' => 'Dashboard Home',
+    'control_center' => 'Control Center',
+    'dashboard' => 'Dashboard',
+    'content_management' => 'Content Management',
+    'create_post' => 'Create Post',
+    'manage_posts' => 'Manage Posts',
+    'categories_tags' => 'Categories & Tags',
+    'user_communication' => 'User & Communication',
+    'user_management' => 'User Management',
+    'comments' => 'Comments',
+    'create_announcement' => 'Create Announcement',
+    'manage_announcements' => 'Manage Announcements',
+    'reports_settings' => 'Reports & Settings',
+    'analytics' => 'Analytics',
+    'featured_posts' => 'Featured Posts',
+    'quick_actions' => 'Quick Actions',
+    'settings' => 'Settings',
+    'backup' => 'Backup',
+    'view_website' => 'View Website',
+    'my_profile' => 'My Profile',
+    
+    // General
+    'welcome' => 'Welcome',
+    'admin_panel' => 'Admin Panel',
+    'current_time' => 'Current Time',
+    'total_posts' => 'Total Posts',
+    'pending_posts' => 'Pending Posts',
+    'total_users' => 'Total Users',
+    'total_comments' => 'Total Comments',
+    'loading' => 'Loading...',
+    'logout' => 'Logout',
+    
+    // Actions
+    'approve' => 'Approve',
+    'reject' => 'Reject',
+    'delete' => 'Delete',
+    'edit' => 'Edit',
+    'save' => 'Save',
+    'cancel' => 'Cancel',
+    'create' => 'Create',
+    'update' => 'Update',
+    'view' => 'View',
+    'activate' => 'Activate',
+    'deactivate' => 'Deactivate',
+    
+    // Messages
+    'success' => 'Success!',
+    'error' => 'Error!',
+    'warning' => 'Warning!',
+    'info' => 'Information',
+    'access_denied' => 'Access denied.',
+    'coming_soon' => 'Coming Soon',
+    'feature_development' => 'This feature is under development',
+    
+    // Posts
+    'post_title' => 'Post Title',
+    'post_content' => 'Post Content',
+    'post_status' => 'Status',
+    'post_author' => 'Author',
+    'post_date' => 'Date',
+    'post_category' => 'Category',
+    'post_tags' => 'Tags',
+    'featured' => 'Featured',
+    
+    // Users
+    'user_name' => 'Name',
+    'user_email' => 'Email',
+    'user_role' => 'Role',
+    'user_actions' => 'Actions',
+    'change_role' => 'Change Role',
+    
+    // Comments
+    'comment_author' => 'Author',
+    'comment_text' => 'Comment',
+    'comment_post' => 'Post',
+    'comment_date' => 'Date',
+    'comment_actions' => 'Actions',
+    
+    // Announcements
+    'announcement_title' => 'Title',
+    'announcement_content' => 'Content',
+    'announcement_priority' => 'Priority',
+    'announcement_type' => 'Type',
+    'announcement_status' => 'Status',
+    'announcement_expires' => 'Expires',
+    'announcement_created' => 'Created',
+    'announcement_actions' => 'Actions',
+    'priority_low' => 'Low',
+    'priority_normal' => 'Normal',
+    'priority_high' => 'High',
+    'priority_urgent' => 'Urgent',
+    'type_general' => 'General',
+    'type_maintenance' => 'Maintenance',
+    'type_feature' => 'Feature',
+    'type_important' => 'Important',
+    'status_active' => 'Active',
+    'status_inactive' => 'Inactive',
+    'permanent' => 'Permanent',
+    'expired' => 'Expired',
+    'expires_today' => 'Expires today',
+    
+    // Settings
+    'system_settings' => 'System Settings',
+    'general_settings' => 'General Settings',
+    'mail_settings' => 'Mail Settings',
+    'appearance_settings' => 'Appearance Settings',
+    'security_settings' => 'Security Settings',
+    'social_media_settings' => 'Social Media Settings',
+    'general' => 'General',
+    'appearance' => 'Appearance',
+    'security' => 'Security',
+    'social_media' => 'Social Media',
+    'system' => 'System',
+    'save_changes' => 'Save Changes',
+    'test_email' => 'Test Email',
+    'clear_cache' => 'Clear Cache',
+    'backup_database' => 'Backup Database',
+    
+    // General Settings
+    'site_name' => 'Site Name',
+    'site_description' => 'Site Description',
+    'site_keywords' => 'Site Keywords',
+    'admin_email' => 'Admin Email',
+    'posts_per_page' => 'Posts Per Page',
+    'allow_comments' => 'Allow Comments',
+    'require_approval' => 'Require Comment Approval',
+    'maintenance_mode' => 'Maintenance Mode',
+    
+    // Mail Settings
+    'mail_driver' => 'Mail Driver',
+    'mail_host' => 'Mail Host',
+    'mail_port' => 'Mail Port',
+    'mail_username' => 'Mail Username',
+    'mail_password' => 'Mail Password',
+    'mail_encryption' => 'Mail Encryption',
+    'mail_from_address' => 'From Email Address',
+    'mail_from_name' => 'From Name',
+    
+    // Appearance Settings
+    'theme' => 'Theme',
+    'primary_color' => 'Primary Color',
+    'secondary_color' => 'Secondary Color',
+    'logo' => 'Logo',
+    'choose_logo' => 'Choose Logo',
+    'favicon' => 'Favicon',
+    'custom_css' => 'Custom CSS',
+    
+    // Security Settings
+    'enable_registration' => 'Enable User Registration',
+    'require_email_verification' => 'Require Email Verification',
+    'enable_captcha' => 'Enable reCAPTCHA',
+    'session_lifetime' => 'Session Lifetime',
+    'max_login_attempts' => 'Max Login Attempts',
+    
+    // Social Media Settings
+    'facebook_url' => 'Facebook URL',
+    'twitter_url' => 'Twitter URL',
+    'instagram_url' => 'Instagram URL',
+    'linkedin_url' => 'LinkedIn URL',
+    'youtube_url' => 'YouTube URL',
+    'enable_social_login' => 'Enable Social Login',
+    
+    // Actions
+    'logout' => 'Logout',
+    'view_website' => 'View Website',
+];

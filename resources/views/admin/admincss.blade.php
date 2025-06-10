@@ -1145,4 +1145,121 @@
         opacity: 1;
         visibility: visible;
     }
+    
+    /* Enhanced Language Selector Styling */
+    .language-selector {
+        position: relative;
+    }
+    
+    .language-selector .nav-link {
+        display: flex;
+        align-items: center;
+        padding: 8px 12px;
+        border-radius: 6px;
+        transition: var(--transition);
+        background: rgba(255,255,255,0.1);
+        border: 1px solid rgba(255,255,255,0.2);
+    }
+    
+    .language-selector .nav-link:hover {
+        background: rgba(255,255,255,0.2);
+        transform: translateY(-1px);
+        box-shadow: var(--shadow-soft);
+    }
+    
+    .language-selector img {
+        width: 20px;
+        height: 15px;
+        margin-right: 8px;
+        border-radius: 2px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+    
+    .language-menu {
+        min-width: 150px;
+        border: none;
+        border-radius: 8px;
+        background: var(--card-bg);
+        box-shadow: var(--shadow-hover);
+        padding: 8px 0;
+    }
+    
+    .language-option {
+        display: flex;
+        align-items: center;
+        padding: 10px 15px;
+        color: var(--text-color);
+        text-decoration: none;
+        transition: var(--transition);
+        border-radius: 0;
+    }
+    
+    .language-option:hover {
+        background: var(--primary-gradient);
+        color: #ffffff;
+        text-decoration: none;
+        transform: translateX(5px);
+    }
+    
+    .language-option img {
+        width: 18px;
+        height: 13px;
+        margin-right: 10px;
+    }
+    
+    /* Mobile Responsive Language Selector */
+    @media (max-width: 576px) {
+        .language-selector .nav-link span {
+            display: none !important;
+        }
+        
+        .language-selector .nav-link {
+            padding: 8px;
+            min-width: 40px;
+            justify-content: center;
+        }
+        
+        .language-selector img {
+            margin-right: 0;
+            width: 24px;
+            height: 18px;
+        }
+        
+        .language-menu {
+            right: 0;
+            left: auto;
+            min-width: 120px;
+        }
+        
+        .language-option {
+            padding: 8px 12px;
+        }
+        
+        .language-option span {
+            font-size: 14px;
+        }
+    }
+    
+    /* Language selector animations */
+    .language-selector .dropdown-menu {
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-10px);
+        transition: all 0.3s ease;
+    }
+    
+    .language-selector .dropdown-menu.show {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+    
+    /* Flag hover effects */
+    .language-option img {
+        transition: transform 0.2s ease;
+    }
+    
+    .language-option:hover img {
+        transform: scale(1.1);
+    }
     </style>

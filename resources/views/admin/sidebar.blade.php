@@ -3,62 +3,66 @@
         <div class="sidebar-header d-flex align-items-center">
           <div class="avatar"><img src="{{ asset('admincss/img/setting.png') }}" alt="..." class="img-fluid rounded-circle"></div>
           <div class="title">
-            <h1 class="h5">Admin Panel</h1>
-            <p>Control Center</p>
+            <h1 class="h5">{{ __('admin.admin_panel') }}</h1>
+            <p>{{ __('admin.control_center') }}</p>
           </div>
         </div>
         
         <!-- Sidebar Navigation Menus-->
-        <span class="heading">Main Dashboard</span>
+        <span class="heading">{{ __('admin.main_dashboard') }}</span>
         <ul class="list-unstyled">
                 <li class="{{ request()->routeIs('home.homepage') || request()->routeIs('admin.index') ? 'active' : '' }}">
-                    <a href="{{ url('home') }}"> <i class="icon-home"></i>Dashboard Home </a>
+                    <a href="{{ url('home') }}"> <i class="icon-home"></i>{{ __('admin.dashboard_home') }} </a>
                 </li>
                 <li class="{{ request()->routeIs('admin.analytics') ? 'active' : '' }}"> 
-                    <a href="{{ route('admin.analytics') }}"> <i class="fa fa-bar-chart"></i>Analytics </a>
+                    <a href="{{ route('admin.analytics') }}"> <i class="fa fa-bar-chart"></i>{{ __('admin.analytics') }} </a>
                 </li>
         </ul>
         
-        <span class="heading">Content Management</span>
+        <span class="heading">{{ __('admin.content_management') }}</span>
         <ul class="list-unstyled">
                 <li class="{{ request()->routeIs('admin.post_page') ? 'active' : '' }}">
-                    <a href="{{ route('admin.post_page') }}"> <i class="icon-plus"></i>Create Post </a>
+                    <a href="{{ route('admin.post_page') }}"> <i class="icon-plus"></i>{{ __('admin.create_post') }} </a>
                 </li>
                 <li class="{{ request()->routeIs('admin.show_posts') ? 'active' : '' }}">
-                    <a href="{{ route('admin.show_posts') }}"> <i class="icon-grid"></i>Manage Posts </a>
+                    <a href="{{ route('admin.show_posts') }}"> <i class="icon-grid"></i>{{ __('admin.manage_posts') }} </a>
                 </li>
                 <li class="{{ request()->routeIs('admin.categories_tags') ? 'active' : '' }}">
-                    <a href="{{ route('admin.categories_tags') }}"> <i class="icon-tag"></i>Categories & Tags </a>
+                    <a href="{{ route('admin.categories_tags') }}"> <i class="icon-tag"></i>{{ __('admin.categories_tags') }} </a>
                 </li>
         </ul>
         
-        <span class="heading">User & Communication</span>
+        <span class="heading">{{ __('admin.user_communication') }}</span>
         <ul class="list-unstyled">
                 <li class="{{ request()->routeIs('admin.users.index') ? 'active' : '' }}">
-                    <a href="{{ route('admin.users.index') }}"> <i class="icon-user"></i>User Management </a>
+                    <a href="{{ route('admin.users.index') }}"> <i class="icon-user"></i>{{ __('admin.user_management') }} </a>
                 </li>
                 <li class="{{ request()->routeIs('admin.comments.index') ? 'active' : '' }}">
-                    <a href="{{ route('admin.comments.index') }}"> <i class="icon-speech"></i>Comments </a>
+                    <a href="{{ route('admin.comments.index') }}"> <i class="icon-speech"></i>{{ __('admin.comments') }} </a>
                 </li>
                 <li class="{{ request()->routeIs('admin.announcement_page') ? 'active' : '' }}">
-                    <a href="{{ route('admin.announcement_page') }}"> <i class="icon-megaphone"></i>Create Announcement </a>
+                    <a href="{{ route('admin.announcement_page') }}"> <i class="icon-megaphone"></i>{{ __('admin.create_announcement') }} </a>
                 </li>
                 <li class="{{ request()->routeIs('admin.show_announcements') ? 'active' : '' }}">
-                    <a href="{{ route('admin.show_announcements') }}"> <i class="icon-list"></i>Manage Announcements </a>
+                    <a href="{{ route('admin.show_announcements') }}"> <i class="icon-list"></i>{{ __('admin.manage_announcements') }} </a>
                 </li>
         </ul>
         
-        <span class="heading">Reports & Settings</span>
+        <span class="heading">{{ __('admin.reports_settings') }}</span>
         <ul class="list-unstyled">
-          <li> <a href="#" onclick="showComingSoon('Advanced Reports')"> <i class="fa fa-line-chart"></i>Reports </a></li>
-          <li> <a href="#" onclick="showComingSoon('System Settings')"> <i class="icon-settings"></i>Settings </a></li>
-          <li> <a href="#" onclick="showComingSoon('Backup & Export')"> <i class="icon-cloud-download"></i>Backup </a></li>
+          <li class="{{ request()->routeIs('admin.analytics') ? 'active' : '' }}">
+            <a href="{{ route('admin.analytics') }}"> <i class="fa fa-line-chart"></i>{{ __('admin.analytics') }} </a>
+          </li>
+          <li class="{{ request()->routeIs('admin.settings') ? 'active' : '' }}">
+            <a href="{{ route('admin.settings') }}"> <i class="icon-settings"></i>{{ __('admin.settings') }} </a>
+          </li>
+          <li> <a href="#" onclick="showComingSoon('Backup & Export')"> <i class="icon-cloud-download"></i>{{ __('admin.backup') }} </a></li>
         </ul>
         
-        <span class="heading">Quick Actions</span>
+        <span class="heading">{{ __('admin.quick_actions') }}</span>
         <ul class="list-unstyled">
-          <li> <a href="{{ route('home.homepage') }}" target="_blank"> <i class="icon-eye"></i>View Website </a></li>
-          <li> <a href="{{ route('profile.show') }}"> <i class="icon-user"></i>My Profile </a></li>
+          <li> <a href="{{ route('home.homepage') }}" target="_blank"> <i class="icon-eye"></i>{{ __('admin.view_website') }} </a></li>
+          <li> <a href="{{ route('profile.show') }}"> <i class="icon-user"></i>{{ __('admin.my_profile') }} </a></li>
         </ul>
       </nav>
 

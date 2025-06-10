@@ -6,7 +6,7 @@
               <div class="welcome-content">
                 <h1 class="dashboard-title">
                   <i class="fa fa-tachometer" aria-hidden="true"></i>
-                  Welcome to Admin Dashboard
+                  {{ __('admin.welcome') }} {{ __('admin.admin_panel') }}
                 </h1>
                 <p class="dashboard-subtitle">
                   <i class="fa fa-calendar" aria-hidden="true"></i>
@@ -17,26 +17,26 @@
                 <div class="quick-actions">
                   <a href="{{ route('admin.post_page') }}" class="quick-action-btn">
                     <i class="fa fa-plus"></i>
-                    Create Post
+                    {{ __('admin.create_post') }}
                   </a>
                   <a href="{{ route('admin.analytics') }}" class="quick-action-btn">
                     <i class="fa fa-bar-chart"></i>
-                    Analytics
+                    {{ __('admin.analytics') }}
                   </a>
                   <a href="{{ route('admin.show_posts') }}" class="quick-action-btn">
                     <i class="fa fa-list"></i>
-                    Manage Posts
+                    {{ __('admin.manage_posts') }}
                   </a>
                 </div>
               </div>
               <div class="welcome-stats">
                 <div class="stat-item">
                   <div class="stat-number">{{ \App\Models\Posts::count() }}</div>
-                  <div class="stat-label">Total Posts</div>
+                  <div class="stat-label">{{ __('admin.total_posts') }}</div>
                 </div>
                 <div class="stat-item">
                   <div class="stat-number">{{ \App\Models\User::count() }}</div>
-                  <div class="stat-label">Total Users</div>
+                  <div class="stat-label">{{ __('admin.total_users') }}</div>
                 </div>
                 <div class="stat-item">
                   <div class="stat-number">{{ \App\Models\Posts::where('post_status', 'active')->count() }}</div>

@@ -15,11 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('content');
-            $table->enum('priority', ['low', 'normal', 'high', 'urgent'])->default('normal');
-            $table->enum('type', ['general', 'maintenance', 'feature', 'important'])->default('general');
+            $table->enum('type', ['info', 'warning', 'success', 'danger'])->default('info');
             $table->boolean('is_active')->default(true);
-            $table->foreignId('created_by')->constrained('users');
-            $table->timestamp('expires_at')->nullable();
+            $table->timestamp('starts_at')->nullable();
+            $table->timestamp('ends_at')->nullable();
             $table->timestamps();
         });
     }

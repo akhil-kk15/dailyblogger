@@ -34,7 +34,11 @@ return [
         'sqlite' => [
             'driver' => 'sqlite',
             'url' => env('DB_URL'),
-            'database' => env('DB_DATABASE', database_path('database.sqlite')),
+            'database' => env('DB_DATABASE') ?: (
+                (isset($_SERVER['DDEV_HOSTNAME']) || str_contains(base_path(), '/var/www/html')) 
+                    ? '/var/www/html/database/database.sqlite' 
+                    : database_path('database.sqlite')
+            ),
             'prefix' => '',
             'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
             'busy_timeout' => null,

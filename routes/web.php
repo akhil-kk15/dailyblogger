@@ -6,10 +6,28 @@ use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\UserPostController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\LanguageController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\adminController;
 use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\AnalyticsController;
+use App\Http\Controllers\SettingsController;
+
+// Language switching routes
+Route::post('/switch-language', [LanguageController::class, 'switchLanguage'])->name('language.switch');
+Route::get('/current-language', [LanguageController::class, 'getCurrentLanguage'])->name('language.current');
+
+// Test route for language
+Route::get('/test-language', function() {
+    return response()->json([
+        'current_locale' => App::getLocale(),
+        'test_translation' => __('admin.dashboard'),
+        'welcome_message' => __('admin.welcome'),
+        'session_locale' => Session::get('locale', 'not set')
+    ]);
+});
 
 // Public routes
 Route::get('/', [homeController::class, 'homepage'])->name('home.homepage');
@@ -97,6 +115,19 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     
     // Analytics dashboard
     Route::get('/admin/analytics', [AnalyticsController::class, 'dashboard'])->name('admin.analytics');
+    
+    // Settings management
+    Route::get('/admin/settings', [SettingsController::class, 'index'])->name('admin.settings');
+    Route::post('/admin/settings/general', [SettingsController::class, 'updateGeneral'])->name('admin.settings.general');
+    Route::post('/admin/settings/mail', [SettingsController::class, 'updateMail'])->name('admin.settings.mail');
+    Route::post('/admin/settings/appearance', [SettingsController::class, 'updateAppearance'])->name('admin.settings.appearance');
+    Route::post('/admin/settings/security', [SettingsController::class, 'updateSecurity'])->name('admin.settings.security');
+    Route::post('/admin/settings/social', [SettingsController::class, 'updateSocial'])->name('admin.settings.social');
+    Route::post('/admin/settings/test-email', [SettingsController::class, 'testEmail'])->name('admin.settings.test_email');
+    Route::post('/admin/settings/clear-cache', [SettingsController::class, 'clearCache'])->name('admin.settings.clear_cache');
+    Route::get('/admin/settings/backup', [SettingsController::class, 'backupDatabase'])->name('admin.settings.backup');
+    Route::get('/admin/settings/export', [SettingsController::class, 'exportSettings'])->name('admin.settings.export');
+    Route::post('/admin/settings/import', [SettingsController::class, 'importSettings'])->name('admin.settings.import');
 });
 
 // Custom Profile route (override Jetstream default before it loads)

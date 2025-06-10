@@ -67,21 +67,27 @@
     .chart_container {
         background: white;
         border-radius: 10px;
-        padding: 25px;
+        padding: 20px;
         margin-bottom: 30px;
         box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+        height: 320px; /* Further reduced height for smaller charts */
     }
     .chart_title {
-        font-size: 18px;
+        font-size: 16px;
         font-weight: bold;
-        margin-bottom: 20px;
+        margin-bottom: 15px;
         color: #333;
     }
     .chart_grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 30px;
+        gap: 20px;
         margin-bottom: 30px;
+    }
+    .chart_wrapper {
+        position: relative;
+        height: 250px; /* Further reduced chart area */
+        width: 100%;
     }
     .table_container {
         background: white;
@@ -134,8 +140,46 @@
             grid-template-columns: 1fr;
         }
         .stats_grid {
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
         }
+        .chart_container {
+            height: 280px;
+        }
+        .chart_wrapper {
+            height: 200px;
+        }
+        .page-content {
+            padding: 15px;
+        }
+    }
+    @media (max-width: 480px) {
+        .analytics_title {
+            font-size: 24px;
+        }
+        .stat_number {
+            font-size: 24px;
+        }
+        .chart_container {
+            padding: 15px;
+            height: 260px;
+        }
+        .chart_wrapper {
+            height: 180px;
+        }
+    }
+    /* Loading animation */
+    .loading {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 3px solid #f3f3f3;
+        border-top: 3px solid #007bff;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
     }
    </style>
   </head>
@@ -199,11 +243,15 @@
         <div class="chart_grid">
             <div class="chart_container">
                 <h3 class="chart_title">Posts by Status</h3>
-                <canvas id="postsStatusChart" width="400" height="300"></canvas>
+                <div class="chart_wrapper">
+                    <canvas id="postsStatusChart"></canvas>
+                </div>
             </div>
             <div class="chart_container">
                 <h3 class="chart_title">Posts Created (Last 7 Days)</h3>
-                <canvas id="postsTimelineChart" width="400" height="300"></canvas>
+                <div class="chart_wrapper">
+                    <canvas id="postsTimelineChart"></canvas>
+                </div>
             </div>
         </div>
 
@@ -296,79 +344,119 @@
     @include('admin.footer')
     
     <script>
-        // Posts by Status Pie Chart
-        const statusCtx = document.getElementById('postsStatusChart').getContext('2d');
-        const statusData = @json($postsByStatus);
+        // Optimize Chart.js performance
+        Chart.defaults.responsive = true;
+        Chart.defaults.maintainAspectRatio = false; // Allow charts to fill container
+        Chart.defaults.aspectRatio = 2;
+        Chart.defaults.animation = { duration: 800 }; // Faster animations
         
-        new Chart(statusCtx, {
-            type: 'doughnut',
-            data: {
-                labels: Object.keys(statusData).map(key => key.charAt(0).toUpperCase() + key.slice(1)),
-                datasets: [{
-                    data: Object.values(statusData),
-                    backgroundColor: [
-                        '#28a745',  // active - green
-                        '#ffc107',  // pending - yellow
-                        '#dc3545',  // rejected - red
-                    ],
-                    borderWidth: 0
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'bottom',
-                        labels: {
-                            padding: 20,
-                            usePointStyle: true
+        // Lazy load charts when page is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add small delay to ensure page elements are rendered
+            setTimeout(() => {
+                initializeCharts();
+            }, 100);
+        });
+        
+        function initializeCharts() {
+            // Posts by Status Pie Chart
+            const statusCtx = document.getElementById('postsStatusChart');
+            if (statusCtx) {
+                const statusData = @json($postsByStatus);
+                
+                new Chart(statusCtx.getContext('2d'), {
+                    type: 'doughnut',
+                    data: {
+                        labels: Object.keys(statusData).map(key => key.charAt(0).toUpperCase() + key.slice(1)),
+                        datasets: [{
+                            data: Object.values(statusData),
+                            backgroundColor: [
+                                '#28a745',  // active - green
+                                '#ffc107',  // pending - yellow
+                                '#dc3545',  // rejected - red
+                            ],
+                            borderWidth: 2,
+                            borderColor: '#fff'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    padding: 10,
+                                    usePointStyle: true,
+                                    font: {
+                                        size: 11
+                                    }
+                                }
+                            }
+                        },
+                        animation: {
+                            duration: 800
                         }
                     }
-                }
+                });
             }
-        });
 
-        // Posts Timeline Line Chart
-        const timelineCtx = document.getElementById('postsTimelineChart').getContext('2d');
-        const timelineData = @json($postsLast7Days);
-        
-        new Chart(timelineCtx, {
-            type: 'line',
-            data: {
-                labels: timelineData.map(item => item.date),
-                datasets: [{
-                    label: 'Posts Created',
-                    data: timelineData.map(item => item.count),
-                    borderColor: '#007bff',
-                    backgroundColor: 'rgba(0, 123, 255, 0.1)',
-                    borderWidth: 3,
-                    fill: true,
-                    tension: 0.4,
-                    pointBackgroundColor: '#007bff',
-                    pointBorderColor: '#fff',
-                    pointBorderWidth: 2,
-                    pointRadius: 6
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            stepSize: 1
+            // Posts Timeline Line Chart
+            const timelineCtx = document.getElementById('postsTimelineChart');
+            if (timelineCtx) {
+                const timelineData = @json($postsLast7Days);
+                
+                new Chart(timelineCtx.getContext('2d'), {
+                    type: 'line',
+                    data: {
+                        labels: timelineData.map(item => item.date),
+                        datasets: [{
+                            label: 'Posts Created',
+                            data: timelineData.map(item => item.count),
+                            borderColor: '#007bff',
+                            backgroundColor: 'rgba(0, 123, 255, 0.1)',
+                            borderWidth: 2,
+                            fill: true,
+                            tension: 0.3,
+                            pointBackgroundColor: '#007bff',
+                            pointBorderColor: '#fff',
+                            pointBorderWidth: 2,
+                            pointRadius: 3
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    stepSize: 1,
+                                    font: {
+                                        size: 10
+                                    }
+                                }
+                            },
+                            x: {
+                                ticks: {
+                                    font: {
+                                        size: 10
+                                    }
+                                }
+                            }
+                        },
+                        animation: {
+                            duration: 800
                         }
                     }
-                }
+                });
             }
-        });
+        }
     </script>
   </body>
 </html>
