@@ -100,8 +100,8 @@
                                           
                                           @if($post->category)
                                               <p class="post_category">
-                                                  <i class="fa fa-folder" style="margin-right: 5px; color: #007bff;"></i>
-                                                  <span style="color: #007bff; font-weight: 600;">{{ $post->category->name }}</span>
+                                                  <i class="fa fa-folder category_icon"></i>
+                                                  <span class="category_text">{{ $post->category->name }}</span>
                                               </p>
                                           @endif
                                           
@@ -134,6 +134,30 @@
                       <!-- Pagination -->
                       <div class="pagination_wrapper">
                           {{ $posts->links() }}
+                      </div>
+                  </div>
+              @elseif(isset($isCurrentUserBlocked) && $isCurrentUserBlocked)
+                  <!-- Blocked user message -->
+                  <div class="blocked_user_message">
+                      <div class="blocked_message_card">
+                          <div class="blocked_icon">
+                              <i class="fa fa-ban" style="font-size: 48px; color: #dc3545; margin-bottom: 20px;"></i>
+                          </div>
+                          <h3 style="color: #dc3545; margin-bottom: 15px;">Access Restricted</h3>
+                          <p style="color: #666; font-size: 16px; line-height: 1.6; margin-bottom: 20px;">
+                              Your account has been temporarily blocked. You cannot view public posts at this time.
+                          </p>
+                          <p style="color: #999; font-size: 14px; margin-bottom: 25px;">
+                              You can still manage your own posts in the "My Posts" section. For questions about your account status, please contact the administrator.
+                          </p>
+                          <div class="blocked_actions">
+                              <a href="{{ route('home.my_posts') }}" class="btn btn-primary" style="margin-right: 10px;">
+                                  <i class="fa fa-file-text-o"></i> View My Posts
+                              </a>
+                              <a href="{{ route('home.homepage') }}" class="btn btn-secondary">
+                                  <i class="fa fa-home"></i> Back to Home
+                              </a>
+                          </div>
                       </div>
                   </div>
               @else
@@ -257,6 +281,66 @@
           .pagination_wrapper .pagination li.active a {
               background: #007bff;
               color: white;
+          }
+          
+          /* Blocked user message styles */
+          .blocked_user_message {
+              text-align: center;
+              padding: 80px 20px;
+              background: #f8f9fa;
+              border-radius: 12px;
+              margin: 40px 0;
+          }
+          
+          .blocked_message_card {
+              max-width: 600px;
+              margin: 0 auto;
+              background: #fff;
+              padding: 50px 40px;
+              border-radius: 12px;
+              box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+              border-left: 5px solid #dc3545;
+          }
+          
+          .blocked_icon {
+              margin-bottom: 30px;
+          }
+          
+          .blocked_actions {
+              margin-top: 30px;
+          }
+          
+          .blocked_actions .btn {
+              padding: 12px 25px;
+              border-radius: 6px;
+              text-decoration: none;
+              font-weight: 600;
+              display: inline-block;
+              transition: all 0.3s ease;
+          }
+          
+          .blocked_actions .btn-primary {
+              background: #007bff;
+              color: white;
+              border: 2px solid #007bff;
+          }
+          
+          .blocked_actions .btn-primary:hover {
+              background: #0056b3;
+              border-color: #0056b3;
+              transform: translateY(-2px);
+          }
+          
+          .blocked_actions .btn-secondary {
+              background: #6c757d;
+              color: white;
+              border: 2px solid #6c757d;
+          }
+          
+          .blocked_actions .btn-secondary:hover {
+              background: #5a6268;
+              border-color: #5a6268;
+              transform: translateY(-2px);
           }
       </style>
    </body>

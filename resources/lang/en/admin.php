@@ -7,7 +7,6 @@ return [
     'control_center' => 'Control Center',
     'dashboard' => 'Dashboard',
     'content_management' => 'Content Management',
-    'create_post' => 'Create Post',
     'manage_posts' => 'Manage Posts',
     'categories_tags' => 'Categories & Tags',
     'user_communication' => 'User & Communication',

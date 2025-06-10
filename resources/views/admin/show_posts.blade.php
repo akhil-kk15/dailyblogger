@@ -537,7 +537,7 @@
         @else
             <div class="no_posts">
                 <p>No posts found.</p>
-                <a href="{{ route('admin.post_page') }}" class="btn btn-primary">Create First Post</a>
+                <p class="text-muted">Posts are created by users and managed here by admins.</p>
             </div>
         @endif
         

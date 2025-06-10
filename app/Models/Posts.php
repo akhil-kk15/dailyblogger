@@ -64,4 +64,18 @@ class Posts extends Model
     {
         return $query->where('is_featured', true)->where('post_status', 'active');
     }
+
+    // Scope for posts from non-blocked users
+    public function scopeFromNonBlockedUsers($query)
+    {
+        return $query->whereHas('user', function($q) {
+            $q->where('usertype', '!=', 'blocked');
+        });
+    }
+
+    // Scope for public posts (active status and from non-blocked users)
+    public function scopePublic($query)
+    {
+        return $query->where('post_status', 'active')->fromNonBlockedUsers();
+    }
 }

@@ -21,6 +21,11 @@ class homeController extends Controller
             else if($usertype == 'admin'){
                 return view('admin.index');
             }
+            else if($usertype == 'blocked'){
+                // Logout blocked users
+                Auth::logout();
+                return redirect('/')->with('error', 'Your account has been blocked. Please contact the administrator.');
+            }
             else{
                 return redirect()->back();
             }
@@ -31,22 +36,32 @@ class homeController extends Controller
     }
     public function homepage()
     {
-        $posts = Posts::where('post_status', 'active')->latest()->limit(6)->get();
-        $featuredPosts = Posts::activeFeatured()->latest('featured_at')->limit(3)->get();
+        $posts = Posts::public()->latest()->limit(6)->get();
+        
+        $featuredPosts = Posts::activeFeatured()
+                             ->fromNonBlockedUsers()
+                             ->latest('featured_at')
+                             ->limit(3)
+                             ->get();
+                             
         return view('home.homepage', compact('posts', 'featuredPosts'));
     }
     
     public function all_posts()
     {
-        $posts = Posts::where('post_status', 'active')->latest()->paginate(12);
-        return view('home.all_posts', compact('posts'));
+        $posts = Posts::public()->latest()->paginate(12);
+        
+        // Check if current user is blocked
+        $isCurrentUserBlocked = Auth::check() && Auth::user()->isBlocked();
+        
+        return view('home.all_posts', compact('posts', 'isCurrentUserBlocked'));
     }
     
     public function post_details($id)
     {
         $post = Posts::with(['category', 'tags', 'comments.user'])
                     ->where('id', $id)
-                    ->where('post_status', 'active')
+                    ->public()
                     ->firstOrFail();
                     
         return view('home.post_details', compact('post'));

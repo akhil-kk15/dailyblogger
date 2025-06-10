@@ -19,7 +19,7 @@
          <div class="container">
             <div class="row">
                <div class="col-md-12">
-                  <h2 class="announcements_title">📢 Latest Announcements</h2>
+                  <h2 class="announcements_title"> Latest Announcements</h2>
                   <div class="announcements_container">
                      @foreach($announcements as $announcement)
                      <div class="announcement_card announcement_{{ $announcement->priority }} announcement_{{ $announcement->type }}">

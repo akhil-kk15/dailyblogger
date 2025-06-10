@@ -5,49 +5,60 @@
         @if(isset($posts) && $posts->count() > 0)
             <div class="posts_section_2">
                 <div class="row">
-                    @foreach($posts as $post)
-                        <div class="col-md-4 mb-4">
-                            <div class="post_card">
-                                @if($post->image)
-                                    <div class="post_image">
-                                        <img src="{{ asset('postimage/' . $post->image) }}" class="services_img" alt="{{ $post->title }}">
-                                    </div>
-                                @endif
-                                <div class="post_content">
-                                    <h4 class="post_title">{{ \Illuminate\Support\Str::limit($post->title, 50) }}</h4>
-                                    <p class="post_description">{{ \Illuminate\Support\Str::limit($post->description, 100) }}</p>
-                                    <p class="post_author">By: {{ $post->name }}</p>
-                                    
-                                    @if($post->category)
-                                        <p class="post_category">
-                                            <i class="fa fa-folder" style="margin-right: 5px; color: #007bff;"></i>
-                                            <span style="color: #007bff; font-weight: 600;">{{ $post->category->name }}</span>
-                                        </p>
-                                    @endif
-                                    
-                                    @if($post->tags->count() > 0)
-                                        <div class="post_tags" style="margin-bottom: 15px;">
-                                            @foreach($post->tags->take(3) as $tag)
-                                                <span class="tag_badge" style="background-color: {{ $tag->color }}; color: #fff; padding: 2px 6px; border-radius: 8px; font-size: 10px; margin-right: 4px; display: inline-block;">
-                                                    {{ $tag->name }}
-                                                </span>
-                                            @endforeach
-                                            @if($post->tags->count() > 3)
-                                                <span style="font-size: 10px; color: #666;">+{{ $post->tags->count() - 3 }} more</span>
+                    <!-- Main Content Area (Left Side) -->
+                    <div class="col-lg-8 col-md-12">
+                        <div class="row">
+                            @foreach($posts as $post)
+                                <div class="col-md-6 mb-4">
+                                    <div class="post_card">
+                                        @if($post->image)
+                                            <div class="post_image">
+                                                <img src="{{ asset('postimage/' . $post->image) }}" class="services_img" alt="{{ $post->title }}">
+                                            </div>
+                                        @endif
+                                        <div class="post_content">
+                                            <h4 class="post_title">{{ \Illuminate\Support\Str::limit($post->title, 50) }}</h4>
+                                            <p class="post_description">{{ \Illuminate\Support\Str::limit($post->description, 100) }}</p>
+                                            <p class="post_author">By: {{ $post->name }}</p>
+                                            
+                                            @if($post->category)
+                                                <p class="post_category">
+                                                    <i class="fa fa-folder category_icon"></i>
+                                                    <span class="category_text">{{ $post->category->name }}</span>
+                                                </p>
                                             @endif
+                                            
+                                            @if($post->tags->count() > 0)
+                                                <div class="post_tags" style="margin-bottom: 15px;">
+                                                    @foreach($post->tags->take(3) as $tag)
+                                                        <span class="tag_badge" style="background-color: {{ $tag->color }}; color: #fff; padding: 2px 6px; border-radius: 8px; font-size: 10px; margin-right: 4px; display: inline-block;">
+                                                            {{ $tag->name }}
+                                                        </span>
+                                                    @endforeach
+                                                    @if($post->tags->count() > 3)
+                                                        <span style="font-size: 10px; color: #666;">+{{ $post->tags->count() - 3 }} more</span>
+                                                    @endif
+                                                </div>
+                                            @endif
+                                            
+                                            <div class="btn_main">
+                                                <a href="{{ route('home.post_details', $post->id) }}">Read More</a>
+                                            </div>
                                         </div>
-                                    @endif
-                                    
-                                    <div class="btn_main">
-                                        <a href="{{ route('home.post_details', $post->id) }}">Read More</a>
                                     </div>
                                 </div>
-                            </div>
+                            @endforeach
                         </div>
-                    @endforeach
-                </div>
-                <div class="text-center mt-4">
-                    <a href="{{ route('home.posts') }}" class="btn btn-primary">View All Posts</a>
+                        <div class="text-center mt-4">
+                            <a href="{{ route('home.posts') }}" class="btn btn-primary">View All Posts</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Sidebar (Right Side) -->
+                    <div class="col-lg-4 col-md-12">
+                        <!-- Latest/Unseen Posts Sidebar -->
+                        @include('home.partials.posts_sidebar')
+                    </div>
                 </div>
             </div>
         @else

@@ -21,9 +21,6 @@
         
         <span class="heading">{{ __('admin.content_management') }}</span>
         <ul class="list-unstyled">
-                <li class="{{ request()->routeIs('admin.post_page') ? 'active' : '' }}">
-                    <a href="{{ route('admin.post_page') }}"> <i class="icon-plus"></i>{{ __('admin.create_post') }} </a>
-                </li>
                 <li class="{{ request()->routeIs('admin.show_posts') ? 'active' : '' }}">
                     <a href="{{ route('admin.show_posts') }}"> <i class="icon-grid"></i>{{ __('admin.manage_posts') }} </a>
                 </li>

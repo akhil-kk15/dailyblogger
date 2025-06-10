@@ -133,48 +133,58 @@
               </div>
             </div> -->
             <!-- Megamenu end     -->
-            <!-- Languages dropdown    -->
-            <div class="list-inline-item dropdown language-selector">
-                <a id="languages" rel="nofollow" data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link language dropdown-toggle">
-                    <div id="current-flag" class="flag-icon flag-gb"></div>
-                    <span class="d-none d-sm-inline-block" id="current-language">English</span>
-                </a>
-                <div aria-labelledby="languages" class="dropdown-menu language-menu" style="margin-top:-29px;">
-                    <a rel="nofollow" href="#" class="dropdown-item language-option" data-lang="en" data-flag="flag-gb" data-name="English">
-                        <div class="flag-icon flag-gb mr-2"></div>
-                        <span>English</span>
-                    </a>
-                    <a rel="nofollow" href="#" class="dropdown-item language-option" data-lang="de" data-flag="flag-de" data-name="German">
-                        <div class="flag-icon flag-de mr-2"></div>
-                        <span>German</span>
-                    </a>
-                    <a rel="nofollow" href="#" class="dropdown-item language-option" data-lang="fr" data-flag="flag-fr" data-name="French">
-                        <div class="flag-icon flag-fr mr-2"></div>
-                        <span>French</span>
+            
+            <!-- Right menu with active items -->
+            <div class="right-menu list-inline no-margin-bottom">
+                <!-- View Website Button -->
+                <div class="list-inline-item">
+                    <a href="{{ route('home.homepage') }}" class="nav-link" target="_blank" title="{{ __('admin.view_website') }}">
+                        <i class="icon-eye"></i>
+                        <span class="d-none d-sm-inline-block">{{ __('admin.view_website') }}</span>
                     </a>
                 </div>
+                
+                <!-- Languages dropdown -->
+                <div class="list-inline-item dropdown language-selector">
+                    <a id="languages" rel="nofollow" data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link language dropdown-toggle">
+                        <div id="current-flag" class="flag-icon flag-gb"></div>
+                        <span class="d-none d-sm-inline-block" id="current-language">English</span>
+                    </a>
+                    <div aria-labelledby="languages" class="dropdown-menu language-menu">
+                        <a rel="nofollow" href="#" class="dropdown-item language-option" data-lang="en" data-flag="flag-gb" data-name="English">
+                            <div class="flag-icon flag-gb mr-2"></div>
+                            <span>English</span>
+                        </a>
+                        <a rel="nofollow" href="#" class="dropdown-item language-option" data-lang="de" data-flag="flag-de" data-name="German">
+                            <div class="flag-icon flag-de mr-2"></div>
+                            <span>German</span>
+                        </a>
+                        <a rel="nofollow" href="#" class="dropdown-item language-option" data-lang="fr" data-flag="flag-fr" data-name="French">
+                            <div class="flag-icon flag-fr mr-2"></div>
+                            <span>French</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- User menu dropdown -->
+                <div class="list-inline-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" id="adminUserDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="icon-user"></i> {{ Auth::user()->name ?? 'Account' }}
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="adminUserDropdown">
+                        <a class="dropdown-item" href="{{ route('profile.show') }}">Edit Profile</a>
+                        <div class="dropdown-divider"></div>
+                        <form method="POST" action="{{ route('logout') }}" style="margin:0;">
+                            @csrf
+                            <button type="submit" class="dropdown-item" style="color:#dc3545;">Logout</button>
+                        </form>
+                    </div>
+                </div>
             </div>
-            <!-- User menu dropdown -->
-            <div class="list-inline-item dropdown">
-    <a href="#" class="nav-link dropdown-toggle" id="adminUserDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <i class="icon-user"></i> {{ Auth::user()->name ?? 'Account' }}
-    </a>
-    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="adminUserDropdown" style="margin-top:-29px;">
-        <a class="dropdown-item" href="{{ route('profile.show') }}">Edit Profile</a>
-        <div class="dropdown-divider"></div>
-        <form method="POST" action="{{ route('logout') }}" style="margin:0;">
-            @csrf
-            <button type="submit" class="dropdown-item" style="color:#dc3545;">Logout</button>
-        </form>
-    </div>
-</div>
           </div>
         </div>
       </nav>
-      <!-- Make sure jQuery and Bootstrap JS are loaded in your admin layout before </body> -->
-<script src="{{ asset('admincss/vendor/jquery/jquery.min.js') }}"></script>
-<script src="{{ asset('admincss/vendor/bootstrap/js/bootstrap.min.js') }}"></script>
-
+      
 <!-- Enhanced Sidebar Toggle Script -->
 <script>
 function toggleSidebar() {
@@ -360,5 +370,206 @@ document.addEventListener('DOMContentLoaded', function() {
             }, 300);
         }, 3000);
     }
+});
+
+// Bootstrap Dropdown Fix
+$(document).ready(function() {
+    // Simple CSS for dropdown functionality - keeping dark theme styling
+    $('<style>')
+        .prop('type', 'text/css')
+        .html(`
+            .dropdown-menu {
+                position: absolute !important;
+                top: 100% !important;
+                left: 0 !important;
+                z-index: 1000 !important;
+                display: none !important;
+                margin: 2px 0 0 !important;
+                min-width: 160px !important;
+            }
+            .dropdown-menu.show {
+                display: block !important;
+            }
+            .dropdown-menu-right {
+                right: 0 !important;
+                left: auto !important;
+            }
+            .dropdown {
+                position: relative !important;
+            }
+            .flag-icon {
+                width: 20px !important;
+                height: 14px !important;
+                display: inline-block !important;
+                border-radius: 2px !important;
+            }
+            .language-menu .dropdown-item {
+                display: flex !important;
+                align-items: center !important;
+                gap: 8px !important;
+            }
+        `)
+        .appendTo('head');
+    $('<style>')
+        .prop('type', 'text/css')
+        .html(`
+            /* Override dark theme dropdown styles with maximum specificity */
+            body nav.navbar .dropdown-menu,
+            body .navbar .dropdown-menu,
+            body nav .dropdown-menu,
+            nav.navbar .dropdown-menu,
+            .navbar .dropdown-menu,
+            nav .dropdown-menu,
+            .dropdown-menu {
+                position: absolute !important;
+                top: 100% !important;
+                left: 0 !important;
+                z-index: 1000 !important;
+                display: none !important;
+                margin: 2px 0 0 !important;
+                min-width: 160px !important;
+                background-color: #f8f9fa !important;
+                background: #f8f9fa !important;
+                border: 1px solid #dee2e6 !important;
+                border-radius: 0.375rem !important;
+                box-shadow: 0 0.5rem 1rem rgba(0,0,0,.175) !important;
+                color: #495057 !important;
+                padding: 0.5rem 0 !important;
+            }
+            
+            body nav.navbar .dropdown-menu.show,
+            body .navbar .dropdown-menu.show,
+            body nav .dropdown-menu.show,
+            nav.navbar .dropdown-menu.show,
+            .navbar .dropdown-menu.show,
+            nav .dropdown-menu.show,
+            .dropdown-menu.show {
+                display: block !important;
+                background-color: #f8f9fa !important;
+                background: #f8f9fa !important;
+            }
+            
+            .dropdown-menu-right {
+                right: 0 !important;
+                left: auto !important;
+            }
+            .dropdown {
+                position: relative !important;
+            }
+            
+            /* Override dark theme dropdown items with maximum specificity */
+            body nav.navbar .dropdown-item,
+            body .navbar .dropdown-item,
+            body nav .dropdown-item,
+            nav.navbar .dropdown-item,
+            .navbar .dropdown-item,
+            nav .dropdown-item,
+            .dropdown-item {
+                padding: 0.5rem 1rem !important;
+                color: #495057 !important;
+                background-color: transparent !important;
+                background: transparent !important;
+                border: 0 !important;
+                text-decoration: none !important;
+                font-size: 0.875rem !important;
+                transition: all 0.2s ease !important;
+            }
+            
+            body nav.navbar .dropdown-item:hover,
+            body nav.navbar .dropdown-item:focus,
+            body .navbar .dropdown-item:hover,
+            body .navbar .dropdown-item:focus,
+            body nav .dropdown-item:hover,
+            body nav .dropdown-item:focus,
+            nav.navbar .dropdown-item:hover,
+            nav.navbar .dropdown-item:focus,
+            .navbar .dropdown-item:hover,
+            .navbar .dropdown-item:focus,
+            nav .dropdown-item:hover,
+            nav .dropdown-item:focus,
+            .dropdown-item:hover,
+            .dropdown-item:focus {
+                background-color: #e9ecef !important;
+                background: #e9ecef !important;
+                color: #343a40 !important;
+            }
+            
+            .dropdown-divider {
+                height: 0 !important;
+                margin: 0.5rem 0 !important;
+                overflow: hidden !important;
+                border-top: 1px solid #dee2e6 !important;
+            }
+            .flag-icon {
+                width: 20px !important;
+                height: 14px !important;
+                display: inline-block !important;
+                border-radius: 2px !important;
+            }
+            .language-menu .dropdown-item {
+                display: flex !important;
+                align-items: center !important;
+                gap: 8px !important;
+            }
+        `)
+    
+    // Initialize Bootstrap dropdowns manually
+    $('.dropdown-toggle').each(function() {
+        $(this).on('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            // Close all other dropdowns
+            $('.dropdown-menu').not($(this).next('.dropdown-menu')).removeClass('show').hide();
+            
+            // Toggle this dropdown
+            const dropdownMenu = $(this).next('.dropdown-menu');
+            dropdownMenu.toggleClass('show').toggle();
+        });
+    });
+    
+    // Close dropdowns when clicking outside
+    $(document).on('click', function(e) {
+        if (!$(e.target).closest('.dropdown').length) {
+            $('.dropdown-menu').removeClass('show').hide();
+        }
+    });
+    
+    // Handle language selector specifically
+    $('.language-option').on('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        const lang = $(this).data('lang');
+        const flag = $(this).data('flag');
+        const name = $(this).data('name');
+        
+        // Update display immediately
+        $('#current-flag').removeClass().addClass('flag-icon ' + flag);
+        $('#current-language').text(name);
+        
+        // Close dropdown
+        $('.language-menu').removeClass('show').hide();
+        
+        // Send language switch request
+        $.post('/switch-language', {
+            language: lang,
+            _token: $('meta[name="csrf-token"]').attr('content')
+        })
+        .done(function(data) {
+            if (data.success) {
+                // Show success message
+                const toast = $('<div class="alert alert-success" style="position:fixed;top:20px;right:20px;z-index:9999;">Language switched to ' + name + '</div>');
+                $('body').append(toast);
+                setTimeout(() => toast.fadeOut(), 2000);
+                
+                // Reload page after delay
+                setTimeout(() => location.reload(), 1000);
+            }
+        })
+        .fail(function() {
+            console.error('Failed to switch language');
+        });
+    });
 });
 </script>

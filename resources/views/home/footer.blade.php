@@ -1,12 +1,8 @@
-<div class="footer_section layout_padding">
+<!-- <div class="footer_section layout_padding">
          <div class="container">
-            <div class="input_btn_main">
-               <input type="text" class="mail_text" placeholder="Enter your email" name="Enter your email">
-               <div class="subscribe_bt"><a href="#">Join us </a></div>
-            </div>
+            
             <div class="location_main">
-               <div class="call_text"><img src="images/call-icon.png"></div>
-               <div class="call_text"><a href="#">Call +01 1234567890</a></div>
+               
                <div class="call_text"><img src="images/mail-icon.png"></div>
                <div class="call_text"><a href="#">demo@gmail.com</a></div>
             </div>
@@ -19,11 +15,11 @@
                </ul>
             </div>
          </div>
-      </div>
+      </div> -->
        <!-- copyright section start -->
       <div class="copyright_section">
          <div class="container">
-            <p class="copyright_text">2020 All Rights Reserved. Design by <a href="https://html.design">Free html  Templates</a></p>
+            <p class="copyright_text">2025 All Rights Reserved</a></p>
          </div>
       </div>
       <!-- copyright section end -->

@@ -100,7 +100,7 @@
                                   <a href="{{ route('home.posts') }}" class="btn btn-secondary">View All Posts</a>
                                   @if(Auth::check())
                                       @if(Auth::user()->usertype == 'admin')
-                                          <a href="{{ route('admin.post_page') }}" class="btn btn-secondary">Create New Post</a>
+                                          <a href="{{ route('admin.show_posts') }}" class="btn btn-secondary">Manage Posts</a>
                                       @else
                                           <a href="{{ route('home.create_post') }}" class="btn btn-secondary">Create New Post</a>
                                       @endif

@@ -20,9 +20,7 @@
                         </li>
                         @if(Auth::check())
                             @if(Auth::user()->usertype == 'admin')
-                                <li class="nav-item {{ request()->routeIs('admin.post_page') ? 'active' : '' }}">
-                                   <a class="nav-link" href="{{ route('admin.post_page') }}">Create Posts</a> 
-                                </li>
+                                <!-- Admin users don't need the create posts link in header since it's removed from admin panel -->
                             @else
                                 <li class="nav-item {{ request()->routeIs('home.create_post') ? 'active' : '' }}">
                                    <a class="nav-link" href="{{ route('home.create_post') }}">Create Posts</a> 
@@ -94,10 +92,9 @@
                   <ul>
                      <li class="{{ request()->routeIs('home.homepage') ? 'active' : '' }}"><a href="{{ route('home.homepage') }}">Home</a></li>
                      <li class="{{ request()->routeIs('home.posts') ? 'active' : '' }}"><a href="{{ route('home.posts') }}">All Posts</a></li>
-                     <li class="{{ request()->routeIs('home.search') ? 'active' : '' }}"><a href="{{ route('home.search') }}">Search</a></li>
-                     @if(Auth::check())
+                     <li class="{{ request()->routeIs('home.search') ? 'active' : '' }}"><a href="{{ route('home.search') }}">Search</a></li>                        @if(Auth::check())
                         @if(Auth::user()->usertype == 'admin')
-                            <li class="{{ request()->routeIs('admin.post_page') ? 'active' : '' }}"><a href="{{ route('admin.post_page') }}">Create Posts</a></li>
+                            <!-- Admin users don't need the create posts link in header since it's removed from admin panel -->
                         @else
                             <li class="{{ request()->routeIs('home.create_post') ? 'active' : '' }}"><a href="{{ route('home.create_post') }}">Create Posts</a></li>
                         @endif
@@ -109,7 +106,7 @@
                                  $unreadCount = \App\Services\NotificationService::getUnreadCount(Auth::id());
                               @endphp
                               @if($unreadCount > 0)
-                                 <span style="background: #ff4757; color: white; border-radius: 50%; padding: 2px 6px; font-size: 12px; position: absolute; top: -5px; right: -10px; min-width: 18px; text-align: center;">{{ $unreadCount }}</span>
+                                 <span style="background: #ff4757; color: white; border-radius: 120%; padding: 2px 6px; font-size: 10px; position: absolute; top: 10px; right: -10px; min-width: 18px; text-align: center;">{{ $unreadCount }}</span>
                               @endif
                            </a>
                         </li>

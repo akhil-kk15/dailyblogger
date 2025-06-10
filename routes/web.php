@@ -34,6 +34,11 @@ Route::get('/', [homeController::class, 'homepage'])->name('home.homepage');
 Route::get('/posts', [homeController::class, 'all_posts'])->name('home.posts');
 Route::get('/posts/{id}', [homeController::class, 'post_details'])->name('home.post_details');
 
+// Blocked access route (for blocked users)
+Route::get('/blocked-access', function() {
+    return view('blocked.access');
+})->name('blocked.access');
+
 // Search routes
 Route::get('/search', [SearchController::class, 'index'])->name('home.search');
 Route::get('/search/suggestions', [SearchController::class, 'suggestions'])->name('search.suggestions');
@@ -54,15 +59,13 @@ Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified',
+    'check.blocked',
 ])->group(function () {
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
 });    // Admin routes (protected with auth middleware)
-Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
-    Route::get('/post_page', [adminController::class, 'post_page'])->name('admin.post_page');
-    Route::post('/add_post', [adminController::class, 'add_post'])->name('admin.add_post');
-    
+Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified', 'check.blocked'])->group(function () {
     // Admin dashboard stats API
     Route::get('/admin/dashboard/stats', [adminController::class, 'getDashboardStats'])->name('admin.dashboard.stats');
     
@@ -82,7 +85,6 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     
     // Admin user management routes
     Route::get('/users', [UserManagementController::class, 'index'])->name('admin.users.index');
-    Route::put('/users/{user}/role', [UserManagementController::class, 'updateRole'])->name('admin.users.updateRole');
     Route::put('/users/{user}/role', [UserManagementController::class, 'updateRole'])->name('admin.users.updateRole');
     
     // User post management routes
@@ -138,6 +140,6 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
 });
 
 // Custom Profile route (override Jetstream default before it loads)
-Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
+Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified', 'check.blocked'])->group(function () {
     Route::get('/user/profile', [ProfileController::class, 'showCustomProfile'])->name('profile.show');
 });

@@ -30,6 +30,8 @@ class User extends Authenticatable
         'email',
         'password',
         'usertype', // Add usertype to fillable
+        'blocked_at',
+        'blocked_reason',
     ];
 
     /**
@@ -63,6 +65,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'blocked_at' => 'datetime',
         ];
     }
 
@@ -85,6 +88,16 @@ class User extends Authenticatable
     public function hasRole(string $role): bool
     {
         return $this->usertype === $role;
+    }
+
+    /**
+     * Check if user is blocked.
+     *
+     * @return bool
+     */
+    public function isBlocked(): bool
+    {
+        return $this->usertype === 'blocked';
     }
 
     /**

@@ -7,7 +7,6 @@ return [
     'control_center' => 'Centre de contrôle',
     'dashboard' => 'Tableau de bord',
     'content_management' => 'Gestion du contenu',
-    'create_post' => 'Créer un article',
     'manage_posts' => 'Gérer les articles',
     'categories_tags' => 'Catégories et tags',
     'user_communication' => 'Utilisateur et communication',

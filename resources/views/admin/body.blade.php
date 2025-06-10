@@ -15,10 +15,6 @@
                   <span id="current-time"></span>
                 </p>
                 <div class="quick-actions">
-                  <a href="{{ route('admin.post_page') }}" class="quick-action-btn">
-                    <i class="fa fa-plus"></i>
-                    {{ __('admin.create_post') }}
-                  </a>
                   <a href="{{ route('admin.analytics') }}" class="quick-action-btn">
                     <i class="fa fa-bar-chart"></i>
                     {{ __('admin.analytics') }}
@@ -290,10 +286,6 @@
                 <div class="action-center-block block">
                   <div class="title"><strong><i class="fa fa-cogs"></i> Action Center</strong></div>
                   <div class="action-buttons">
-                    <a href="{{ route('admin.post_page') }}" class="action-btn btn-create">
-                      <i class="fa fa-plus"></i>
-                      <span>Create New Post</span>
-                    </a>
                     <a href="{{ route('admin.show_posts', ['status' => 'pending']) }}" class="action-btn btn-review">
                       <i class="fa fa-clock-o"></i>
                       <span>Review Pending ({{ $stats['pendingPosts'] ?? 0 }})</span>

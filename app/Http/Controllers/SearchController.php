@@ -29,7 +29,7 @@ class SearchController extends Controller
         // Only perform search if there are search parameters
         if ($request->hasAny(['q', 'category', 'tags', 'sort'])) {
             $hasResults = true;
-            $query = Posts::query()->where('post_status', 'active');
+            $query = Posts::query()->public();
             
             // Search by title and content
             if ($request->filled('q')) {
@@ -101,7 +101,7 @@ class SearchController extends Controller
             return response()->json([]);
         }
         
-        $posts = Posts::where('post_status', 'active')
+        $posts = Posts::public()
                     ->where(function (Builder $query) use ($searchTerm) {
                         $query->where('title', 'LIKE', '%' . $searchTerm . '%')
                              ->orWhere('description', 'LIKE', '%' . $searchTerm . '%');

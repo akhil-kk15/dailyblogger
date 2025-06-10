@@ -17,7 +17,7 @@
                   <div class="col-md-8 offset-md-2">
                       <div class="post_details_card">
                           @if($post->image)
-                              <div class="post_image_large">
+                              <div class="post_image_large" onclick="openImageModal('{{ asset('postimage/' . $post->image) }}', '{{ $post->title }}')">
                                   <img src="{{ asset('postimage/' . $post->image) }}" alt="{{ $post->title }}" class="img-fluid">
                               </div>
                           @endif
@@ -149,6 +149,15 @@
       @include('home.footer')
       <!-- footer section end -->
       
+      <!-- Image Modal -->
+      <div id="imageModal" class="image_modal">
+          <span class="image_modal_close" onclick="closeImageModal()">&times;</span>
+          <div class="image_modal_content">
+              <img id="modalImage" src="" alt="">
+              <div id="modalCaption" class="image_modal_caption"></div>
+          </div>
+      </div>
+      
       <style>
           .post_details_card {
               background: #fff;
@@ -160,14 +169,282 @@
           
           .post_image_large {
               width: 100%;
-              max-height: 400px;
-              overflow: hidden;
+              max-height: none;
+              overflow: visible;
+              border-radius: 12px;
+              margin-bottom: 30px;
+              box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+              position: relative;
+              cursor: pointer;
+              transition: all 0.3s ease;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+          }
+          
+          .post_image_large:hover {
+              box-shadow: 0 12px 35px rgba(0,0,0,0.15);
+              transform: translateY(-2px);
           }
           
           .post_image_large img {
               width: 100%;
+              height: auto;
+              max-width: 100%;
+              object-fit: contain;
+              transition: transform 0.3s ease;
+              display: block;
+              opacity: 1;
+              border-radius: 12px;
+          }
+          
+          .post_image_large:hover img {
+              transform: scale(1.05);
+          }
+          
+          /* Image Modal for Full Size Display */
+          .image_modal {
+              display: none;
+              position: fixed;
+              z-index: 9999;
+              left: 0;
+              top: 0;
+              width: 100%;
               height: 100%;
-              object-fit: cover;
+              background-color: rgba(0,0,0,0.9);
+              overflow: auto;
+              animation: fadeIn 0.3s ease;
+          }
+          
+          .image_modal_content {
+              position: relative;
+              margin: 2% auto;
+              max-width: 95%;
+              max-height: 95%;
+              animation: zoomIn 0.3s ease;
+          }
+          
+          .image_modal_content img {
+              width: 100%;
+              height: auto;
+              max-height: 90vh;
+              object-fit: contain;
+              border-radius: 8px;
+              box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+          }
+          
+          .image_modal_close {
+              position: absolute;
+              top: 20px;
+              right: 35px;
+              color: #fff;
+              font-size: 40px;
+              font-weight: bold;
+              cursor: pointer;
+              background: rgba(0,0,0,0.5);
+              border-radius: 50%;
+              width: 50px;
+              height: 50px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              transition: all 0.3s ease;
+          }
+          
+          .image_modal_close:hover {
+              background: rgba(255,255,255,0.2);
+              transform: scale(1.1);
+          }
+          
+          .image_modal_caption {
+              text-align: center;
+              color: #fff;
+              padding: 20px;
+              font-size: 18px;
+              font-weight: 600;
+              margin-top: 10px;
+          }
+          
+          @keyframes fadeIn {
+              from { opacity: 0; }
+              to { opacity: 1; }
+          }
+          
+          @keyframes zoomIn {
+              from { transform: scale(0.8); opacity: 0; }
+              to { transform: scale(1); opacity: 1; }
+          }
+          
+          /* Responsive Image Improvements */
+          @media (max-width: 768px) {
+              .post_image_large {
+                  margin-bottom: 20px;
+                  border-radius: 8px;
+              }
+              
+              .post_image_large img {
+                  border-radius: 8px;
+              }
+              
+              .image_modal_content {
+                  margin: 5% auto;
+                  max-width: 98%;
+              }
+              
+              .image_modal_close {
+                  top: 10px;
+                  right: 20px;
+                  font-size: 30px;
+                  width: 40px;
+                  height: 40px;
+              }
+              
+              .image_modal_caption {
+                  font-size: 16px;
+                  padding: 15px;
+              }
+          }
+          
+          @media (max-width: 480px) {
+              .post_image_large {
+                  border-radius: 6px;
+              }
+              
+              .post_image_large img {
+                  border-radius: 6px;
+              }
+              
+              .image_modal_close {
+                  font-size: 24px;
+                  width: 35px;
+                  height: 35px;
+              }
+          }
+          
+          /* Ensure images maintain aspect ratio */
+          .post_image_large img {
+              max-height: 70vh;
+              object-position: center;
+          }
+          
+          /* Responsive Image Improvements */
+          @media (max-width: 768px) {
+              .post_image_large {
+                  max-height: 300px;
+                  margin-bottom: 20px;
+                  border-radius: 8px;
+              }
+              
+              .image_modal_content {
+                  margin: 5% auto;
+                  max-width: 98%;
+              }
+              
+              .image_modal_close {
+                  top: 10px;
+                  right: 20px;
+                  font-size: 30px;
+                  width: 40px;
+                  height: 40px;
+              }
+              
+              .image_modal_caption {
+                  font-size: 16px;
+                  padding: 15px;
+              }
+          }
+          
+          @media (max-width: 480px) {
+              .post_image_large {
+                  max-height: 250px;
+                  border-radius: 8px;
+              }
+              
+              .image_modal_close {
+                  font-size: 24px;
+                  width: 35px;
+                  height: 35px;
+              }
+          }
+          
+          /* Responsive Image Improvements */
+          @media (max-width: 768px) {
+              .post_image_large {
+                  max-height: 300px;
+                  margin-bottom: 20px;
+                  border-radius: 8px;
+              }
+              
+              .image_modal_content {
+                  margin: 5% auto;
+                  max-width: 98%;
+              }
+              
+              .image_modal_close {
+                  top: 10px;
+                  right: 20px;
+                  font-size: 30px;
+                  width: 40px;
+                  height: 40px;
+              }
+              
+              .image_modal_caption {
+                  font-size: 16px;
+                  padding: 15px;
+              }
+              
+              .post_details_content {
+                  padding: 20px;
+              }
+              
+              .post_title_large {
+                  font-size: 24px;
+              }
+              
+              .post_meta {
+                  flex-direction: column;
+                  gap: 10px;
+              }
+          }
+          
+          @media (max-width: 480px) {
+              .post_image_large {
+                  max-height: 250px;
+                  border-radius: 6px;
+                  margin-bottom: 15px;
+              }
+              
+              .image_modal_close {
+                  font-size: 24px;
+                  width: 35px;
+                  height: 35px;
+                  top: 5px;
+                  right: 15px;
+              }
+              
+              .image_modal_caption {
+                  font-size: 14px;
+                  padding: 10px;
+              }
+              
+              .post_details_content {
+                  padding: 15px;
+              }
+              
+              .post_title_large {
+                  font-size: 20px;
+                  line-height: 1.4;
+              }
+              
+              .post_actions {
+                  flex-direction: column;
+                  gap: 10px;
+              }
+              
+              .post_actions .btn {
+                  text-align: center;
+                  width: 100%;
+              }
           }
           
           .post_details_content {
@@ -542,6 +819,69 @@
                   alert.style.display = 'none';
               });
           }, 5000);
+          
+          // Image Modal Functions
+          function openImageModal(imageSrc, caption) {
+              const modal = document.getElementById('imageModal');
+              const modalImg = document.getElementById('modalImage');
+              const modalCaption = document.getElementById('modalCaption');
+              
+              modal.style.display = 'block';
+              modalImg.src = imageSrc;
+              modalCaption.textContent = caption;
+              
+              // Prevent body scroll when modal is open
+              document.body.style.overflow = 'hidden';
+          }
+          
+          function closeImageModal() {
+              const modal = document.getElementById('imageModal');
+              modal.style.display = 'none';
+              
+              // Restore body scroll
+              document.body.style.overflow = 'auto';
+          }
+          
+          // Close modal when clicking outside the image
+          window.onclick = function(event) {
+              const modal = document.getElementById('imageModal');
+              if (event.target === modal) {
+                  closeImageModal();
+              }
+          }
+          
+          // Close modal with Escape key
+          document.addEventListener('keydown', function(event) {
+              if (event.key === 'Escape') {
+                  closeImageModal();
+              }
+          });
+          
+          // Optimize image loading
+          document.addEventListener('DOMContentLoaded', function() {
+              const postImage = document.querySelector('.post_image_large img');
+              if (postImage) {
+                  // Only add loading animation if image is not already loaded
+                  if (!postImage.complete) {
+                      postImage.style.opacity = '0';
+                      postImage.style.transition = 'opacity 0.3s ease';
+                      
+                      postImage.onload = function() {
+                          this.style.opacity = '1';
+                      };
+                  } else {
+                      // Image is already loaded, make sure it's visible
+                      postImage.style.opacity = '1';
+                  }
+                  
+                  // Add error handling
+                  postImage.onerror = function() {
+                      this.style.opacity = '1';
+                      this.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNlZWVlZWUiLz4KICAgIDx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTgiIGZpbGw9IiM5OTk5OTkiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5JbWFnZSBub3QgZm91bmQ8L3RleHQ+Cjwvc3ZnPg==';
+                      this.alt = 'Image not found';
+                  };
+              }
+          });
       </script>
    </body>
 </html>

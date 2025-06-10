@@ -27,6 +27,69 @@ body {
     width: auto !important;
 }
 
+/* Improve text visibility across the admin panel */
+body, .page-content {
+    color: #333333 !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: #2c3e50 !important;
+    font-weight: 600 !important;
+}
+
+p, span, div {
+    color: #495057 !important;
+}
+
+strong, b {
+    color: #2c3e50 !important;
+    font-weight: 600 !important;
+}
+
+small {
+    color: #6c757d !important;
+}
+
+/* Table text improvements for user management */
+.table {
+    color: #333333 !important;
+}
+
+.table td, .table th {
+    color: #333333 !important;
+}
+
+.table tbody tr {
+    background-color: #ffffff !important;
+}
+
+.table tbody tr:hover {
+    background-color: rgba(102, 126, 234, 0.08) !important;
+}
+
+/* Ensure consistent table row colors */
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #ffffff !important;
+}
+
+.table-striped tbody tr:nth-of-type(even) {
+    background-color: #ffffff !important;
+}
+
+/* Form elements */
+.form-control {
+    color: #495057 !important;
+    background-color: #ffffff !important;
+    border: 1px solid #ced4da !important;
+}
+
+.form-control:focus {
+    color: #495057 !important;
+    background-color: #ffffff !important;
+    border-color: #667eea !important;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25) !important;
+}
+
 /* Fix transparent dropdowns */
 .dropdown-menu {
     background-color: #ffffff !important;

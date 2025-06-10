@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 use App\Models\Category;
 use App\Models\Tag;
 use App\Models\Posts;
@@ -23,21 +24,22 @@ class SearchTestDataSeeder extends Seeder
 
         foreach ($categoryData as $id => $name) {
             Category::where('id', $id)->update([
-                'category_name' => $name,
-                'status' => 'active'
+                'name' => $name,
+                'slug' => Str::slug($name),
+                'is_active' => true
             ]);
         }
 
         // Add more categories if needed
         $additionalCategories = [
-            ['category_name' => 'DevOps', 'status' => 'active'],
-            ['category_name' => 'UI/UX Design', 'status' => 'active'],
-            ['category_name' => 'Blockchain', 'status' => 'active'],
-            ['category_name' => 'Cybersecurity', 'status' => 'active'],
+            ['name' => 'DevOps', 'slug' => 'devops', 'is_active' => true],
+            ['name' => 'UI/UX Design', 'slug' => 'ui-ux-design', 'is_active' => true],
+            ['name' => 'Blockchain', 'slug' => 'blockchain', 'is_active' => true],
+            ['name' => 'Cybersecurity', 'slug' => 'cybersecurity', 'is_active' => true],
         ];
 
         foreach ($additionalCategories as $category) {
-            Category::firstOrCreate(['category_name' => $category['category_name']], $category);
+            Category::firstOrCreate(['name' => $category['name']], $category);
         }
 
         // Update existing tags with proper names and add new ones

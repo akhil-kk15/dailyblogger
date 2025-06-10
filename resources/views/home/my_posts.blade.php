@@ -54,15 +54,15 @@
                                       
                                       <div class="post_meta">
                                           @if($post->category)
-                                              <span class="post_category">{{ $post->category->category_name }}</span>
+                                              <span class="post_category">{{ $post->category->name }}</span>
                                           @endif
                                           <span class="post_date">{{ $post->created_at->format('M d, Y') }}</span>
                                       </div>
                                       
-                                      @if($post->tags->count() > 0)
+                                          @if($post->tags->count() > 0)
                                           <div class="post_tags">
                                               @foreach($post->tags as $tag)
-                                                  <span class="tag_item">{{ $tag->tag_name }}</span>
+                                                  <span class="tag_item">{{ $tag->name }}</span>
                                               @endforeach
                                           </div>
                                       @endif
@@ -186,11 +186,10 @@
           }
           
           .post_category {
-              background: #007bff;
-              color: white;
-              padding: 2px 8px;
-              border-radius: 10px;
-              font-size: 12px;
+              color: #007bff;
+              font-weight: 600;
+              font-size: 14px;
+              margin-bottom: 10px;
           }
           
           .post_tags {

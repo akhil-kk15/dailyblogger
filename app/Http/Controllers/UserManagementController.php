@@ -33,7 +33,8 @@ class UserManagementController extends Controller
         
         // Validate request
         $request->validate([
-            'usertype' => 'required|in:admin,user'
+            'usertype' => 'required|in:admin,user,blocked',
+            'blocked_reason' => 'nullable|string|max:255'
         ]);
 
         // Prevent admins from changing their own role
@@ -42,9 +43,28 @@ class UserManagementController extends Controller
         }
 
         // Update the user's role
+        $oldRole = $user->usertype;
         $user->usertype = $request->usertype;
+        
+        // Handle blocking metadata (keep the fields for admin reference)
+        if ($request->usertype === 'blocked') {
+            $user->blocked_at = now();
+            $user->blocked_reason = $request->blocked_reason ?? 'Blocked by admin';
+        } else if ($oldRole === 'blocked') {
+            // Clear blocking info when unblocking
+            $user->blocked_at = null;
+            $user->blocked_reason = null;
+        }
+        
         $user->save();
 
-        return redirect()->back()->with('message', "User role updated successfully.");
+        $message = "User role updated successfully";
+        if ($request->usertype === 'blocked') {
+            $message = "User has been blocked successfully";
+        } elseif ($oldRole === 'blocked') {
+            $message = "User has been unblocked successfully";
+        }
+
+        return redirect()->back()->with('message', $message);
     }
 }

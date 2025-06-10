@@ -69,7 +69,7 @@
                                       @foreach($categories as $category)
                                           <option value="{{ $category->id }}" 
                                                   {{ old('category_id', $post->category_id) == $category->id ? 'selected' : '' }}>
-                                              {{ $category->category_name }}
+                                              {{ $category->name }}
                                           </option>
                                       @endforeach
                                   </select>
@@ -86,7 +86,7 @@
                                           <div class="tag_checkbox">
                                               <input type="checkbox" id="tag_{{ $tag->id }}" name="tags[]" value="{{ $tag->id }}" 
                                                      {{ in_array($tag->id, old('tags', $post->tags->pluck('id')->toArray())) ? 'checked' : '' }}>
-                                              <label for="tag_{{ $tag->id }}" class="tag_label">{{ $tag->tag_name }}</label>
+                                              <label for="tag_{{ $tag->id }}" class="tag_label">{{ $tag->name }}</label>
                                           </div>
                                       @endforeach
                                   </div>

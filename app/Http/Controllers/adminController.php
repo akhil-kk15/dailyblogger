@@ -13,11 +13,6 @@ use Illuminate\Support\Str;
 
 class adminController extends Controller
 {
-    public function post_page()
-    {
-        return view('admin.post_page');
-    }
-
     public function index()
     {
         if(Auth::id()){
@@ -97,42 +92,6 @@ class adminController extends Controller
                 return redirect()->back();
             }
          }
-    }
-
-    public function add_post(Request $request)
-    {
-        if (!Auth::check()) {
-            return redirect()->route('login');
-        }
-
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string|min:10',
-            'category' => 'required|string|max:255',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:5120', // 5MB limit, JPEG/PNG only
-        ], [
-            'image.mimes' => 'The image must be a JPEG or PNG file.',
-            'image.max' => 'The image file size must not exceed 5MB.',
-        ]);
-
-        $post = new Posts;
-        $post->title = $request->title;
-        $post->description = $request->description;
-        $post->post_status = 'active';
-        
-        $image = $request->image;
-        if($image) {
-            $imagename = time().'.'.$image->getClientOriginalExtension();
-            $request->image->move('postimage', $imagename);
-            $post->image = $imagename;
-        }
-
-        $post->name = Auth::user()->name;
-        $post->user_id = Auth::id();
-        $post->usertype = Auth::user()->usertype;
-        $post->save();
-        
-        return redirect()->back()->with('message', 'Post added successfully');
     }
 
     public function show_posts(Request $request)

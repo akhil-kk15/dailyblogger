@@ -1060,7 +1060,7 @@
     
     .stat-label {
         color: #7f8c8d;
-        font-size: 12px;
+        font-size: 14px;
         font-weight: 600;
         text-transform: uppercase;
         letter-spacing: 0.5px;
@@ -1625,6 +1625,39 @@
         font-size: 1rem !important;
     }
 
+    /* Improve text visibility throughout the admin panel */
+    .section-title {
+        color: #ffffff !important;
+        font-weight: 700 !important;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .section-subtitle {
+        color: rgba(255,255,255,0.8) !important;
+        font-weight: 500 !important;
+    }
+
+    /* Fix text colors in blocks */
+    .block .title strong {
+        color: #333333 !important;
+        font-weight: 700 !important;
+    }
+
+    .block .title {
+        color: #333333 !important;
+    }
+
+    /* Fix muted text colors */
+    .text-muted {
+        color: #6c757d !important;
+    }
+
+    /* Improve stat text visibility */
+    .stat-row span {
+        color: #495057 !important;
+        font-weight: 500 !important;
+    }
+
     /* Reduce white space and improve blocks */
     .block {
         background: rgba(255, 255, 255, 0.95) !important;
@@ -1712,9 +1745,9 @@
         transition: width 0.6s ease !important;
     }
 
-    /* Enhanced table styling */
+    /* Enhanced table styling with consistent colors */
     .table {
-        background: rgba(255, 255, 255, 0.95) !important;
+        background: rgba(255, 255, 255, 0.98) !important;
         border-radius: 12px !important;
         overflow: hidden;
         box-shadow: 0 5px 15px rgba(0,0,0,0.1) !important;
@@ -1733,16 +1766,40 @@
 
     .table tbody tr {
         transition: all 0.2s ease !important;
+        background-color: #ffffff !important; /* Consistent white background for all rows */
     }
 
     .table tbody tr:hover {
-        background-color: rgba(102, 126, 234, 0.05) !important;
+        background-color: rgba(102, 126, 234, 0.08) !important; /* Light purple hover effect */
+        transform: translateY(-1px) !important;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
+    }
+
+    .table tbody tr:nth-child(even) {
+        background-color: #ffffff !important; /* Override alternating colors - keep all white */
+    }
+
+    .table tbody tr:nth-child(odd) {
+        background-color: #ffffff !important; /* Override alternating colors - keep all white */
     }
 
     .table tbody td {
-        padding: 12px !important;
-        border-top: 1px solid rgba(0,0,0,0.05) !important;
+        padding: 15px 12px !important;
+        border-top: 1px solid rgba(0,0,0,0.08) !important;
         vertical-align: middle !important;
+        color: #333333 !important;
+        font-weight: 500 !important;
+    }
+
+    /* Improve table text visibility */
+    .table tbody td strong {
+        color: #2c3e50 !important;
+        font-weight: 600 !important;
+    }
+
+    .table tbody td small {
+        color: #6c757d !important;
+        font-weight: 400 !important;
     }
 
     /* Body and html reset for admin pages */
@@ -1799,18 +1856,87 @@
         padding-right: 10px !important;
     }
 
-    /* Recent items styling */
+    /* Recent items styling with better visibility */
     .recent-post-item,
     .recent-user-item {
-        padding: 12px !important;
-        border-bottom: 1px solid rgba(0,0,0,0.05) !important;
+        padding: 15px !important;
+        border-bottom: 1px solid rgba(0,0,0,0.08) !important;
         transition: all 0.2s ease !important;
     }
 
     .recent-post-item:hover,
     .recent-user-item:hover {
-        background-color: rgba(102, 126, 234, 0.05) !important;
+        background-color: rgba(102, 126, 234, 0.08) !important;
         transform: translateX(5px) !important;
+    }
+
+    .recent-post-item strong,
+    .recent-user-item strong {
+        color: #2c3e50 !important;
+        font-weight: 600 !important;
+    }
+
+    .recent-post-item .text-muted,
+    .recent-user-item .text-muted {
+        color: #6c757d !important;
+    }
+
+    .recent-post-item .date,
+    .recent-user-item .date {
+        color: #95a5a6 !important;
+    }
+
+    /* Status badges with better visibility */
+    .status-badge {
+        padding: 4px 8px !important;
+        border-radius: 12px !important;
+        font-size: 10px !important;
+        font-weight: 600 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.5px !important;
+    }
+
+    .status-active {
+        background-color: #27ae60 !important;
+        color: #ffffff !important;
+    }
+
+    .status-pending {
+        background-color: #f39c12 !important;
+        color: #ffffff !important;
+    }
+
+    .status-rejected {
+        background-color: #e74c3c !important;
+        color: #ffffff !important;
+    }
+
+    /* User type badges */
+    .user-type-badge {
+        padding: 4px 8px !important;
+        border-radius: 12px !important;
+        font-size: 10px !important;
+        font-weight: 600 !important;
+        text-transform: uppercase !important;
+        background-color: #3498db !important;
+        color: #ffffff !important;
+    }
+
+    /* Badges in general */
+    .badge {
+        font-weight: 600 !important;
+        font-size: 10px !important;
+        padding: 6px 10px !important;
+    }
+
+    .badge-primary {
+        background-color: #667eea !important;
+        color: #ffffff !important;
+    }
+
+    .badge-success {
+        background-color: #27ae60 !important;
+        color: #ffffff !important;
     }
 
     /* Activity items */
@@ -1886,5 +2012,314 @@
             transition: none;
             animation: none;
         }
+    }
+    
+    /* Text Visibility Fixes for Admin Panel */
+    
+    /* Ensure text-light class is visible in dark backgrounds */
+    .text-light {
+        color: #f8f9fa !important;
+    }
+    
+    /* Ensure text-dark class is visible in light backgrounds */
+    .text-dark {
+        color: #212529 !important;
+    }
+    
+    /* Fix any white text on white background issues */
+    .bg-light .text-white {
+        color: #333333 !important;
+    }
+    
+    /* Fix any black text on black background issues */
+    .bg-dark .text-black {
+        color: #e1e1e1 !important;
+    }
+    
+    /* Ensure muted text is visible */
+    .text-muted {
+        color: #6c757d !important;
+    }
+    
+    .bg-dark .text-muted {
+        color: #adb5bd !important;
+    }
+    
+    /* Fix link visibility on dark backgrounds */
+    .bg-dark a:not(.btn):not(.nav-link):not(.dropdown-item) {
+        color: #6db4fd !important;
+    }
+    
+    .bg-dark a:not(.btn):not(.nav-link):not(.dropdown-item):hover {
+        color: #8ac5ff !important;
+    }
+    
+    /* Fix button text visibility */
+    .btn-light {
+        color: #212529 !important;
+        background-color: #e9ecef !important;
+        border-color: #e9ecef !important;
+    }
+    
+    .btn-dark {
+        color: #ffffff !important;
+        background-color: #495057 !important;
+        border-color: #495057 !important;
+    }
+    
+    /* Fix badge visibility */
+    .badge-light {
+        color: #212529 !important;
+        background-color: #e9ecef !important;
+    }
+    
+    .badge-dark {
+        color: #ffffff !important;
+        background-color: #495057 !important;
+    }
+    
+    /* Fix card text visibility on different backgrounds */
+    .bg-dark .card-text {
+        color: #e1e1e1 !important;
+    }
+    
+    .bg-dark .card-title {
+        color: #ffffff !important;
+    }
+    
+    /* Fix list group item visibility */
+    .bg-dark .list-group-item {
+        background-color: #495057 !important;
+        color: #e1e1e1 !important;
+        border-color: #6c757d !important;
+    }
+    
+    /* Fix form label visibility on dark backgrounds */
+    .bg-dark label,
+    .bg-dark .form-label {
+        color: #e1e1e1 !important;
+    }
+    
+    /* Fix help text visibility */
+    .bg-dark .form-text,
+    .bg-dark small {
+        color: #adb5bd !important;
+    }
+    
+    /* Fix code and pre visibility */
+    .bg-dark code {
+        color: #ff6b6b !important;
+        background-color: #495057 !important;
+    }
+    
+    .bg-dark pre {
+        color: #e1e1e1 !important;
+        background-color: #495057 !important;
+    }
+    
+    /* Fix blockquote visibility */
+    .bg-dark blockquote {
+        color: #e1e1e1 !important;
+        border-left-color: #6c757d !important;
+    }
+    
+    /* Fix hr visibility */
+    .bg-dark hr {
+        border-color: #6c757d !important;
+    }
+    
+    /* Fix caption and figure text */
+    .bg-dark .figure-caption,
+    .bg-dark caption {
+        color: #adb5bd !important;
+    }
+    
+    /* Fix mark/highlight visibility */
+    .bg-dark mark {
+        background-color: #ffc107 !important;
+        color: #212529 !important;
+    }
+    
+    /* Fix strong emphasis visibility */
+    .bg-dark strong,
+    .bg-dark b {
+        color: #ffffff !important;
+    }
+    
+    /* Fix emphasis visibility */
+    .bg-dark em,
+    .bg-dark i {
+        color: #e1e1e1 !important;
+    }
+    
+    /* Fix input placeholder visibility on dark backgrounds */
+    .bg-dark input::placeholder,
+    .bg-dark textarea::placeholder,
+    .bg-dark select::placeholder {
+        color: #adb5bd !important;
+        opacity: 1 !important;
+    }
+    
+    /* Fix select option visibility */
+    .bg-dark select option {
+        background-color: #495057 !important;
+        color: #e1e1e1 !important;
+    }
+    
+    /* Fix disabled element visibility */
+    .bg-dark .disabled,
+    .bg-dark [disabled] {
+        color: #6c757d !important;
+    }
+    
+    /* Fix readonly element visibility */
+    .bg-dark [readonly] {
+        background-color: #6c757d !important;
+        color: #e1e1e1 !important;
+    }
+    
+    /* Ensure minimum contrast ratios for colored text */
+    .bg-dark .text-success {
+        color: #5cb85c !important;
+    }
+    
+    .bg-dark .text-info {
+        color: #5bc0de !important;
+    }
+    
+    .bg-dark .text-warning {
+        color: #f0ad4e !important;
+    }
+    
+    .bg-dark .text-danger {
+        color: #d9534f !important;
+    }
+    
+    /* Fix utility class text visibility */
+    .bg-dark .text-primary {
+        color: #6db4fd !important;
+    }
+    
+    .bg-dark .text-secondary {
+        color: #adb5bd !important;
+    }
+    
+    /* Fix border visibility on dark backgrounds */
+    .bg-dark .border {
+        border-color: #6c757d !important;
+    }
+    
+    .bg-dark .border-light {
+        border-color: #adb5bd !important;
+    }
+    
+    .bg-dark .border-dark {
+        border-color: #495057 !important;
+    }
+    
+    /* Fix shadow visibility on dark backgrounds */
+    .bg-dark .shadow,
+    .bg-dark .shadow-sm,
+    .bg-dark .shadow-lg {
+        box-shadow: 0 0.125rem 0.25rem rgba(255, 255, 255, 0.175) !important;
+    }
+    
+    /* Admin specific visibility fixes */
+    
+    /* Sidebar text visibility */
+    #sidebar .nav-link {
+        color: #ecf0f1 !important;
+    }
+    
+    #sidebar .nav-link:hover {
+        color: #ffffff !important;
+    }
+    
+    /* Content area text visibility */
+    .content-wrapper {
+        background-color: #f4f4f4;
+        color: #333;
+    }
+    
+    .content-wrapper.dark-theme {
+        background-color: #2c3e50;
+        color: #ecf0f1;
+    }
+    
+    .content-wrapper.dark-theme h1,
+    .content-wrapper.dark-theme h2,
+    .content-wrapper.dark-theme h3,
+    .content-wrapper.dark-theme h4,
+    .content-wrapper.dark-theme h5,
+    .content-wrapper.dark-theme h6 {
+        color: #ffffff !important;
+    }
+    
+    .content-wrapper.dark-theme p,
+    .content-wrapper.dark-theme span,
+    .content-wrapper.dark-theme div {
+        color: #ecf0f1 !important;
+    }
+    
+    /* Table visibility improvements */
+    .table-dark {
+        background-color: #495057 !important;
+        color: #e1e1e1 !important;
+    }
+    
+    .table-dark th,
+    .table-dark td {
+        border-color: #6c757d !important;
+        color: #e1e1e1 !important;
+    }
+    
+    .table-dark thead th {
+        background-color: #343a40 !important;
+        color: #ffffff !important;
+    }
+    
+    /* Modal visibility improvements */
+    .modal-content.dark-theme {
+        background-color: #495057;
+        color: #e1e1e1;
+    }
+    
+    .modal-content.dark-theme .modal-header {
+        border-bottom-color: #6c757d;
+    }
+    
+    .modal-content.dark-theme .modal-footer {
+        border-top-color: #6c757d;
+    }
+    
+    /* Alert visibility improvements */
+    .alert.dark-theme {
+        background-color: #495057;
+        color: #e1e1e1;
+        border-color: #6c757d;
+    }
+    
+    .alert-success.dark-theme {
+        background-color: #155724;
+        color: #d4edda;
+        border-color: #c3e6cb;
+    }
+    
+    .alert-danger.dark-theme {
+        background-color: #721c24;
+        color: #f8d7da;
+        border-color: #f5c6cb;
+    }
+    
+    .alert-warning.dark-theme {
+        background-color: #856404;
+        color: #fff3cd;
+        border-color: #ffeaa7;
+    }
+    
+    .alert-info.dark-theme {
+        background-color: #0c5460;
+        color: #d1ecf1;
+        border-color: #bee5eb;
     }
     </style>
