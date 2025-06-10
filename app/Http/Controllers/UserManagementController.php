@@ -10,18 +10,27 @@ class UserManagementController extends Controller
 {
     public function __construct()
     {
-        // Middleware application removed from constructor
+        $this->middleware('auth');
     }
 
     public function index()
     {
+        // Check if user is admin
+        if (!Auth::check() || Auth::user()->usertype !== 'admin') {
+            return redirect('/dashboard')->with('error', 'Access denied.');
+        }
+        
         $users = User::orderBy('name')->paginate(10);
         return view('admin.users.index', compact('users'));
     }
 
     public function updateRole(Request $request, User $user)
     {
-
+        // Check if user is admin
+        if (!Auth::check() || Auth::user()->usertype !== 'admin') {
+            return redirect('/dashboard')->with('error', 'Access denied.');
+        }
+        
         // Validate request
         $request->validate([
             'usertype' => 'required|in:admin,user'

@@ -16,7 +16,9 @@
               <div class="brand-text brand-big visible text-uppercase"><strong class="text-primary">daily</strong><strong>Blogger</strong></div>
               <div class="brand-text brand-sm"><strong class="text-primary">D</strong><strong>A</strong></div></a>
             <!-- Sidebar Toggle Btn-->
-            <button class="sidebar-toggle"><i class="fa fa-long-arrow-left"></i></button>
+            <button class="sidebar-toggle" onclick="toggleSidebar()">
+                <i class="fa fa-bars"></i>
+            </button>
           </div>
           <div class="right-menu list-inline no-margin-bottom">    
             <div class="list-inline-item"><a href="#" class="search-open nav-link"><i class="icon-magnifying-glass-browser"></i></a></div>
@@ -156,3 +158,58 @@
       <!-- Make sure jQuery and Bootstrap JS are loaded in your admin layout before </body> -->
 <script src="{{ asset('admincss/vendor/jquery/jquery.min.js') }}"></script>
 <script src="{{ asset('admincss/vendor/bootstrap/js/bootstrap.min.js') }}"></script>
+
+<!-- Enhanced Sidebar Toggle Script -->
+<script>
+function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const pageContent = document.querySelector('.page-content');
+    
+    if (sidebar.classList.contains('active')) {
+        sidebar.classList.remove('active');
+        sidebar.classList.add('slide-out');
+        setTimeout(() => {
+            sidebar.classList.remove('slide-out');
+        }, 300);
+    } else {
+        sidebar.classList.add('active');
+        sidebar.classList.add('slide-in-left');
+        setTimeout(() => {
+            sidebar.classList.remove('slide-in-left');
+        }, 300);
+    }
+}
+
+// Enhanced mobile responsiveness
+document.addEventListener('DOMContentLoaded', function() {
+    // Auto-hide sidebar on mobile
+    if (window.innerWidth <= 1199) {
+        const sidebar = document.getElementById('sidebar');
+        sidebar.classList.remove('active');
+    }
+    
+    // Handle window resize
+    window.addEventListener('resize', function() {
+        const sidebar = document.getElementById('sidebar');
+        if (window.innerWidth > 1199) {
+            sidebar.classList.remove('active');
+            sidebar.style.transform = '';
+        } else if (window.innerWidth <= 1199 && !sidebar.classList.contains('active')) {
+            sidebar.style.transform = 'translateX(-100%)';
+        }
+    });
+    
+    // Close sidebar when clicking outside on mobile
+    document.addEventListener('click', function(event) {
+        const sidebar = document.getElementById('sidebar');
+        const toggleBtn = document.querySelector('.sidebar-toggle');
+        
+        if (window.innerWidth <= 1199 && 
+            sidebar.classList.contains('active') &&
+            !sidebar.contains(event.target) &&
+            !toggleBtn.contains(event.target)) {
+            toggleSidebar();
+        }
+    });
+});
+</script>

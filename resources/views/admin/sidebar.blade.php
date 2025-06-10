@@ -35,10 +35,10 @@
         <span class="heading">User & Communication</span>
         <ul class="list-unstyled">
                 <li class="{{ request()->routeIs('admin.users.index') ? 'active' : '' }}">
-                    <a href="#" onclick="showComingSoon('User Management')"> <i class="icon-user"></i>User Management </a>
+                    <a href="{{ route('admin.users.index') }}"> <i class="icon-user"></i>User Management </a>
                 </li>
                 <li class="{{ request()->routeIs('admin.comments.index') ? 'active' : '' }}">
-                    <a href="#" onclick="showComingSoon('Comments Management')"> <i class="icon-speech"></i>Comments </a>
+                    <a href="{{ route('admin.comments.index') }}"> <i class="icon-speech"></i>Comments </a>
                 </li>
                 <li class="{{ request()->routeIs('admin.announcement_page') ? 'active' : '' }}">
                     <a href="{{ route('admin.announcement_page') }}"> <i class="icon-megaphone"></i>Create Announcement </a>

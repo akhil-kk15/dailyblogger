@@ -1,11 +1,63 @@
 <div class="page-content">
+        <!-- Enhanced Dashboard Header -->
         <div class="page-header">
           <div class="container-fluid">
-            <h2 class="h5 no-margin-bottom">Dashboard</h2>
+            <div class="dashboard-welcome">
+              <div class="welcome-content">
+                <h1 class="dashboard-title">
+                  <i class="fa fa-tachometer" aria-hidden="true"></i>
+                  Welcome to Admin Dashboard
+                </h1>
+                <p class="dashboard-subtitle">
+                  <i class="fa fa-calendar" aria-hidden="true"></i>
+                  {{ date('l, F j, Y') }} | 
+                  <i class="fa fa-clock-o" aria-hidden="true"></i>
+                  <span id="current-time"></span>
+                </p>
+                <div class="quick-actions">
+                  <a href="{{ route('admin.post_page') }}" class="quick-action-btn">
+                    <i class="fa fa-plus"></i>
+                    Create Post
+                  </a>
+                  <a href="{{ route('admin.analytics') }}" class="quick-action-btn">
+                    <i class="fa fa-bar-chart"></i>
+                    Analytics
+                  </a>
+                  <a href="{{ route('admin.show_posts') }}" class="quick-action-btn">
+                    <i class="fa fa-list"></i>
+                    Manage Posts
+                  </a>
+                </div>
+              </div>
+              <div class="welcome-stats">
+                <div class="stat-item">
+                  <div class="stat-number">{{ \App\Models\Posts::count() }}</div>
+                  <div class="stat-label">Total Posts</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-number">{{ \App\Models\User::count() }}</div>
+                  <div class="stat-label">Total Users</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-number">{{ \App\Models\Posts::where('post_status', 'active')->count() }}</div>
+                  <div class="stat-label">Published</div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
+
+        <!-- Enhanced Statistics Section -->
         <section class="no-padding-top no-padding-bottom">
           <div class="container-fluid">
+            <div class="section-header">
+              <h3 class="section-title">
+                <i class="fa fa-line-chart"></i>
+                Performance Overview
+              </h3>
+              <p class="section-subtitle">Real-time insights into your blog's performance</p>
+            </div>
+            
             <div class="row">
               <div class="col-md-3 col-sm-6">
                 <div class="statistic-block block">
@@ -375,4 +427,4 @@
               </div>
             </div>
           </div>
-        </section>
+        </section
