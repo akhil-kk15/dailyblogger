@@ -37,67 +37,71 @@
         </div>
     </div>
 
-    <!-- User Stats Widget -->
+    <!-- My Stats Widget -->
     <div class="sidebar_widget stats_widget">
         <div class="widget_header">
             <h3 class="widget_title">
-                <i class="fa fa-users"></i>
-                User Statistics
+                <i class="fa fa-user"></i>
+                My Stats
             </h3>
         </div>
         <div class="widget_content">
-            @php
-                $totalUsers = \App\Models\User::where('usertype', '!=', 'blocked')->count();
-                $totalAuthors = \App\Models\User::whereHas('posts', function($query) {
-                    $query->where('post_status', 'active');
-                })->count();
-                $activeThisWeek = \App\Models\User::where('created_at', '>=', now()->subWeek())
-                    ->where('usertype', '!=', 'blocked')
-                    ->count();
-                $totalComments = \App\Models\Comment::count();
-            @endphp
-            
-            <div class="stats_grid">
-                <div class="stat_item">
-                    <div class="stat_icon">
-                        <i class="fa fa-users"></i>
-                    </div>
-                    <div class="stat_details">
-                        <span class="stat_number">{{ $totalUsers }}</span>
-                        <span class="stat_label">Total Users</span>
-                    </div>
-                </div>
+            @if(Auth::check())
+                @php
+                    $myPosts = \App\Models\Posts::where('user_id', Auth::id())->count();
+                    $myActivePosts = \App\Models\Posts::where('user_id', Auth::id())
+                        ->where('post_status', 'active')->count();
+                    $myComments = \App\Models\Comment::where('user_id', Auth::id())->count();
+                    $memberSince = Auth::user()->created_at->diffForHumans();
+                @endphp
                 
-                <div class="stat_item">
-                    <div class="stat_icon">
-                        <i class="fa fa-pencil"></i>
+                <div class="stats_grid">
+                    <div class="stat_item">
+                        <div class="stat_icon">
+                            <i class="fa fa-file-text"></i>
+                        </div>
+                        <div class="stat_details">
+                            <span class="stat_number">{{ $myPosts }}</span>
+                            <span class="stat_label">My Posts</span>
+                        </div>
                     </div>
-                    <div class="stat_details">
-                        <span class="stat_number">{{ $totalAuthors }}</span>
-                        <span class="stat_label">Authors</span>
+                    
+                    <div class="stat_item">
+                        <div class="stat_icon">
+                            <i class="fa fa-check-circle"></i>
+                        </div>
+                        <div class="stat_details">
+                            <span class="stat_number">{{ $myActivePosts }}</span>
+                            <span class="stat_label">Published</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat_item">
+                        <div class="stat_icon">
+                            <i class="fa fa-comments"></i>
+                        </div>
+                        <div class="stat_details">
+                            <span class="stat_number">{{ $myComments }}</span>
+                            <span class="stat_label">My Comments</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat_item">
+                        <div class="stat_icon">
+                            <i class="fa fa-calendar"></i>
+                        </div>
+                        <div class="stat_details">
+                            <span class="stat_number">{{ $memberSince }}</span>
+                            <span class="stat_label">Member Since</span>
+                        </div>
                     </div>
                 </div>
-                
-                <div class="stat_item">
-                    <div class="stat_icon">
-                        <i class="fa fa-user-plus"></i>
-                    </div>
-                    <div class="stat_details">
-                        <span class="stat_number">{{ $activeThisWeek }}</span>
-                        <span class="stat_label">New Users</span>
-                    </div>
+            @else
+                <div class="no_posts_message">
+                    <i class="fa fa-info-circle"></i>
+                    <p><a href="{{ route('login') }}">Login</a> to see your stats.</p>
                 </div>
-                
-                <div class="stat_item">
-                    <div class="stat_icon">
-                        <i class="fa fa-comments"></i>
-                    </div>
-                    <div class="stat_details">
-                        <span class="stat_number">{{ $totalComments }}</span>
-                        <span class="stat_label">Comments</span>
-                    </div>
-                </div>
-            </div>
+            @endif
         </div>
     </div>
 </div>
