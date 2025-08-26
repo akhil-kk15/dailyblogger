@@ -4,7 +4,7 @@
     @include('admin.admincss')
     <style>
         .management_section {
-            background: #fff;
+            background: #f8f9fa;
             border-radius: 12px;
             padding: 30px;
             margin-bottom: 30px;

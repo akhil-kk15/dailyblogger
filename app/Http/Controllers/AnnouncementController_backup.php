@@ -27,18 +27,11 @@ class AnnouncementController extends Controller
     
     public function store_announcement(Request $request)
     {
-<<<<<<< HEAD
-        if (!Auth::check() || Auth::user()->usertype !== 'admin') {
-            return redirect()->route('login');
-        }
-
-=======
         // Check if user is admin
         if (!Auth::check() || Auth::user()->usertype !== 'admin') {
             return redirect('/dashboard')->with('error', 'Access denied.');
         }
         
->>>>>>> pre-release
         $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',

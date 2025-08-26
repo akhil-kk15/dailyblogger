@@ -133,7 +133,7 @@
                       
                       <!-- Pagination -->
                       <div class="pagination_wrapper">
-                          {{ $posts->links() }}
+                          {{ $posts->links('custom-pagination') }}
                       </div>
                   </div>
               @elseif(isset($isCurrentUserBlocked) && $isCurrentUserBlocked)
@@ -256,31 +256,99 @@
           .pagination_wrapper {
               display: flex;
               justify-content: center;
-              margin-top: 40px;
+              margin-top: 30px;
+              margin-bottom: 20px;
           }
           
           .pagination_wrapper .pagination {
               display: flex;
               list-style: none;
               padding: 0;
+              gap: 12px;
           }
           
           .pagination_wrapper .pagination li {
-              margin: 0 5px;
+              margin: 0;
           }
           
-          .pagination_wrapper .pagination li a {
-              display: block;
-              padding: 8px 12px;
-              background: #f8f9fa;
-              color: #007bff;
+          .pagination_wrapper .pagination li a,
+          .pagination_wrapper .pagination li span {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              min-width: 50px;
+              height: 45px;
+              padding: 10px 16px;
+              background-color: #2b2278;
+              color: #ffffff;
               text-decoration: none;
-              border-radius: 4px;
+              border-radius: 30px;
+              font-weight: bold;
+              font-size: 16px;
+              text-transform: uppercase;
+              transition: all 0.3s ease;
+              box-shadow: 0 4px 15px rgba(43, 34, 120, 0.3);
           }
           
-          .pagination_wrapper .pagination li.active a {
-              background: #007bff;
-              color: white;
+          .pagination_wrapper .pagination li a:hover {
+              background-color: #000d10;
+              color: #ffffff;
+              transform: translateY(-2px);
+              box-shadow: 0 6px 20px rgba(0, 13, 16, 0.4);
+          }
+          
+          .pagination_wrapper .pagination li.active a,
+          .pagination_wrapper .pagination li.active span {
+              background-color: #000d10;
+              color: #ffffff;
+              box-shadow: 0 6px 20px rgba(0, 13, 16, 0.4);
+          }
+          
+          .pagination_wrapper .pagination li.disabled a,
+          .pagination_wrapper .pagination li.disabled span {
+              background-color: #6c757d;
+              color: #ffffff;
+              cursor: not-allowed;
+              opacity: 0.6;
+          }
+          
+          .pagination_wrapper .pagination li.disabled a:hover {
+              background-color: #6c757d;
+              transform: none;
+              box-shadow: 0 4px 15px rgba(108, 117, 125, 0.3);
+          }
+          
+          /* Previous/Next button styling */
+          .pagination_wrapper .pagination li:first-child a,
+          .pagination_wrapper .pagination li:last-child a {
+              min-width: 80px;
+              font-size: 14px;
+          }
+          
+          /* Responsive pagination for mobile */
+          @media (max-width: 768px) {
+              .pagination_wrapper {
+                  margin-top: 20px;
+                  margin-bottom: 15px;
+              }
+              
+              .pagination_wrapper .pagination li a,
+              .pagination_wrapper .pagination li span {
+                  min-width: 40px;
+                  height: 40px;
+                  padding: 8px 12px;
+                  font-size: 14px;
+              }
+              
+              .pagination_wrapper .pagination li:first-child a,
+              .pagination_wrapper .pagination li:last-child a {
+                  min-width: 70px;
+                  font-size: 12px;
+              }
+              
+              .pagination_wrapper .pagination {
+                  gap: 8px;
+              }
           }
           
           /* Blocked user message styles */

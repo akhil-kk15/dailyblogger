@@ -45,22 +45,9 @@
                 </li>
         </ul>
         
-        <span class="heading">{{ __('admin.reports_settings') }}</span>
-        <ul class="list-unstyled">
-          <li class="{{ request()->routeIs('admin.analytics') ? 'active' : '' }}">
-            <a href="{{ route('admin.analytics') }}"> <i class="fa fa-line-chart"></i>{{ __('admin.analytics') }} </a>
-          </li>
-          <li class="{{ request()->routeIs('admin.settings') ? 'active' : '' }}">
-            <a href="{{ route('admin.settings') }}"> <i class="icon-settings"></i>{{ __('admin.settings') }} </a>
-          </li>
-          <li> <a href="#" onclick="showComingSoon('Backup & Export')"> <i class="icon-cloud-download"></i>{{ __('admin.backup') }} </a></li>
-        </ul>
-        
-        <span class="heading">{{ __('admin.quick_actions') }}</span>
-        <ul class="list-unstyled">
-          <li> <a href="{{ route('home.homepage') }}" target="_blank"> <i class="icon-eye"></i>{{ __('admin.view_website') }} </a></li>
-          <li> <a href="{{ route('profile.show') }}"> <i class="icon-user"></i>{{ __('admin.my_profile') }} </a></li>
-        </ul>
+
+       
+        <!-- Reports & Settings and Quick Actions sections removed as requested -->
       </nav>
 
 <script>
@@ -73,7 +60,7 @@ function showComingSoon(feature) {
         <div class="coming-soon-content">
             <div class="coming-soon-header">
                 <i class="fa fa-rocket"></i>
-                <h3>🚧 Coming Soon!</h3>
+                <h3>Coming Soon!</h3>
                 <button class="close-modal" onclick="closeComingSoonModal()">&times;</button>
             </div>
             <div class="coming-soon-body">

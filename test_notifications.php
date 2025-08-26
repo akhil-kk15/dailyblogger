@@ -30,8 +30,8 @@ try {
     $testNotification->delete();
     echo "✓ Test notification cleaned up\n";
     
-    echo "\n✅ Notifications table is working correctly!\n";
-    echo "🎉 Both announcement and post approval features should now work.\n";
+    echo "\nNotifications table is working correctly!\n";
+    echo " Both announcement and post approval features should now work.\n";
     
 } catch (Exception $e) {
     echo "✗ Error: " . $e->getMessage() . "\n";

@@ -24,3 +24,7 @@ yarn-error.log
 hpage _content.txt
 /public/postimage
 resources/views/admin/show_announcements.blade.php
+ACADEMIC_REQUIREMENTS_README.md
+BLOCK_FUNCTIONALITY_COMPLETE.md
+newredme.md
+CHAT_EXPORT_DOCUMENTATION.md

@@ -11,6 +11,78 @@
       <meta name="description" content="">
       <meta name="author" content="">
       <meta name="csrf-token" content="{{ csrf_token() }}">
+      
+      <!-- CRITICAL CSS FOR FOUC PREVENTION -->
+      <style>
+          /* IMMEDIATE DARK THEME APPLICATION */
+          body.dark-mode {
+              background-color: #1a1a1a !important;
+              color: #e1e1e1 !important;
+          }
+          
+          body.dark-mode .header_section {
+              background: #2d2d2d !important;
+              color: #e1e1e1 !important;
+          }
+          
+          body.dark-mode .services_section,
+          body.dark-mode .posts_section,
+          body.dark-mode .featured_section,
+          body.dark-mode .about_section,
+          body.dark-mode .blog_section {
+              background-color: #1a1a1a !important;
+              color: #e1e1e1 !important;
+          }
+          
+          body.dark-mode h1,
+          body.dark-mode h2,
+          body.dark-mode h3,
+          body.dark-mode h4,
+          body.dark-mode p {
+              color: #e1e1e1 !important;
+          }
+          
+          body.dark-mode .post_card,
+          body.dark-mode .featured_box {
+              background-color: #2d2d2d !important;
+              color: #e1e1e1 !important;
+          }
+      </style>
+      
+      <!-- IMMEDIATE THEME APPLICATION SCRIPT -->
+      <script>
+          // Apply saved theme IMMEDIATELY to prevent FOUC
+          (function() {
+              const savedTheme = localStorage.getItem('app-theme');
+              if (savedTheme === 'dark') {
+                  // Set class on documentElement immediately
+                  if (document.documentElement) {
+                      document.documentElement.style.cssText = 'background-color: #1a1a1a !important; color: #e1e1e1 !important;';
+                  }
+                  
+                  // Apply to body when it becomes available
+                  function applyToBody() {
+                      if (document.body) {
+                          document.body.classList.add('dark-mode');
+                          document.body.style.cssText = 'background-color: #1a1a1a !important; color: #e1e1e1 !important;';
+                      }
+                  }
+                  
+                  if (document.body) {
+                      applyToBody();
+                  } else {
+                      // Apply as soon as body becomes available
+                      const observer = new MutationObserver(function() {
+                          if (document.body) {
+                              applyToBody();
+                              observer.disconnect();
+                          }
+                      });
+                      observer.observe(document.documentElement, { childList: true });
+                  }
+              }
+          })();
+      </script>
       <!-- bootstrap css -->
       <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap.min.css') }}">
       <!-- style css -->
@@ -1374,6 +1446,37 @@
       </style>
       
       <script>
+          // IMMEDIATE FOUC PREVENTION FOR BLOG THEME SWITCHING
+          (function() {
+              'use strict';
+              
+              // Apply theme IMMEDIATELY - before any rendering
+              function applyThemeImmediate() {
+                  const savedTheme = localStorage.getItem('app-theme');
+                  const body = document.body;
+                  
+                  if (savedTheme === 'dark' && body) {
+                      body.classList.add('dark-mode');
+                  } else if (body) {
+                      body.classList.remove('dark-mode');
+                  }
+              }
+              
+              // Apply immediately if body exists
+              if (document.body) {
+                  applyThemeImmediate();
+              } else {
+                  // Apply as soon as body is available
+                  const observer = new MutationObserver(function(mutations) {
+                      if (document.body) {
+                          applyThemeImmediate();
+                          observer.disconnect();
+                      }
+                  });
+                  observer.observe(document.documentElement, { childList: true });
+              }
+          })();
+          
           // Dark mode functionality for home layout
           document.addEventListener('DOMContentLoaded', function() {
               const html = document.documentElement;
@@ -1394,22 +1497,22 @@
               function updateTheme() {
                   if (isDarkMode) {
                       body.classList.add('dark-mode');
-                      iconDesktop.className = 'fa fa-sun-o';
-                      iconMobile.className = 'fa fa-sun-o';
-                      textDesktop.textContent = 'Light';
-                      textMobile.textContent = 'Light Mode';
+                      if (iconDesktop) iconDesktop.className = 'fa fa-sun-o';
+                      if (iconMobile) iconMobile.className = 'fa fa-sun-o';
+                      if (textDesktop) textDesktop.textContent = 'Light';
+                      if (textMobile) textMobile.textContent = 'Light Mode';
                       localStorage.setItem('app-theme', 'dark');
                   } else {
                       body.classList.remove('dark-mode');
-                      iconDesktop.className = 'fa fa-moon-o';
-                      iconMobile.className = 'fa fa-moon-o';
-                      textDesktop.textContent = 'Dark';
-                      textMobile.textContent = 'Dark Mode';
+                      if (iconDesktop) iconDesktop.className = 'fa fa-moon-o';
+                      if (iconMobile) iconMobile.className = 'fa fa-moon-o';
+                      if (textDesktop) textDesktop.textContent = 'Dark';
+                      if (textMobile) textMobile.textContent = 'Dark Mode';
                       localStorage.setItem('app-theme', 'light');
                   }
               }
               
-              // Initialize theme
+              // Initialize theme (redundant but ensures UI elements are updated)
               updateTheme();
               
               // Add event listeners

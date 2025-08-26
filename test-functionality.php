@@ -13,7 +13,7 @@ use App\Models\Posts;
 use App\Models\Category;
 use App\Models\Tag;
 
-echo "🚀 Testing User Post Management Functionality\n";
+echo " Testing User Post Management Functionality\n";
 echo "=============================================\n\n";
 
 // Test 1: Check if models and relationships work

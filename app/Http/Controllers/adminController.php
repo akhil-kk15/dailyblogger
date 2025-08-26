@@ -13,6 +13,7 @@ use Illuminate\Support\Str;
 
 class adminController extends Controller
 {
+    //eloquent's aggregate functions are used to get the count of users, posts, etc.
     public function index()
     {
         if(Auth::id()){
@@ -73,7 +74,9 @@ class adminController extends Controller
                     'weeklyUsers' => $weeklyUsers,
                 ];
                 
-                // Get recent posts (last 30 days, limit 5)
+                
+                
+                // Get recent posts (last 30 days, limit 5) using eloquent
                 $recentPosts = Posts::with('category')
                     ->where('created_at', '>=', now()->subDays(30))
                     ->orderBy('created_at', 'desc')
@@ -122,6 +125,8 @@ class adminController extends Controller
         return view('admin.show_posts', compact('posts', 'currentStatus', 'stats'));
     }
 
+
+    //content modertion functions 
     public function approve_post($id)
     {
         $post = Posts::findOrFail($id);

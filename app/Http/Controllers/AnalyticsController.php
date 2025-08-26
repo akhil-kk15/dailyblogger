@@ -21,7 +21,7 @@ class AnalyticsController extends Controller
             abort(403, 'Unauthorized');
         }
 
-        // Get basic statistics
+        // Get basic statistics  
         $stats = [
             'total_posts' => Posts::count(),
             'active_posts' => Posts::where('post_status', 'active')->count(),

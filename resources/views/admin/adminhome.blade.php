@@ -4,15 +4,25 @@
    @include('admin.admincss')
   </head>
   <body>
-    <header class="header">   
-     @include('admin.header ')
-    </header>
-    <div class="d-flex align-items-stretch">
-      <!-- Sidebar Navigation-->
-      @include('admin.sidebar')
-      <!-- Sidebar Navigation end-->
-      @include('admin.body')
+    <div class="admin-layout-container">
+      <!-- Header that spans full width -->
+      <header class="header">   
+        @include('admin.header ')
+      </header>
+      
+      <!-- Main content area with sidebar and body -->
+      <div class="admin-main-content d-flex align-items-stretch">
+        <!-- Sidebar Navigation-->
+        @include('admin.sidebar')
+        <!-- Sidebar Navigation end-->
+        
+        <!-- Page Content -->
+        @include('admin.body')
+      </div>
+      
+      <!-- Footer -->
       @include('admin.footer')
+    </div>
         
         <!-- Enhanced Admin Dashboard JavaScript -->
         <script>

@@ -24,7 +24,7 @@
         margin-bottom: 40px;
     }
     .stat_card {
-        background: white;
+        background: #f8f9fa;
         border-radius: 10px;
         padding: 25px;
         box-shadow: 0 4px 16px rgba(0,0,0,0.1);

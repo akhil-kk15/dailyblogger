@@ -41,56 +41,162 @@
         --bg-darker: #2c3034;
     }
 
-    /* Fix for transparent dropdowns */
+    /* Fix for transparent dropdowns - Enhanced */
     .dropdown-menu {
-        background-color: #ffffff !important;
+        background-color: #6c757d !important;
         border: 1px solid rgba(0,0,0,0.15) !important;
-        box-shadow: 0 6px 20px rgba(0,0,0,0.15) !important;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.2) !important;
         opacity: 1 !important;
         backdrop-filter: blur(10px) !important;
         -webkit-backdrop-filter: blur(10px) !important;
+        border-radius: 8px !important;
+        padding: 8px 0 !important;
+        margin-top: 5px !important;
+        z-index: 1050 !important;
     }
 
     .dropdown-menu.language-menu {
-        background-color: #ffffff !important;
+        background-color: #6c757d !important;
         border: 1px solid rgba(0,0,0,0.15) !important;
-        min-width: 150px;
-        box-shadow: 0 8px 25px rgba(0,0,0,0.18) !important;
+        min-width: 150px !important;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.25) !important;
         border-radius: 8px !important;
-        overflow: hidden;
+        overflow: hidden !important;
     }
 
     .dropdown-item {
         background-color: transparent !important;
-        color: #333 !important;
-        padding: 8px 16px !important;
+        color: #ffffff !important;
+        padding: 10px 16px !important;
         transition: all 0.2s ease !important;
+        font-weight: 500 !important;
+        font-size: 0.9rem !important;
+        border: none !important;
+        text-decoration: none !important;
+        display: flex !important;
+        align-items: center !important;
+        width: 100% !important;
+        border-radius: 0 !important;
     }
 
     .dropdown-item:hover,
     .dropdown-item:focus {
-        background-color: #f8f9fa !important;
-        color: #495057 !important;
+        background-color: rgba(255, 255, 255, 0.1) !important;
+        color: #ffffff !important;
+        text-decoration: none !important;
+        transform: translateX(3px) !important;
     }
 
-    /* Page layout fixes - Remove white space between sidebar and content */
-    .d-flex.align-items-stretch {
-        margin: 0 !important;
-        padding: 0 !important;
-        width: 100% !important;
-        min-height: 100vh;
+    /* Language dropdown specific styling */
+    .language-option {
+        display: flex !important;
+        align-items: center !important;
+        gap: 10px !important;
+        color: #ffffff !important;
+        font-weight: 500 !important;
+    }
+
+    .language-option:hover {
+        background-color: rgba(255, 255, 255, 0.1) !important;
+        color: #ffffff !important;
+    }
+
+    .language-option .flag-icon {
+        margin-right: 8px !important;
+        flex-shrink: 0 !important;
+    }
+
+    /* User dropdown menu styling */
+    .dropdown-menu-right {
+        right: 0 !important;
+        left: auto !important;
+    }
+
+    .dropdown-divider {
+        height: 0 !important;
+        margin: 8px 0 !important;
+        overflow: hidden !important;
+        border-top: 1px solid rgba(255,255,255,0.2) !important;
+        border-bottom: none !important;
+        background: none !important;
+    }
+
+    /* Logout button styling */
+    .dropdown-item[style*="color:#dc3545"] {
+        color: #ff6b6b !important;
+        font-weight: 600 !important;
+    }
+
+    .dropdown-item[style*="color:#dc3545"]:hover {
+        background-color: rgba(255, 107, 107, 0.1) !important;
+        color: #ff6b6b !important;
+    }
+
+    /* Fixed Admin Layout Structure - Eliminate White Space */
+    .admin-layout-container {
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        box-sizing: border-box;
+    }
+    
+    /* Header styling - Tight fit with no white space */
+    .header {
+        background: #ffffff !important;
+        color: #212529 !important;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        position: relative;
+        z-index: 1000;
+        flex-shrink: 0;
+        margin: 0;
+        padding: 0;
+        border: none;
+    }
+    
+    .header * {
+        color: #212529 !important;
+    }
+    
+    .header .navbar {
+        margin: 0;
+        padding: 0;
+        min-height: 60px;
+        max-height: 60px;
+        display: flex;
+        align-items: center;
+    }
+    
+    .header .navbar-brand {
+        color: #212529 !important;
+        font-weight: 700;
+    }
+    
+    /* Main content area - exact height calculation */
+    .admin-main-content {
+        flex: 1;
+        display: flex;
+        align-items: stretch;
+        height: calc(100vh - 60px); /* Exact calculation using the 60px navbar height */
+        overflow: hidden;
+    }
+    
+    /* Remove white space between sidebar and content */
+    .admin-main-content.d-flex.align-items-stretch {
+        margin: 0;
+        padding: 0;
     }
 
     .page-content {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-        min-height: 100vh;
+        height: calc(100vh - 60px); /* Exact height calculation */
         position: relative;
-        flex: 1 !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        width: auto !important; /* Let flexbox handle the width */
-        max-width: none !important;
-        overflow-x: hidden !important;
+        flex: 1;
+        margin: 0;
+        padding: 0;
+        overflow-y: auto;
+        overflow-x: hidden;
     }
 
     .page-content::before {
@@ -109,26 +215,111 @@
         z-index: 1;
     }
     
-    /* Improved Admin Panel Organization - Optimized for Space */
+    /* Improved Admin Panel Organization */
     #sidebar {
-        width: 260px; /* Reduced from default 280px */
+        width: 260px;
         box-shadow: 2px 0 20px rgba(0,0,0,0.1);
         background: var(--sidebar-gradient);
         position: relative;
         overflow: hidden;
-        height: 100vh;
+        height: calc(100vh - 60px); /* Match exact height with navbar */
         overflow-y: auto;
-        flex-shrink: 0 !important; /* Prevent sidebar from shrinking */
-        margin: 0 !important;
-        padding: 0 !important;
-        /* Custom scrollbar for better aesthetics */
+        flex-shrink: 0;
         scrollbar-width: thin;
         scrollbar-color: rgba(52, 152, 219, 0.3) transparent;
     }
+        scrollbar-width: thin;
+        scrollbar-color: rgba(52, 152, 219, 0.3) transparent;
+    }
+    /* Navigation bar styling for better alignment */
+    .navbar .container-fluid {
+        padding: 0 20px;
+        max-width: none;
+        align-items: center;
+        height: 60px;
+        display: flex;
+    }
     
-    /* Webkit browsers scrollbar styling */
-    #sidebar::-webkit-scrollbar {
-        width: 6px;
+    .navbar-header {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+    
+    .navbar-brand {
+        margin-right: 0;
+        display: flex;
+        align-items: center;
+    }
+    
+    .sidebar-toggle {
+        background: none;
+        border: none;
+        color: #212529;
+        font-size: 18px;
+        padding: 8px;
+        border-radius: 4px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+    
+    .navbar-brand {
+        margin-right: 0;
+        display: flex;
+        align-items: center;
+        padding: 0 !important;
+        margin: 0 !important;
+        height: 100% !important;
+    }
+    
+    .sidebar-toggle {
+        background: none;
+        border: none;
+        color: #212529;
+        font-size: 18px;
+        padding: 8px;
+        border-radius: 4px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+    
+    .sidebar-toggle:hover {
+        background: rgba(0,0,0,0.1);
+        color: #667eea;
+    }
+
+    /* Right Menu */
+    .right-menu {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+    
+    .right-menu .list-inline-item {
+        margin: 0;
+    }
+        display: flex !important;
+        align-items: center !important;
+    }
+    
+    .right-menu .nav-link {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+        border-radius: 6px;
+        transition: all 0.3s ease;
+        color: #212529 !important;
+        text-decoration: none;
+        font-weight: 500;
+    }
+    
+    .right-menu .nav-link:hover {
+        background: rgba(102, 126, 234, 0.1);
+        color: #667eea !important;
+        text-decoration: none;
+    }
     }
     
     #sidebar::-webkit-scrollbar-track {
@@ -176,18 +367,21 @@
     }
     
     #sidebar .sidebar-header .title h1 {
-        color: #ecf0f1;
-        font-weight: 700;
+        color: #ffffff !important;
+        font-weight: 700 !important;
         margin-bottom: 2px;
         font-size: 15px; /* Reduced from 16px */
         line-height: 1.2;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.3) !important;
     }
     
     #sidebar .sidebar-header .title p {
-        color: #bdc3c7;
+        color: #e9ecef !important;
         font-size: 10px; /* Reduced from 11px */
-        opacity: 0.8;
+        opacity: 0.9 !important;
         margin-bottom: 0;
+        font-weight: 500 !important;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.2) !important;
     }
     
     #sidebar .heading {
@@ -297,13 +491,233 @@
         width: calc(100% - 260px);
     }
     
-    /* Enhanced Header Design */
+    /* Enhanced Header Design - Keep original background */
     .header {
         box-shadow: var(--shadow-soft);
         border-bottom: 1px solid #e9ecef;
         background: #ffffff;
         position: relative;
         z-index: 1000;
+    }
+
+    /* Improve header navigation text visibility - Force white text with highest specificity */
+    body .navbar .nav-link,
+    .header .navbar .nav-link,
+    .navbar .nav-link {
+        color: #ffffff !important;
+        font-weight: 700 !important;
+        font-size: 1rem !important;
+        transition: all 0.3s ease !important;
+    }
+
+    body .navbar .nav-link:hover,
+    .header .navbar .nav-link:hover,
+    .navbar .nav-link:hover {
+        color: #f8f9fa !important;
+        text-decoration: none !important;
+    }
+
+    body .navbar .nav-link i,
+    .header .navbar .nav-link i,
+    .navbar .nav-link i {
+        color: #ffffff !important;
+        font-size: 1.1rem !important;
+    }
+
+    body .navbar .nav-link:hover i,
+    .header .navbar .nav-link:hover i,
+    .navbar .nav-link:hover i {
+        color: #f8f9fa !important;
+    }
+
+    /* Force white text for all navigation elements with maximum specificity */
+    body .navbar .right-menu .nav-link,
+    body .navbar .list-inline-item .nav-link,
+    .header .navbar .right-menu .nav-link,
+    .header .navbar .list-inline-item .nav-link,
+    .navbar .right-menu .nav-link,
+    .navbar .list-inline-item .nav-link {
+        color: #ffffff !important;
+        font-weight: 700 !important;
+    }
+
+    body .navbar .right-menu .nav-link:hover,
+    body .navbar .list-inline-item .nav-link:hover,
+    .header .navbar .right-menu .nav-link:hover,
+    .header .navbar .list-inline-item .nav-link:hover,
+    .navbar .right-menu .nav-link:hover,
+    .navbar .list-inline-item .nav-link:hover {
+        color: #f8f9fa !important;
+    }
+
+    /* Force white text for View Website and Language selector specifically */
+    body .right-menu a,
+    .header .right-menu a,
+    .right-menu a {
+        color: #ffffff !important;
+        font-weight: 700 !important;
+    }
+
+    body .right-menu a:hover,
+    .header .right-menu a:hover,
+    .right-menu a:hover {
+        color: #f8f9fa !important;
+        text-decoration: none !important;
+    }
+
+    /* Force white text for dropdown toggles */
+    body .navbar .dropdown-toggle,
+    .header .navbar .dropdown-toggle,
+    .navbar .dropdown-toggle {
+        color: #ffffff !important;
+        font-weight: 700 !important;
+        background: transparent !important;
+        border: none !important;
+    }
+
+    body .navbar .dropdown-toggle:hover,
+    .header .navbar .dropdown-toggle:hover,
+    .navbar .dropdown-toggle:hover {
+        color: #f8f9fa !important;
+        text-decoration: none !important;
+    }
+
+    /* Navbar brand styling - Only text colors */
+    .navbar-brand {
+        font-weight: 700 !important;
+        color: #ffffff !important;
+        text-decoration: none !important;
+    }
+
+    .navbar-brand:hover {
+        color: #f8f9fa !important;
+        text-decoration: none !important;
+    }
+
+    .brand-text strong {
+        font-weight: 800 !important;
+        color: #ffffff !important;
+    }
+
+    .text-primary {
+        color: #74b9ff !important;
+    }
+
+    /* Language selector and user dropdown - Force white with maximum specificity */
+    body .language-selector .nav-link,
+    .header .language-selector .nav-link,
+    .language-selector .nav-link {
+        color: #ffffff !important;
+        font-weight: 700 !important;
+    }
+
+    body .language-selector .nav-link:hover,
+    .header .language-selector .nav-link:hover,
+    .language-selector .nav-link:hover {
+        color: #f8f9fa !important;
+    }
+
+    body .navbar .dropdown-toggle,
+    .header .navbar .dropdown-toggle,
+    .navbar .dropdown-toggle {
+        color: #ffffff !important;
+        font-weight: 700 !important;
+        background: transparent !important;
+        border: none !important;
+    }
+
+    body .navbar .dropdown-toggle:hover,
+    .header .navbar .dropdown-toggle:hover,
+    .navbar .dropdown-toggle:hover {
+        color: #f8f9fa !important;
+        text-decoration: none !important;
+    }
+
+    /* Force white text for language selector text specifically */
+    body #current-language,
+    .header #current-language,
+    #current-language {
+        color: #ffffff !important;
+        font-weight: 700 !important;
+    }
+
+    /* Force white text for View Website span */
+    body .right-menu span,
+    .header .right-menu span,
+    .right-menu span {
+        color: #ffffff !important;
+        font-weight: 700 !important;
+    }
+
+    /* Specific styling for View Website and Language buttons */
+    .right-menu .nav-link {
+        color: #ffffff !important;
+        font-weight: 700 !important;
+    }
+
+    .right-menu .nav-link:hover {
+        color: #f8f9fa !important;
+    }
+
+    /* Flag icons - Fix display issues with better fallbacks */
+    .flag-icon {
+        width: 20px !important;
+        height: 14px !important;
+        display: inline-block !important;
+        border-radius: 2px !important;
+        margin-right: 6px !important;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.2) !important;
+        background-size: cover !important;
+        background-position: center !important;
+        background-repeat: no-repeat !important;
+        border: 1px solid rgba(255,255,255,0.3) !important;
+    }
+
+    /* Enhanced flag backgrounds with proper UK flag */
+    .flag-gb,
+    .flag-icon.flag-gb {
+        background: linear-gradient(45deg, #012169 0%, #012169 25%, transparent 25%, transparent 75%, #012169 75%) !important;
+        background-size: 8px 8px !important;
+        position: relative !important;
+    }
+
+    .flag-gb::before,
+    .flag-icon.flag-gb::before {
+        content: '' !important;
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        background: linear-gradient(90deg, transparent 45%, #ffffff 45%, #ffffff 55%, transparent 55%),
+                    linear-gradient(0deg, transparent 40%, #ffffff 40%, #ffffff 60%, transparent 60%),
+                    linear-gradient(45deg, transparent 40%, #c8102e 40%, #c8102e 60%, transparent 60%),
+                    linear-gradient(-45deg, transparent 40%, #c8102e 40%, #c8102e 60%, transparent 60%) !important;
+        background-color: #012169 !important;
+    }
+
+    .flag-de,
+    .flag-icon.flag-de {
+        background: linear-gradient(to bottom, #000000 0%, #000000 33.33%, #dd0000 33.33%, #dd0000 66.66%, #ffce00 66.66%, #ffce00 100%) !important;
+    }
+
+    .flag-fr,
+    .flag-icon.flag-fr {
+        background: linear-gradient(to right, #002aff 0%, #002aff 33.33%, #ffffff 33.33%, #ffffff 66.66%, #ed2939 66.66%, #ed2939 100%) !important;
+    }
+
+    /* Alternative simple flag styles as fallback */
+    #current-flag.flag-gb,
+    .language-option .flag-gb {
+        background: #012169 !important;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 30'%3E%3Cpath fill='%23012169' d='M0 0h60v30H0z'/%3E%3Cpath fill='%23FFF' d='M0 0l60 30M60 0L0 30'/%3E%3Cpath fill='%23C8102E' d='M25 0h10v30H25zM0 10h60v10H0z'/%3E%3C/svg%3E") !important;
+        background-size: cover !important;
+    }
+
+    /* Ensure flag visibility in dropdowns */
+    .dropdown-menu .flag-icon {
+        display: inline-block !important;
+        vertical-align: middle !important;
     }
     
     .navbar-brand {
@@ -334,7 +748,7 @@
     
     /* Enhanced Card and Block Styling */
     .block {
-        background: #ffffff;
+        background: #f8f9fa;
         border-radius: var(--border-radius);
         box-shadow: var(--shadow-soft);
         border: 1px solid rgba(0,0,0,0.05);
@@ -537,16 +951,17 @@
         color: #fff;
     }
     
-    /* Enhanced Page Header Styling */
+    /* Enhanced Page Header Styling - Compact */
     .page-header {
         background: #ffffff;
         border-radius: 0 0 var(--border-radius) var(--border-radius);
         box-shadow: var(--shadow-soft);
-        margin-bottom: 30px;
+        margin: 0;
+        padding: 20px 30px;
         position: relative;
         overflow: hidden;
     }
-    
+
     .page-header::before {
         content: '';
         position: absolute;
@@ -556,14 +971,55 @@
         height: 4px;
         background: var(--primary-gradient);
     }
-    
+
     .page-header h2 {
         color: #2c3e50;
         font-weight: 700;
-        margin-bottom: 5px;
+        margin: 0;
         font-size: 24px;
         position: relative;
         z-index: 2;
+    }
+    
+    /* Section Header Styling - Compact */
+    .section-header {
+        text-align: center;
+        margin: 20px 0;
+        padding: 0 30px;
+    }
+    
+    .section-title {
+        color: #ffffff;
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 10px;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .section-title i {
+        margin-right: 10px;
+        color: #74b9ff;
+    }
+    
+    .section-subtitle {
+        color: rgba(255,255,255,0.9);
+        font-size: 16px;
+        font-weight: 400;
+        margin: 0;
+    }
+    
+    /* Main sections spacing - Reduced */
+    .no-padding-top {
+        padding-top: 0 !important;
+    }
+    
+    .no-padding-bottom {
+        padding-bottom: 0 !important;
+    }
+    
+    section {
+        padding: 20px 30px;
+        margin: 0;
     }
     
     /* Enhanced Stats Cards */
@@ -946,13 +1402,13 @@
         }
     }
     
-    /* Enhanced Dashboard Welcome Section */
+    /* Enhanced Dashboard Welcome Section - Compact Layout */
     .dashboard-welcome {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         color: #ffffff;
-        padding: 40px 30px;
+        padding: 30px;
         border-radius: var(--border-radius);
-        margin-bottom: 30px;
+        margin: 20px 30px;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -960,7 +1416,7 @@
         position: relative;
         overflow: hidden;
     }
-    
+
     .dashboard-welcome::before {
         content: '';
         position: absolute;
@@ -971,48 +1427,51 @@
         background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
         animation: float 6s ease-in-out infinite;
     }
-    
+
     @keyframes float {
         0%, 100% { transform: translateY(0px); }
         50% { transform: translateY(-20px); }
     }
-    
+
     .welcome-content {
         flex: 1;
         z-index: 2;
         position: relative;
+        max-width: 60%;
     }
-    
+
     .dashboard-title {
         font-size: 32px;
         font-weight: 800;
         margin-bottom: 10px;
         text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        line-height: 1.2;
     }
-    
+
     .dashboard-title i {
         margin-right: 15px;
         color: #74b9ff;
     }
-    
+
     .dashboard-subtitle {
         font-size: 16px;
         opacity: 0.9;
         margin-bottom: 25px;
         font-weight: 500;
+        line-height: 1.4;
     }
-    
+
     .dashboard-subtitle i {
         margin-right: 8px;
         color: #74b9ff;
     }
-    
+
     .quick-actions {
         display: flex;
         gap: 15px;
         flex-wrap: wrap;
     }
-    
+
     .quick-action-btn {
         background: rgba(255,255,255,0.2);
         color: #ffffff;
@@ -1024,8 +1483,9 @@
         transition: var(--transition);
         border: 2px solid transparent;
         backdrop-filter: blur(10px);
+        white-space: nowrap;
     }
-    
+
     .quick-action-btn:hover {
         background: rgba(255,255,255,0.3);
         transform: translateY(-2px);
@@ -1033,25 +1493,140 @@
         color: #ffffff;
         text-decoration: none;
     }
-    
+
     .quick-action-btn i {
         margin-right: 8px;
     }
-    
+
     .welcome-stats {
         display: flex;
-        gap: 30px;
+        gap: 20px;
         z-index: 2;
         position: relative;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        max-width: 40%;
     }
     
     .stat-item {
         text-align: center;
-        min-width: 80px;
+        background: rgba(255,255,255,0.15);
+        padding: 20px 15px;
+        border-radius: 12px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255,255,255,0.2);
+        transition: var(--transition);
+        min-width: 120px;
+        flex: 1;
     }
-    
+
+    .stat-item:hover {
+        transform: translateY(-3px);
+        background: rgba(255,255,255,0.25);
+    }
+
     .stat-number {
         font-size: 28px;
+        font-weight: 800;
+        color: #ffffff;
+        margin-bottom: 5px;
+        display: block;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .stat-label {
+        font-size: 12px;
+        opacity: 0.9;
+        color: #ffffff;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        line-height: 1.3;
+    }
+    
+    /* Responsive Design for Dashboard Welcome - Compact */
+    @media (max-width: 1200px) {
+        .dashboard-welcome {
+            flex-direction: column;
+            gap: 25px;
+            text-align: center;
+            padding: 25px;
+            margin: 15px 20px;
+        }
+        
+        .welcome-content {
+            max-width: 100%;
+        }
+        
+        .welcome-stats {
+            max-width: 100%;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .stat-item {
+            min-width: 100px;
+        }
+        
+        .dashboard-title {
+            font-size: 28px;
+        }
+        
+        section {
+            padding: 15px 20px;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .dashboard-welcome {
+            margin: 10px 15px;
+            padding: 20px 15px;
+        }
+        
+        .dashboard-title {
+            font-size: 24px;
+        }
+        
+        .dashboard-subtitle {
+            font-size: 14px;
+        }
+        
+        .quick-actions {
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .quick-action-btn {
+            padding: 10px 16px;
+            font-size: 13px;
+        }
+        
+        .welcome-stats {
+            gap: 10px;
+        }
+        
+        .stat-item {
+            padding: 15px 10px;
+            min-width: 80px;
+        }
+        
+        .stat-number {
+            font-size: 22px;
+        }
+        
+        .stat-label {
+            font-size: 10px;
+        }
+        
+        section {
+            padding: 10px 15px;
+        }
+        
+        .section-header {
+            margin: 15px 0;
+            padding: 0 15px;
+        }
+    }
         font-weight: 800;
         margin-bottom: 5px;
         color: #74b9ff;
@@ -1615,47 +2190,120 @@
 
     .dashboard-title {
         color: #ffffff !important;
-        font-size: 2rem !important;
-        font-weight: 700 !important;
-        text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        font-size: 2.2rem !important;
+        font-weight: 800 !important;
+        text-shadow: 0 3px 6px rgba(0,0,0,0.4) !important;
+        margin-bottom: 10px !important;
     }
 
     .dashboard-subtitle {
-        color: rgba(255,255,255,0.9) !important;
-        font-size: 1rem !important;
+        color: rgba(255,255,255,0.95) !important;
+        font-size: 1.1rem !important;
+        font-weight: 600 !important;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.3) !important;
     }
 
     /* Improve text visibility throughout the admin panel */
     .section-title {
         color: #ffffff !important;
         font-weight: 700 !important;
-        text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        text-shadow: 0 2px 4px rgba(0,0,0,0.5) !important;
+        font-size: 1.5rem !important;
     }
 
     .section-subtitle {
-        color: rgba(255,255,255,0.8) !important;
-        font-weight: 500 !important;
+        color: rgba(255,255,255,0.95) !important;
+        font-weight: 600 !important;
+        font-size: 1rem !important;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.3) !important;
     }
 
-    /* Fix text colors in blocks */
+    /* Fix text colors in blocks - make much more visible */
     .block .title strong {
-        color: #333333 !important;
+        color: #2c3e50 !important;
         font-weight: 700 !important;
+        font-size: 1.1rem !important;
     }
 
     .block .title {
-        color: #333333 !important;
+        color: #2c3e50 !important;
+        font-weight: 600 !important;
     }
 
-    /* Fix muted text colors */
+    /* Improve statistic block text visibility */
+    .statistic-block .title strong {
+        color: #2c3e50 !important;
+        font-weight: 700 !important;
+        font-size: 1rem !important;
+    }
+
+    .statistic-block .number {
+        color: #2c3e50 !important;
+        font-weight: 800 !important;
+        font-size: 2.2rem !important;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.1) !important;
+    }
+
+    /* Fix muted text colors - make more visible */
     .text-muted {
+        color: #495057 !important;
+        font-weight: 500 !important;
+    }
+
+    .block .text-muted,
+    .statistic-block .text-muted {
         color: #6c757d !important;
+        font-weight: 500 !important;
+        font-size: 0.9rem !important;
     }
 
     /* Improve stat text visibility */
     .stat-row span {
-        color: #495057 !important;
+        color: #2c3e50 !important;
+        font-weight: 600 !important;
+        font-size: 0.95rem !important;
+    }
+
+    .stat-row strong {
+        color: #2c3e50 !important;
+        font-weight: 700 !important;
+        font-size: 1.1rem !important;
+    }
+
+    /* Fix all body text in page content */
+    .page-content {
+        color: #ffffff !important;
+    }
+
+    .page-content p,
+    .page-content span:not(.badge):not(.status-badge),
+    .page-content div:not(.badge):not(.btn):not(.alert) {
+        color: rgba(255, 255, 255, 0.95) !important;
         font-weight: 500 !important;
+    }
+
+    /* Improve general text visibility */
+    .page-content h1,
+    .page-content h2,
+    .page-content h3,
+    .page-content h4,
+    .page-content h5,
+    .page-content h6 {
+        color: #ffffff !important;
+        font-weight: 700 !important;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.3) !important;
+    }
+
+    /* Ensure all links are visible */
+    .page-content a:not(.btn):not(.nav-link) {
+        color: #74b9ff !important;
+        font-weight: 600 !important;
+        text-decoration: none !important;
+    }
+
+    .page-content a:not(.btn):not(.nav-link):hover {
+        color: #0984e3 !important;
+        text-decoration: underline !important;
     }
 
     /* Reduce white space and improve blocks */
@@ -1787,26 +2435,46 @@
         padding: 15px 12px !important;
         border-top: 1px solid rgba(0,0,0,0.08) !important;
         vertical-align: middle !important;
-        color: #333333 !important;
-        font-weight: 500 !important;
+        color: #2c3e50 !important;
+        font-weight: 600 !important;
+        font-size: 0.95rem !important;
     }
 
     /* Improve table text visibility */
     .table tbody td strong {
         color: #2c3e50 !important;
-        font-weight: 600 !important;
+        font-weight: 700 !important;
+        font-size: 1rem !important;
     }
 
     .table tbody td small {
-        color: #6c757d !important;
-        font-weight: 400 !important;
+        color: #495057 !important;
+        font-weight: 500 !important;
+        font-size: 0.85rem !important;
     }
 
-    /* Body and html reset for admin pages */
+    .table tbody td .text-muted {
+        color: #495057 !important;
+        font-weight: 500 !important;
+    }
+
+    /* Improve all text in table cells */
+    .table tbody td span {
+        color: #2c3e50 !important;
+        font-weight: 500 !important;
+    }
+
+    .table tbody td p {
+        color: #2c3e50 !important;
+        font-weight: 500 !important;
+        margin-bottom: 0 !important;
+    }
+
+    /* Body and html reset */
     body {
-        margin: 0 !important;
-        padding: 0 !important;
-        overflow-x: hidden !important;
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
     }
 
     /* Remove any default Bootstrap margins/padding that might cause gaps */
@@ -1814,46 +2482,107 @@
         box-sizing: border-box !important;
     }
 
-    /* Header styling */
-    .header {
-        width: 100% !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        z-index: 1000;
-        position: relative;
+    /* Fix white space at the very top - remove any default margins/padding */
+    .admin-layout-container::before,
+    .admin-layout-container::after {
+        display: none !important;
     }
 
-    /* Main container adjustments */
-    .d-flex.align-items-stretch {
+    /* Remove white space from header area */
+    .admin-layout-container > .header {
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+        background: #ffffff !important;
+    }
+
+    /* Critical: Override Bootstrap navbar defaults that create white space */
+    .header .navbar,
+    .header nav.navbar,
+    nav.navbar {
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+        height: 60px !important; /* Force exact height */
+        min-height: 60px !important;
+        max-height: 60px !important;
+        display: flex !important;
+        align-items: center !important;
+    }
+
+    /* Critical: Remove any potential spacing from navbar container */
+    .header .navbar > .container-fluid,
+    .header nav.navbar > .container-fluid,
+    nav.navbar > .container-fluid {
+        margin: 0 !important;
+        padding-left: 20px !important;
+        padding-right: 20px !important;
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+    }
+
+    /* Ensure no space between header and content */
+    .admin-layout-container > .admin-main-content {
         margin: 0 !important;
         padding: 0 !important;
         gap: 0 !important;
-        width: 100vw !important;
-        height: 100vh !important;
     }
 
-    /* Remove any potential margins from main wrapper */
-    .d-flex.align-items-stretch > * {
+    /* Footer - minimal and unobtrusive */
+    .footer {
+        padding: 0;
+        margin: 0;
+        height: 30px;
+        background-color: transparent !important;
+        border-top: none !important;
+        z-index: 100;
+        flex-shrink: 0;
+    }
+    
+    /* Footer block - minimal and nearly invisible */
+    .footer__block {
+        background: transparent !important;
+        color: rgba(255, 255, 255, 0.6) !important;
+        text-align: center !important;
+        position: relative !important;
+        z-index: 100 !important;
+        flex-shrink: 0 !important;
         margin: 0 !important;
+        padding: 5px 0 !important;
+        font-size: 0.75rem !important;
+        border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+    }
+
+    .footer__block .container-fluid {
+        margin: 0 !important;
+        padding: 5px 20px !important;
+    }
+
+    .footer__block p {
+        margin: 0 !important;
+        padding: 0 !important;
+        color: rgba(255, 255, 255, 0.6) !important;
+        font-size: 0.75rem !important;
+        font-weight: 400 !important;
     }
 
     /* Container adjustments */
     .container-fluid {
-        padding-left: 20px !important;
-        padding-right: 20px !important;
-        margin: 0 !important;
-        max-width: 100% !important;
+        padding-left: 20px;
+        padding-right: 20px;
+        margin: 0;
+        max-width: 100%;
     }
 
     /* Row spacing */
     .row {
-        margin-left: -10px !important;
-        margin-right: -10px !important;
+        margin-left: -15px;
+        margin-right: -15px;
     }
 
     .row > [class*="col-"] {
-        padding-left: 10px !important;
-        padding-right: 10px !important;
+        padding-left: 15px;
+        padding-right: 15px;
     }
 
     /* Recent items styling with better visibility */
@@ -1873,17 +2602,70 @@
     .recent-post-item strong,
     .recent-user-item strong {
         color: #2c3e50 !important;
-        font-weight: 600 !important;
+        font-weight: 700 !important;
+        font-size: 1rem !important;
     }
 
     .recent-post-item .text-muted,
     .recent-user-item .text-muted {
-        color: #6c757d !important;
+        color: #495057 !important;
+        font-weight: 500 !important;
+        font-size: 0.9rem !important;
     }
 
     .recent-post-item .date,
     .recent-user-item .date {
-        color: #95a5a6 !important;
+        color: #6c757d !important;
+        font-weight: 500 !important;
+        font-size: 0.85rem !important;
+    }
+
+    /* Activity text improvements */
+    .activity-item .activity-text strong {
+        color: #2c3e50 !important;
+        font-weight: 700 !important;
+        font-size: 1.1rem !important;
+    }
+
+    .activity-item .activity-text span {
+        color: #495057 !important;
+        font-weight: 500 !important;
+        font-size: 0.9rem !important;
+    }
+
+    /* Block content text improvements */
+    .block .quick-stats-content .stat-row span {
+        color: #2c3e50 !important;
+        font-weight: 600 !important;
+        font-size: 0.95rem !important;
+    }
+
+    .block .quick-stats-content .stat-row strong {
+        font-weight: 700 !important;
+        font-size: 1.1rem !important;
+    }
+
+    /* Activity content improvements */
+    .activity-content .activity-text {
+        color: #2c3e50 !important;
+    }
+
+    /* Improve visibility of all spans and text in blocks */
+    .block span:not(.badge):not(.status-badge):not(.user-type-badge) {
+        color: #495057 !important;
+        font-weight: 500 !important;
+    }
+
+    .block p {
+        color: #2c3e50 !important;
+        font-weight: 500 !important;
+    }
+
+    /* Improve empty state text */
+    .text-center.text-muted p {
+        color: #6c757d !important;
+        font-weight: 500 !important;
+        font-size: 1rem !important;
     }
 
     /* Status badges with better visibility */
@@ -1962,18 +2744,20 @@
 
     /* Stat numbers */
     .stat-number {
-        font-size: 2rem !important;
-        font-weight: 700 !important;
-        color: rgba(102, 126, 234, 1) !important;
+        font-size: 2.5rem !important;
+        font-weight: 800 !important;
+        color: #ffffff !important;
         line-height: 1 !important;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.3) !important;
     }
 
     .stat-label {
-        font-size: 0.85rem !important;
-        color: rgba(52, 58, 64, 0.7) !important;
-        font-weight: 500 !important;
+        font-size: 0.9rem !important;
+        color: rgba(255,255,255,0.9) !important;
+        font-weight: 600 !important;
         text-transform: uppercase !important;
         letter-spacing: 0.5px !important;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.2) !important;
     }
 
     /* Welcome stats */
@@ -1986,21 +2770,33 @@
 
     .stat-item {
         text-align: center !important;
-        padding: 15px !important;
+        padding: 20px 15px !important;
+        background: rgba(255, 255, 255, 0.15) !important;
+        border-radius: 12px !important;
+        backdrop-filter: blur(15px) !important;
+        border: 1px solid rgba(255, 255, 255, 0.25) !important;
+        transition: all 0.3s ease !important;
+    }
+
+    .stat-item:hover {
         background: rgba(255, 255, 255, 0.2) !important;
-        border-radius: 10px !important;
-        backdrop-filter: blur(10px) !important;
-        border: 1px solid rgba(255, 255, 255, 0.3) !important;
+        transform: translateY(-3px) !important;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.2) !important;
     }
 
     .stat-item .stat-number {
         color: #ffffff !important;
-        font-size: 1.5rem !important;
+        font-size: 2rem !important;
+        font-weight: 800 !important;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.4) !important;
     }
 
     .stat-item .stat-label {
-        color: rgba(255, 255, 255, 0.9) !important;
-        font-size: 0.75rem !important;
+        color: rgba(255, 255, 255, 0.95) !important;
+        font-size: 0.8rem !important;
+        font-weight: 600 !important;
+        margin-top: 5px !important;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.3) !important;
     }
     
     /* Reduce motion for users who prefer it */
@@ -2321,5 +3117,241 @@
         background-color: #0c5460;
         color: #d1ecf1;
         border-color: #bee5eb;
+    }
+    
+    /* Light Grey Background for All Cards and Blocks */
+    .block,
+    .card,
+    .statistic-block,
+    .management_section,
+    .stat_card,
+    .analytics_table,
+    .posts_table,
+    .table_container,
+    .item_card,
+    .section_header,
+    .white-bg,
+    .bg-white,
+    .card:not([class*="bg-"]),
+    .modal-content,
+    .dropdown-menu {
+        background: #f8f9fa !important;
+        background-color: #f8f9fa !important;
+    }
+    
+    /* Specific overrides for any remaining white backgrounds */
+    .admin-layout-container .block,
+    .admin-layout-container .card,
+    .admin-layout-container .statistic-block,
+    .page-content .block,
+    .page-content .card,
+    .page-content .stat_card,
+    .page-content .management_section {
+        background: #f8f9fa !important;
+        background-color: #f8f9fa !important;
+    }
+    
+    /* Header can stay white for contrast */
+    .header {
+        background: #ffffff !important;
+    }
+    
+    /* Tables with light grey backgrounds */
+    .table:not(.table-dark),
+    .posts_table,
+    .analytics_table {
+        background: #f8f9fa !important;
+        background-color: #f8f9fa !important;
+    }
+    
+    /* Ensure text remains readable on light grey */
+    .block,
+    .card,
+    .stat_card,
+    .management_section {
+        color: #212529 !important;
+    }
+    
+    .block .title strong,
+    .card .title strong,
+    .stat_card .title strong {
+        color: #212529 !important;
+    }
+    
+    /* Fix for white text visibility - make text black and readable */
+    .page-content p, 
+    .page-content span:not(.badge):not(.status-badge), 
+    .page-content div:not(.badge):not(.btn):not(.alert) {
+        color: rgba(4, 4, 4, 0.95) !important;
+    }
+    
+    /* Fix for heading colors - make headings black and remove shadows */
+    .page-content h1, 
+    .page-content h2, 
+    .page-content h3, 
+    .page-content h4, 
+    .page-content h5, 
+    .page-content h6 {
+        color: #000 !important;
+        text-shadow: none !important;
+    }
+    
+    /* Fix for white box at bottom - ensure footer and body have proper background */
+    .footer,
+    .footer__block {
+        background: transparent !important;
+        background-color: transparent !important;
+    }
+    
+    /* Ensure the admin layout container covers full height */
+    .admin-layout-container {
+        min-height: -70vh;
+        background: #f8f9fa;
+    }
+    
+    /* Fix for any white space under navbar/search panel */
+    .search-panel {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    
+    .navbar {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    
+    .navbar .container-fluid {
+        margin: 0 !important;
+        padding: 0 15px !important;
+    }
+    
+    /* Ensure tight fit between header and content */
+    .admin-main-content {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+    }
+    
+    /* Enhanced Pagination Styling to Match Admin Theme */
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        margin: 20px 0;
+        padding: 0;
+        list-style: none;
+    }
+    
+    .pagination .page-item {
+        margin: 0;
+    }
+    
+    .pagination .page-link {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 44px;
+        width: 44px;
+        height: 44px;
+        padding: 0;
+        color: #495057;
+        background: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-radius: 12px;
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    
+    .pagination .page-link:hover {
+        color: #fff;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-color: #667eea;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    }
+    
+    .pagination .page-item.active .page-link {
+        color: #fff;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-color: #667eea;
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        z-index: 1;
+    }
+    
+    .pagination .page-item.disabled .page-link {
+        color: #adb5bd;
+        background: #e9ecef;
+        border-color: #dee2e6;
+        cursor: not-allowed;
+        opacity: 0.6;
+    }
+    
+    .pagination .page-item.disabled .page-link:hover {
+        transform: none;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        background: #e9ecef;
+    }
+    
+    /* Previous/Next button styling */
+    .pagination .page-item:first-child .page-link,
+    .pagination .page-item:last-child .page-link {
+        font-weight: 600;
+        min-width: 54px;
+        width: 54px;
+        border-radius: 14px;
+    }
+    
+    .pagination .page-item:first-child .page-link::before {
+        content: "‹";
+        margin-right: 4px;
+        font-size: 16px;
+    }
+    
+    .pagination .page-item:last-child .page-link::after {
+        content: "›";
+        margin-left: 4px;
+        font-size: 16px;
+    }
+    
+    /* Pagination wrapper styling */
+    .pagination_wrapper {
+        margin: 30px 0;
+        padding: 20px 0;
+        display: flex;
+        justify-content: center;
+        border-top: 1px solid #dee2e6;
+        background: rgba(248, 249, 250, 0.5);
+        border-radius: 0 0 12px 12px;
+    }
+    
+    /* Responsive pagination */
+    @media (max-width: 576px) {
+        .pagination .page-link {
+            min-width: 38px;
+            width: 38px;
+            height: 38px;
+            padding: 0;
+            font-size: 13px;
+            border-radius: 10px;
+        }
+        
+        .pagination .page-item:first-child .page-link,
+        .pagination .page-item:last-child .page-link {
+            min-width: 46px;
+            width: 46px;
+            border-radius: 12px;
+        }
+        
+        .pagination {
+            gap: 4px;
+        }
+        
+        /* Hide some page numbers on mobile */
+        .pagination .page-item:not(.active):not(:first-child):not(:last-child):not(:nth-child(2)):not(:nth-last-child(2)) {
+            display: none;
+        }
     }
     </style>
